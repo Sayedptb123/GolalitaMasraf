@@ -1,0 +1,67 @@
+import { useTranslation } from "react-i18next";
+import { useTheme } from "../ThemeProvider";
+import { colors } from "../colors";
+import HTMLView from "react-native-htmlview";
+
+export const getHtmlStyleSheet = (isDark, language) => {
+  const styles = {
+    div: {
+      color: `${isDark ? colors.white : colors.mai}`,
+    },
+    a: {
+      color: isDark ? colors.white : colors.darkBlue,
+      textDecorationLine: "underline",
+      textDecorationStyle: "solid",
+      textDecorationColor: isDark ? colors.white : colors.darkBlue,
+    },
+  };
+
+  if (language === "ar") {
+    styles["span"] = {
+      textAlign: "right",
+    };
+    styles["p"] = {
+      textAlign: "right",
+    };
+    styles["div"] = {
+      textAlign: "right",
+    };
+    // styles["a"] = {
+    //   textAlign: "right",
+    // };
+    styles["li"] = {
+      textAlign: "right",
+    };
+    styles["ol"] = {
+      textAlign: "right",
+    };
+    styles["ul"] = {
+      textAlign: "right",
+    };
+  }
+
+  return styles;
+};
+
+const HTMLRenderer = ({ value, ...restProps }) => {
+  const { isDark } = useTheme();
+  const { i18n } = useTranslation();
+  const textColor = isDark ? colors.white : colors.mainDarkModeText;
+
+  return (
+    <HTMLView
+      value={value}
+      stylesheet={getHtmlStyleSheet(isDark, i18n.language)}
+      addLineBreaks={true}
+      paragraphBreak={false}
+      textComponentProps={{
+        style: {
+          color: textColor,
+        },
+      }}
+      {...restProps}
+    />
+  );
+};
+
+export default HTMLRenderer;

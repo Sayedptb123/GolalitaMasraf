@@ -1,0 +1,238 @@
+import { StyleSheet,Image } from "react-native";
+import MainLayout from "../../../components/MainLayout";
+import Header from "../../../components/Header";
+import { SCREEN_HEIGHT ,mainStyles} from "../../../styles/mainStyles";
+import { useRoute } from "@react-navigation/native";
+import { View } from "react-native";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { userSelector } from "../../../redux/auth/auth-selectors";
+import { getMerchantDetails } from "../../../api/merchants";
+import { getOfferById, sendRedemptionEmail } from "../../../api/offers";
+import FullScreenLoader from "../../../components/Loaders/FullScreenLoader";
+import { HEADER_HEIGHT } from "../../../constants";
+import { showMessage } from "react-native-flash-message";
+import { useTranslation } from "react-i18next";
+import { TypographyText } from "../../../components/Typography";
+import { useTheme } from "../../../components/ThemeProvider";
+import { colors } from "../../../components/colors";
+import CommonButton from "../../../components/CommonButton/CommonButton";
+import LogoSvg from "../../../assets/logo.svg";
+
+const getDateString = (date) => {
+  if (!date.getFullYear) return "";
+
+  return `${date.getFullYear()}-${(date.getMonth() + 1)
+    .toString()
+    .padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}`;
+};
+const ApplyCodeConfirmation = ({ navigation }) => {
+  const route = useRoute();
+  const { t } = useTranslation();
+  const params = route.params;
+  const user = useSelector(userSelector);
+  const { isDark } = useTheme();
+
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+
+  const logo = isDark
+  ? require("../../../assets/horizontal_logo_white.png")
+  : require("../../../assets/horizontal_logo.png");
+  const getData = async () => {
+    try {
+      setLoading(true);
+      const merchant = await getMerchantDetails({
+        merchant_id: params.merchant_id,
+      });
+
+      if (!merchant) {
+        throw "err";
+      }
+
+      const offer = await getOfferById(params.product_id);
+
+      if (!offer) {
+        throw "err";
+      }
+
+      const currentDate = new Date();
+      const date = getDateString(currentDate);
+      const time = currentDate.toTimeString().slice(0, 8);
+
+      setData({
+        merchant_name: merchant.merchant_name,
+        merchant_email: merchant.email,
+        offer_type: "B1G1",
+        product_name: offer.name,
+        date,
+        time,
+        location_name: merchant.address,
+        product_id: offer.product_id,
+        confirmation_number: Date.now().toString(),
+        customer_id: user.partner_id,
+      });
+    } catch (err) {
+      showMessage({
+        message: t("General.error"),
+        type: "danger",
+      });
+      console.log(err, "error");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSubmitPress = async () => {
+    try {
+      setLoading(true);
+
+      const res = await sendRedemptionEmail(data);
+      if (res?.status == "success") {
+        showMessage({
+          type: "success",
+          message: t("General.success"),
+        });
+        setTimeout(() => {
+          navigation.navigate("Main");
+        }, 2000);
+      }
+      else{
+        showMessage({
+          message: t("General.error"),
+          type: "danger",
+        });
+      }
+
+      
+    } catch (err) {
+      console.log(err, "err");
+      showMessage({
+        message: t("General.error"),
+        type: "danger",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  return (
+    <MainLayout
+      outsideScroll={true}
+      headerChildren={
+        <Header label={t("AllOffers.confirmation")} btns={["back"]} />
+      }
+      headerHeight={50}
+      contentStyle={{ height: SCREEN_HEIGHT - 120, paddingHorizontal: 20 }}
+    >
+      {loading && (
+        <FullScreenLoader absolutePosition style={{ top: -HEADER_HEIGHT }} />
+      )}
+      {!loading && (
+        <View style={styles.wrapper}>
+          {/* <LogoSvg
+            color={isDark ? colors.mainDarkMode : colors.darkBlue}
+            style={styles.logo}
+          /> */}
+          <View
+                      style={[
+                        mainStyles.centeredRow,
+                        { flexDirection: "column" },
+                      ]}
+                    >
+                      <Image source={logo} style={styles.main_logo} />
+                    </View>
+          <TypographyText
+            title={data.merchant_name}
+            textColor={isDark ? colors.mainDarkMode : colors.darkBlue}
+            size={22}
+            style={styles.name}
+          />
+          <TypographyText
+            title={data.location_name}
+            textColor={isDark ? colors.mainDarkMode : colors.darkBlue}
+            size={16}
+            style={styles.address}
+          />
+
+          <TypographyText
+            title={t("AllOffers.codeSuccess")}
+            textColor={isDark ? colors.mainDarkMode : colors.darkBlue}
+            size={20}
+            style={styles.confirmationText}
+          />
+
+          <TypographyText
+            title={t("AllOffers.codeConfirmation")}
+            textColor={isDark ? colors.mainDarkMode : colors.darkBlue}
+            size={16}
+            style={{ marginTop: 10 }}
+          />
+
+          <View style={styles.codeWrapper}>
+            <TypographyText
+              title={data.confirmation_number}
+              textColor={"black"}
+              size={18}
+            />
+          </View>
+
+          <CommonButton
+            onPress={handleSubmitPress}
+            label={t("AllOffers.agree")}
+            style={{ marginTop: 26 }}
+            textColor={isDark ? colors.black : colors.white}
+          />
+        </View>
+      )}
+    </MainLayout>
+  );
+};
+
+const styles = StyleSheet.create({
+  wrapper: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  logo: {
+    width: 60,
+    height: 60,
+  },
+  name: {
+    textAlign: "center",
+    fontWeight: "800",
+    marginTop: 30,
+  },
+  address: {
+    textAlign: "center",
+    marginTop: 20,
+  },
+  codeWrapper: {
+    backgroundColor: "#F2F2F2",
+    paddingVertical: 20,
+    paddingHorizontal: 30,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 4,
+    marginTop: 10,
+    borderWidth: 1,
+    borderStyle: "dashed",
+  },
+  confirmationText: {
+    marginTop: 40,
+  },
+  main_logo: {
+    width: 250,
+    height: 150,
+    // borderRadius: 50,
+    resizeMode: "contain",
+  },
+});
+
+export default ApplyCodeConfirmation;
