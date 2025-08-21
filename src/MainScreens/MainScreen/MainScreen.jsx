@@ -16,6 +16,7 @@ import { onBannerPress } from "../../../utils";
 import { handleNotificationClick } from "../../pushNotifications/notificationClickHandler";
 import AdwertSwiper from "../../components/AdwertSwiper/AdwertSwiper";
 import RNBootSplash from "react-native-bootsplash";
+import { setIsSplashScreenVisible } from "../../redux/auth/auth-actions";
 import MerchantListHeader from "../MerchantsPage/components/MerchantsHeader";
 import Header from "../../components/Header";
 
@@ -58,8 +59,10 @@ const MainScreen = ({
     setTimeout(() => {
       if (Platform.OS === "android") {
         RNBootSplash.hide({ fade: true });
+      } else {
+        setIsSplashScreenVisible(false);
       }
-    }, 2000);
+    }, 3000);
   }, [clickedNotification, isLoaded]);
 
   if (clickedNotification || !isLoaded) {

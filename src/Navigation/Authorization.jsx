@@ -15,6 +15,7 @@ import PrivacyPolicy from "../MainScreens/PrivacyPolicy";
 import Verification from "../AuthScreens/Verification/Verification";
 import { useDispatch } from "react-redux";
 import RNBootSplash from "react-native-bootsplash";
+import { setIsSplashScreenVisible } from "../redux/auth/auth-actions";
 import { Platform } from "react-native";
 
 const Stack = createStackNavigator();
@@ -28,8 +29,10 @@ export const Authorization = () => {
       setTimeout(() => {
         if (Platform.OS === "android") {
           RNBootSplash.hide({ fade: true });
+        } else {
+          dispatch(setIsSplashScreenVisible(false));
         }
-      }, 2000);
+      }, 3000);
 
       const isBoard = await AsyncStorage.getItem("isBoard");
       setIsOnBoarding(JSON.parse(isBoard) === null);

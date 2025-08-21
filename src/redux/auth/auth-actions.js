@@ -8,6 +8,7 @@ import {
   SET_CONFIRMATIONCODE_LOADING,
   SET_REGISTERATIONCODE_LOADING,
   SET_PUBLIC_ORGANIZATIONS,
+  SET_SPLASH_SCREEN_VISIBLE,
   SET_TOKEN,
   SET_USER,
   SET_USER_ID,
@@ -58,6 +59,11 @@ export const setIsUserJustLogOut = (payload) => ({
 
 export const setIsAuthorized = (payload) => ({
   type: SET_IS_AUTHORIZED,
+  payload,
+});
+
+export const setIsSplashScreenVisible = (payload) => ({
+  type: SET_SPLASH_SCREEN_VISIBLE,
   payload,
 });
 

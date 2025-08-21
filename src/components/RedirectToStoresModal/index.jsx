@@ -14,6 +14,7 @@ import { useTranslation } from "react-i18next";
 import CommonButton from "../CommonButton/CommonButton";
 import { useDispatch } from "react-redux";
 import RNBootSplash from "react-native-bootsplash";
+import { setIsSplashScreenVisible } from "../../redux/auth/auth-actions";
 
 const PhoneIcon = sized(PhoneSvg, 120, 160);
 
@@ -50,8 +51,10 @@ const RedirectToStoresModal = ({ organization }) => {
     setTimeout(() => {
       if (Platform.OS === "android") {
         RNBootSplash.hide({ fade: true });
+      } else {
+        dispatch(setIsSplashScreenVisible(false));
       }
-    }, 2000);
+    }, 3000);
   }, []);
 
   return (
