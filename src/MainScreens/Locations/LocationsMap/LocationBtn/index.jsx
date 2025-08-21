@@ -1,7 +1,6 @@
 import { ActivityIndicator, StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native";
 import { TypographyText } from "../../../../components/Typography";
-import GeolocationSvg from "../../../../assets/geolocation";
 import { mainStyles } from "../../../../styles/mainStyles";
 import { colors } from "../../../../components/colors";
 import { BALOO_REGULAR } from "../../../../redux/types";
@@ -16,7 +15,7 @@ const LocationBtn = ({ userLocation, onPress }) => {
         <ActivityIndicator color={colors.green} size={"small"} />
       ) : (
         <>
-          <GeolocationSvg />
+         // <GeolocationSvg />
           <TypographyText
             textColor={"#686868"}
             size={8}

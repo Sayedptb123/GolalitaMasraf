@@ -289,6 +289,7 @@
 				CURRENT_PROJECT_VERSION = 2;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = GolalitaMasraf/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Al Rayan Rewards-مكافآت الريان";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -317,6 +318,7 @@
 				CODE_SIGN_ENTITLEMENTS = GolalitaMasraf/GolalitaMasraf.entitlements;
 				CURRENT_PROJECT_VERSION = 2;
 				INFOPLIST_FILE = GolalitaMasraf/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Al Rayan Rewards-مكافآت الريان";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
