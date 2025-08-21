@@ -10,12 +10,12 @@
 		0C80B921A6F3F58F76C31292 /* libPods-GolalitaMasraf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-GolalitaMasraf.a */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		19161D712A03CB15005B081F /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = 19161D6F2A03C9E6005B081F /* Fonts */; };
+		67B550A4EB974DAD9BB69D70 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6B383AC4E4524762A72CA307 /* Colors.xcassets */; };
 		761780ED2CA45674006654EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761780EC2CA45674006654EE /* AppDelegate.swift */; };
 		76F49C5596DBC28590959DB7 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
-
-		CE07AB0F2BB595DF0022604A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE07AB0E2BB595DE0022604A /* GoogleService-Info.plist */; };
+		81AB9BB82411601600AC10FF /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* SplashScreen.storyboard */; };
 		9687F1A0A8154682BA8735A7 /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 65172BBCEC694B328E60A877 /* BootSplash.storyboard */; };
-		67B550A4EB974DAD9BB69D70 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6B383AC4E4524762A72CA307 /* Colors.xcassets */; };
+		CE07AB0F2BB595DF0022604A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE07AB0E2BB595DE0022604A /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,12 +29,12 @@
 		3B4392A12AC88292D35C810B /* Pods-GolalitaMasraf.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GolalitaMasraf.debug.xcconfig"; path = "Target Support Files/Pods-GolalitaMasraf/Pods-GolalitaMasraf.debug.xcconfig"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-GolalitaMasraf.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GolalitaMasraf.release.xcconfig"; path = "Target Support Files/Pods-GolalitaMasraf/Pods-GolalitaMasraf.release.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-GolalitaMasraf.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-GolalitaMasraf.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		65172BBCEC694B328E60A877 /* BootSplash.storyboard */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = BootSplash.storyboard; path = GolalitaMasraf/BootSplash.storyboard; sourceTree = "<group>"; };
+		6B383AC4E4524762A72CA307 /* Colors.xcassets */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = folder.assetcatalog; name = Colors.xcassets; path = GolalitaMasraf/Colors.xcassets; sourceTree = "<group>"; };
 		761780EC2CA45674006654EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = GolalitaMasraf/AppDelegate.swift; sourceTree = "<group>"; };
-
+		81AB9BB72411601600AC10FF /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = GolalitaMasraf/SplashScreen.storyboard; sourceTree = "<group>"; };
 		CE07AB0E2BB595DE0022604A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GolalitaMasraf/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		65172BBCEC694B328E60A877 /* BootSplash.storyboard */ = {isa = PBXFileReference; name = "BootSplash.storyboard"; path = "GolalitaMasraf/BootSplash.storyboard"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		6B383AC4E4524762A72CA307 /* Colors.xcassets */ = {isa = PBXFileReference; name = "Colors.xcassets"; path = "GolalitaMasraf/Colors.xcassets"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = folder.assetcatalog; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +57,7 @@
 				761780EC2CA45674006654EE /* AppDelegate.swift */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				81AB9BB72411601600AC10FF /* SplashScreen.storyboard */,
 				13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */,
 				13B07FB91A68108700A75B9A /* GolalitaMasraf.entitlements */,
 				CE07AB0E2BB595DE0022604A /* GoogleService-Info.plist */,
@@ -176,6 +177,7 @@
 			files = (
 				19161D712A03CB15005B081F /* Fonts in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				81AB9BB82411601600AC10FF /* SplashScreen.storyboard in Resources */,
 				CE07AB0F2BB595DF0022604A /* GoogleService-Info.plist in Resources */,
 				76F49C5596DBC28590959DB7 /* PrivacyInfo.xcprivacy in Resources */,
 				9687F1A0A8154682BA8735A7 /* BootSplash.storyboard in Resources */,

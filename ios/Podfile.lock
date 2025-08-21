@@ -2065,8 +2065,6 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
-  - react-native-splash-screen (3.3.0):
-    - React-Core
   - react-native-view-shot (4.0.3):
     - boost
     - DoubleConversion
@@ -2719,8 +2717,6 @@ PODS:
     - ReactCommon/turbomodule/core
     - SocketRocket
     - Yoga
-  - RNCPushNotificationIOS (1.11.0):
-    - React-Core
   - RNDateTimePicker (8.4.2):
     - boost
     - DoubleConversion
@@ -3214,7 +3210,6 @@ DEPENDENCIES:
   - react-native-restart (from `../node_modules/react-native-restart`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - "react-native-slider (from `../node_modules/@react-native-community/slider`)"
-  - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
   - react-native-view-shot (from `../node_modules/react-native-view-shot`)
   - react-native-wallet-passes (from `../node_modules/react-native-wallet-passes`)
   - react-native-webview (from `../node_modules/react-native-webview`)
@@ -3254,7 +3249,6 @@ DEPENDENCIES:
   - "RNCClipboard (from `../node_modules/@react-native-clipboard/clipboard`)"
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - "RNCPicker (from `../node_modules/@react-native-picker/picker`)"
-  - "RNCPushNotificationIOS (from `../node_modules/@react-native-community/push-notification-ios`)"
   - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - "RNFBMessaging (from `../node_modules/@react-native-firebase/messaging`)"
@@ -3400,8 +3394,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-slider:
     :path: "../node_modules/@react-native-community/slider"
-  react-native-splash-screen:
-    :path: "../node_modules/react-native-splash-screen"
   react-native-view-shot:
     :path: "../node_modules/react-native-view-shot"
   react-native-wallet-passes:
@@ -3480,8 +3472,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/masked-view"
   RNCPicker:
     :path: "../node_modules/@react-native-picker/picker"
-  RNCPushNotificationIOS:
-    :path: "../node_modules/@react-native-community/push-notification-ios"
   RNDateTimePicker:
     :path: "../node_modules/@react-native-community/datetimepicker"
   RNFBApp:
@@ -3579,7 +3569,6 @@ SPEC CHECKSUMS:
   react-native-restart: 0bc732f4461709022a742bb29bcccf6bbc5b4863
   react-native-safe-area-context: d3738f0c3b1fcefaed874a45891b0d44306c47c1
   react-native-slider: c434f7094c9500dfa1176931f48e5957872818f8
-  react-native-splash-screen: 95994222cc95c236bd3cdc59fe45ed5f27969594
   react-native-view-shot: 86844f7d310b4a26d84102a2c5078203c627b3be
   react-native-wallet-passes: 2a7b7631cc5892d60bc30e0e7b0bd4a87a6e016b
   react-native-webview: 9a8ea59197aa76145b8ce72aa3eea69f1e89dd38
@@ -3619,7 +3608,6 @@ SPEC CHECKSUMS:
   RNCClipboard: b228d492733d66e0126e18ce66c6d2f90bacc7e5
   RNCMaskedView: 4c5ee1c8667d56077246cc6d1977f77393923560
   RNCPicker: 3959648fed5fbfe8065368fbdf2420c7e73b2587
-  RNCPushNotificationIOS: 6c4ca3388c7434e4a662b92e4dfeeee858e6f440
   RNDateTimePicker: 6912adbf27c5365bedd36f77e378b8dc59b71959
   RNFBApp: 557f15b87d602ed5879a1cbd6dc574481bccb278
   RNFBMessaging: e6480aaf434826565d5a40b01c422fb0f58fc8a9
@@ -3635,6 +3623,6 @@ SPEC CHECKSUMS:
   TouchID: 6d9af299007675845fe9e23bd2701f4354613366
   Yoga: daa1e4de4b971b977b23bc842aaa3e135324f1f3
 
-PODFILE CHECKSUM: ac3e1deb7c83bec840fd8e3a56465d0248840141
+PODFILE CHECKSUM: bdfa33aab959176357d983bcdbadea261dc310c0
 
 COCOAPODS: 1.16.2

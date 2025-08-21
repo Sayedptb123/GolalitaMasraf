@@ -21,7 +21,6 @@ target 'GolalitaMasraf' do
   
   # Notifee configuration
   pod 'RNNotifee', :path => '../node_modules/@notifee/react-native'
-  pod 'NotifeeCore', :path => '../node_modules/@notifee/react-native/ios/NotifeeCore'
   
   # Firebase modular headers (required for Firebase to work properly)
   pod 'FirebaseCore', :modular_headers => true
