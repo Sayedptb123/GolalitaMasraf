@@ -5,7 +5,7 @@ import ReactAppDependencyProvider
 import GoogleMaps
 import Firebase
 import UserNotifications
-import RNCPushNotificationIOS
+import Notifee
 import CodePush
 
 @main
@@ -62,21 +62,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate, RCTBridgeDelegate, UNUser
     let fcmToken = Messaging.messaging().fcmToken
     print("FCM registration token: \(fcmToken ?? "nil")")
     
-    RNCPushNotificationIOS.didRegisterForRemoteNotifications(withDeviceToken: deviceToken)
+    // Notifee handles device token registration automatically
+    Notifee.setNotificationCategories([])
   }
   
   func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-    RNCPushNotificationIOS.didFailToRegisterForRemoteNotifications(withError: error)
+    print("Failed to register for remote notifications: \(error)")
   }
   
   func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-    RNCPushNotificationIOS.didReceiveRemoteNotification(userInfo, fetchCompletionHandler: completionHandler)
+    // Notifee handles remote notifications automatically
+    completionHandler(.newData)
   }
   
   // MARK: - UNUserNotificationCenterDelegate
   
   func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-    RNCPushNotificationIOS.didReceiveNotificationResponse(response)
+    // Notifee handles notification responses automatically
     completionHandler()
   }
   
@@ -84,7 +86,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, RCTBridgeDelegate, UNUser
     let userInfo = notification.request.content.userInfo
     print("APP_PUSH from foreground \(userInfo)")
     
-    RNCPushNotificationIOS.didReceiveRemoteNotification(userInfo) { _ in }
+    // Notifee handles foreground notifications automatically
     completionHandler([.sound, .alert, .badge])
   }
   
