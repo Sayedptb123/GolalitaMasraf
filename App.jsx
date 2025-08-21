@@ -22,7 +22,6 @@ import { I18nManager } from "react-native";
 import { resetImageCacheDate } from "./src/api/asyncStorage";
 import { checkIfTokenIsValid } from "./src/api/auth";
 import { setIsAuthorized } from "./src/redux/auth/auth-actions";
-import SplashScreenModal from "./src/components/SplashScreenModal";
 import RedirectToStoresModal, {
   STORES_CONFIG,
 } from "./src/components/RedirectToStoresModal";
@@ -95,7 +94,6 @@ let App = ({
   getVersion,
   user,
   isAuthorized,
-  isSplashScreenVisible,
 }) => {
   const dispatch = useDispatch();
   const { i18n } = useTranslation();
@@ -258,7 +256,6 @@ let App = ({
         style={{ backgroundColor: isDark ? colors.darkBlue : colors.white }}
         titleStyle={{ color: isDark ? colors.white : colors.darkBlue }}
       />
-      <SplashScreenModal isVisible={isSplashScreenVisible} />
     </>
   );
 };
@@ -268,7 +265,6 @@ const mapStateToProps = (state) => ({
   workStatus: state.authReducer.workStatus,
   version: state.authReducer.version,
   isAuthorized: state.authReducer.isAuthorized,
-  isSplashScreenVisible: state.authReducer.isSplashScreenVisible,
 });
 
 App = connect(mapStateToProps, { getAppStatus, getVersion })(App);

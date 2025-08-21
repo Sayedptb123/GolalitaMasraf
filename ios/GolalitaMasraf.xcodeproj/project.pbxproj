@@ -14,6 +14,8 @@
 		76F49C5596DBC28590959DB7 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
 		81AB9BB82411601600AC10FF /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* SplashScreen.storyboard */; };
 		CE07AB0F2BB595DF0022604A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CE07AB0E2BB595DE0022604A /* GoogleService-Info.plist */; };
+		9687F1A0A8154682BA8735A7 /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 65172BBCEC694B328E60A877 /* BootSplash.storyboard */; };
+		67B550A4EB974DAD9BB69D70 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6B383AC4E4524762A72CA307 /* Colors.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +33,8 @@
 		81AB9BB72411601600AC10FF /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = GolalitaMasraf/SplashScreen.storyboard; sourceTree = "<group>"; };
 		CE07AB0E2BB595DE0022604A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GolalitaMasraf/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		65172BBCEC694B328E60A877 /* BootSplash.storyboard */ = {isa = PBXFileReference; name = "BootSplash.storyboard"; path = "GolalitaMasraf/BootSplash.storyboard"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		6B383AC4E4524762A72CA307 /* Colors.xcassets */ = {isa = PBXFileReference; name = "Colors.xcassets"; path = "GolalitaMasraf/Colors.xcassets"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = folder.assetcatalog; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +61,8 @@
 				13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */,
 				13B07FB91A68108700A75B9A /* GolalitaMasraf.entitlements */,
 				CE07AB0E2BB595DE0022604A /* GoogleService-Info.plist */,
+				65172BBCEC694B328E60A877 /* BootSplash.storyboard */,
+				6B383AC4E4524762A72CA307 /* Colors.xcassets */,
 			);
 			name = GolalitaMasraf;
 			sourceTree = "<group>";
@@ -174,6 +180,8 @@
 				81AB9BB82411601600AC10FF /* SplashScreen.storyboard in Resources */,
 				CE07AB0F2BB595DF0022604A /* GoogleService-Info.plist in Resources */,
 				76F49C5596DBC28590959DB7 /* PrivacyInfo.xcprivacy in Resources */,
+				9687F1A0A8154682BA8735A7 /* BootSplash.storyboard in Resources */,
+				67B550A4EB974DAD9BB69D70 /* Colors.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

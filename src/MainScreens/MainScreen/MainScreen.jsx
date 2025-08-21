@@ -15,8 +15,7 @@ import { useTranslation } from "react-i18next";
 import { onBannerPress } from "../../../utils";
 import { handleNotificationClick } from "../../pushNotifications/notificationClickHandler";
 import AdwertSwiper from "../../components/AdwertSwiper/AdwertSwiper";
-import { setIsSplashScreenVisible } from "../../redux/auth/auth-actions";
-import SplashScreen from "react-native-splash-screen";
+import RNBootSplash from "react-native-bootsplash";
 import MerchantListHeader from "../MerchantsPage/components/MerchantsHeader";
 import Header from "../../components/Header";
 
@@ -27,7 +26,6 @@ const MainScreen = ({
   advert,
   clickedNotification,
   trackBanner,
-  setIsSplashScreenVisible,
 }) => {
   const { t } = useTranslation();
   const { isDark } = useTheme();
@@ -59,9 +57,7 @@ const MainScreen = ({
   useEffect(() => {
     setTimeout(() => {
       if (Platform.OS === "android") {
-        SplashScreen.hide();
-      } else {
-        setIsSplashScreenVisible(false);
+        RNBootSplash.hide({ fade: true });
       }
     }, 2000);
   }, [clickedNotification, isLoaded]);
@@ -126,5 +122,4 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
   getMerchantDetails,
   trackBanner,
-  setIsSplashScreenVisible,
 })(MainScreen);

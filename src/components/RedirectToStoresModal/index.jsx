@@ -13,8 +13,7 @@ import { TypographyText } from "../Typography";
 import { useTranslation } from "react-i18next";
 import CommonButton from "../CommonButton/CommonButton";
 import { useDispatch } from "react-redux";
-import SplashScreen from "react-native-splash-screen";
-import { setIsSplashScreenVisible } from "../../redux/auth/auth-actions";
+import RNBootSplash from "react-native-bootsplash";
 
 const PhoneIcon = sized(PhoneSvg, 120, 160);
 
@@ -50,9 +49,7 @@ const RedirectToStoresModal = ({ organization }) => {
   useEffect(() => {
     setTimeout(() => {
       if (Platform.OS === "android") {
-        SplashScreen.hide();
-      } else {
-        dispatch(setIsSplashScreenVisible(false));
+        RNBootSplash.hide({ fade: true });
       }
     }, 2000);
   }, []);

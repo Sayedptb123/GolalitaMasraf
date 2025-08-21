@@ -1,4 +1,3 @@
-import { Platform } from "react-native";
 import {
   SET_IS_LOGIN_ERROR,
   SET_PUBLIC_ORGANIZATIONS,
@@ -9,7 +8,6 @@ import {
   SET_WORK_STATUS,
   SET_IS_USER_JUST_LOG_OUT,
   SET_IS_AUTHORIZED,
-  SET_SPLASH_SCREEN_VISIBLE,
   SET_IS_MAIN_USER,
   SET_LOGIN_LOADING,
   SET_PROFILE_LOADING,
@@ -33,7 +31,6 @@ const initialState = {
   version: null,
   isUserJustLogOut: false,
   isAuthorized: null,
-  isSplashScreenVisible: Platform.OS === "ios" ? true : false,
   isMainUser: false,
 };
 
@@ -67,8 +64,6 @@ export const authReducer = (state = initialState, action) => {
       return { ...state, isUserJustLogOut: action.payload };
     case SET_IS_AUTHORIZED:
       return { ...state, isAuthorized: action.payload };
-    case SET_SPLASH_SCREEN_VISIBLE:
-      return { ...state, isSplashScreenVisible: action.payload };
     default:
       return state;
   }

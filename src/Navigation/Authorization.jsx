@@ -14,8 +14,7 @@ import CreatePassword from "../AuthScreens/CreatePassword/CreatePassword";
 import PrivacyPolicy from "../MainScreens/PrivacyPolicy";
 import Verification from "../AuthScreens/Verification/Verification";
 import { useDispatch } from "react-redux";
-import SplashScreen from "react-native-splash-screen";
-import { setIsSplashScreenVisible } from "../redux/auth/auth-actions";
+import RNBootSplash from "react-native-bootsplash";
 import { Platform } from "react-native";
 
 const Stack = createStackNavigator();
@@ -28,9 +27,7 @@ export const Authorization = () => {
     (async () => {
       setTimeout(() => {
         if (Platform.OS === "android") {
-          SplashScreen.hide();
-        } else {
-          dispatch(setIsSplashScreenVisible(false));
+          RNBootSplash.hide({ fade: true });
         }
       }, 2000);
 
