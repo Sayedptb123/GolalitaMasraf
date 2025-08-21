@@ -24,11 +24,6 @@ target 'GolalitaMasraf' do
   pod 'Firebase', :modular_headers => true
   pod 'FirebaseCoreInternal', :modular_headers => true
   pod 'GoogleUtilities', :modular_headers => true
-  
-  # Permissions
-  permissions_path = '../node_modules/react-native-permissions/ios'
-  pod 'Permission-LocationWhenInUse', :path => "#{permissions_path}/LocationWhenInUse"
-  pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
 
   config = use_native_modules!
 
