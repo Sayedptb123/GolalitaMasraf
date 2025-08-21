@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { BackHandler, Image, View, Text, TouchableOpacity } from "react-native";
+import { BackHandler, Image, View, Text, TouchableOpacity, Platform } from "react-native";
 import { connect, Provider, useDispatch } from "react-redux";
 import store from "./src/redux/store";
 import { ThemeProvider, useTheme } from "./src/components/ThemeProvider";
@@ -21,10 +21,12 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { I18nManager } from "react-native";
 import { resetImageCacheDate } from "./src/api/asyncStorage";
 import { checkIfTokenIsValid } from "./src/api/auth";
-import { setIsAuthorized } from "./src/redux/auth/auth-actions";
+import { setIsAuthorized, setIsSplashScreenVisible } from "./src/redux/auth/auth-actions";
+import SplashScreenModal from "./src/components/SplashScreenModal";
 import RedirectToStoresModal, {
   STORES_CONFIG,
 } from "./src/components/RedirectToStoresModal";
+import RNBootSplash from "react-native-bootsplash";
 import Geocoder from "react-native-geocoding";
 
 import PortalProvider from "./src/components/Portal/PortalProvider";
@@ -94,6 +96,7 @@ let App = ({
   getVersion,
   user,
   isAuthorized,
+  isSplashScreenVisible,
 }) => {
   const dispatch = useDispatch();
   const { i18n } = useTranslation();
@@ -143,8 +146,27 @@ let App = ({
   useEffect(() => {
     if (typeof isAuthorized === "boolean") {
       setIsLoading(false);
+      // Hide the splashscreen when the app is ready
+      if (Platform.OS === "android") {
+        RNBootSplash.hide({ fade: true });
+      } else {
+        dispatch(setIsSplashScreenVisible(false));
+      }
     }
   }, [isAuthorized]);
+
+  // Fallback: hide splashscreen after 4 seconds to prevent white screen
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (Platform.OS === "android") {
+        RNBootSplash.hide({ fade: true });
+      } else {
+        dispatch(setIsSplashScreenVisible(false));
+      }
+    }, 4000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     try {
@@ -256,6 +278,7 @@ let App = ({
         style={{ backgroundColor: isDark ? colors.darkBlue : colors.white }}
         titleStyle={{ color: isDark ? colors.white : colors.darkBlue }}
       />
+      <SplashScreenModal isVisible={isSplashScreenVisible} />
     </>
   );
 };
@@ -265,6 +288,7 @@ const mapStateToProps = (state) => ({
   workStatus: state.authReducer.workStatus,
   version: state.authReducer.version,
   isAuthorized: state.authReducer.isAuthorized,
+  isSplashScreenVisible: state.authReducer.isSplashScreenVisible,
 });
 
 App = connect(mapStateToProps, { getAppStatus, getVersion })(App);
