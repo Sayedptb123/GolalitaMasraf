@@ -123,8 +123,7 @@ const ForgotPassword = ({
                       width: SCREEN_WIDTH / 2,
                       height: SCREEN_WIDTH / 2,
                       resizeMode: "contain",
-                      marginTop: 22,
-                      tintColor: colors.darkBlue,
+                      marginTop: 22
                     },
                   ]}
                 />
