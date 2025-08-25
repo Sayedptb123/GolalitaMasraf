@@ -16,7 +16,6 @@ import { onBannerPress } from "../../../utils";
 import { handleNotificationClick } from "../../pushNotifications/notificationClickHandler";
 import AdwertSwiper from "../../components/AdwertSwiper/AdwertSwiper";
 import { setIsSplashScreenVisible } from "../../redux/auth/auth-actions";
-import SplashScreen from "react-native-splash-screen";
 import MerchantListHeader from "../MerchantsPage/components/MerchantsHeader";
 import Header from "../../components/Header";
 
@@ -58,11 +57,8 @@ const MainScreen = ({
 
   useEffect(() => {
     setTimeout(() => {
-      if (Platform.OS === "android") {
-        SplashScreen.hide();
-      } else {
-        setIsSplashScreenVisible(false);
-      }
+     
+      setIsSplashScreenVisible(false);
     }, 2000);
   }, [clickedNotification, isLoaded]);
 
