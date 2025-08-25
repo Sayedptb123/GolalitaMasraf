@@ -32,7 +32,7 @@ setup_permissions([
    'PhotoLibrary'
 ])
 
-target 'Emtiyaz' do
+target 'AlRayanRewards' do
 
   rn_maps_path = '../node_modules/react-native-maps'
   pod 'react-native-google-maps', :path => rn_maps_path

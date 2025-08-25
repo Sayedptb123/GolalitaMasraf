@@ -36,7 +36,7 @@ const AddToWalletBtn = () => {
       name: language === 'ar' ? fNameAr : fName,
       fileName: fName,
       x_user_expiry,
-      organisation: 'Emtiyaz', // user.organisation,
+              organisation: 'Al Rayan Rewards', // user.organisation,
       available_points: 1,
       organisation_logo:
         'https://golalita.com/web/static/src/img/emitiyaz/Layer.png',

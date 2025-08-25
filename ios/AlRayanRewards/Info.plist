@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>EMTIYAZ - إمتياز</string>
+	<string>Al Rayan Rewards - مكافآت الريان</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -34,11 +34,11 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>Emtiyaz uses the camera to let user put a photo in his profile page.</string>
+	<string>Al Rayan Rewards uses the camera to let user put a photo in his profile page.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Emtiaz accesses the library to let user put a photo in his profile page.</string>
 	<key>NSAppleMusicUsageDescription</key>
-	<string>Emtiyaz usses media access to display notifications with sound</string>
+	<string>Al Rayan Rewards uses media access to display notifications with sound</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Emtiaz uses your location for displaying nearest merchants on the map.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>

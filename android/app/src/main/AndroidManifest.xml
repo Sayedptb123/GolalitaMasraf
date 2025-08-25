@@ -1,5 +1,5 @@
 <manifest
-  package="com.emtiazapp"
+  package="com.golalitamasraf.android"
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools"
   >
@@ -70,7 +70,7 @@
         <action android:name="android.intent.action.VIEW" />
         <category android:name="android.intent.category.DEFAULT" />
         <category android:name="android.intent.category.BROWSABLE" />
-        <data android:scheme="com.emtiazapp" />
+        <data android:scheme="com.golalitamasraf.android" />
         <data android:scheme="exp+golalita" />
         <data android:scheme="golalita" />
       </intent-filter>
@@ -78,7 +78,7 @@
 
     <provider
       android:name="androidx.core.content.FileProvider"
-      android:authorities="com.emtiazapp.fileprovider"
+      android:authorities="com.golalitamasraf.android.fileprovider"
       android:grantUriPermissions="true"
       android:exported="false"
       tools:replace="android:authorities">
