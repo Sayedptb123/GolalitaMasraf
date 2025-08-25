@@ -73,3 +73,10 @@ yarn-error.log
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+# Firebase configuration files
+fcm.json
+google-services.json
+GoogleService-Info.plist
+firebase-config.js
+firebase-config.json
