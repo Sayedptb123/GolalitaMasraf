@@ -1,4 +1,5 @@
-import { navigationRef } from "../../Navigation/RootNavigation";
+
+import { navigationRef } from '../../Navigation/navigationHelpers';
 import { getBranchesById } from "../../api/merchants";
 import { getCategoryNameByIdAndLang } from "../../components/Categories/helpres";
 import i18n from "../../languages";

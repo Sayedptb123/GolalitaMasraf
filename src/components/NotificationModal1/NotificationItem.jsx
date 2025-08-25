@@ -13,7 +13,7 @@ import { getMerchantDetails } from "../../redux/merchant/merchant-thunks";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
-import { navigationRef } from "../../Navigation/RootNavigation";
+import { navigationRef } from '../../Navigation/navigationHelpers';
 import { useTheme } from "../ThemeProvider";
 import { readNotification } from "../../redux/notifications/notifications-thunks";
 import HTMLRenderer from "../../components/HTMLRenderer";
