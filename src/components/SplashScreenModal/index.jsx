@@ -8,7 +8,7 @@ const SplashScreenModal = ({ isVisible }) => {
     BootSplash.hide();
   }, []);
 
-  const logo = require('../../assets/sjc.gif');
+  const logo = require('../../assets/golalita.gif');
 
   return (
     <Modal
