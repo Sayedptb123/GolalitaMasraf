@@ -27,8 +27,6 @@ import RedirectToStoresModal, {
   STORES_CONFIG,
 } from "./src/components/RedirectToStoresModal";
 import Geocoder from "react-native-geocoding";
-import codePush from "react-native-code-push";
-import CodePushUpdate from "./src/components/CodePushUpdate";
 import PortalProvider from "./src/components/Portal/PortalProvider";
 
 I18nManager.allowRTL(false);
@@ -194,14 +192,11 @@ const AppWrapper = () => {
           <PortalProvider>
             <App />
           </PortalProvider>
-
-          <CodePushUpdate />
         </ThemeProvider>
       </QueryClientProvider>
     </Provider>
   );
 };
 
-const codePushOptions = { checkFrequency: codePush.CheckFrequency.MANUAL };
 
-export default codePush(codePushOptions)(AppWrapper);
+export default AppWrapper;
