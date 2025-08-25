@@ -10,9 +10,10 @@ const getLatitudeAndLongitude = (locationFromSelect, userLocation) => {
   };
 
   if (
-    locationFromSelect.latitude === defaultLocation.latitude &&
-    locationFromSelect.longitude === defaultLocation.longitude &&
-    userLocation
+    (locationFromSelect?.latitude === defaultLocation.latitude &&
+      locationFromSelect?.longitude === defaultLocation.longitude &&
+      userLocation) ||
+    (!locationFromSelect?.latitude && userLocation)
   ) {
     return userLocation;
   }
@@ -35,8 +36,8 @@ const useMerchants = (
 
       const data = await requestLocation();
 
-      const latitude = data.location.latitude;
-      const longitude = data.location.longitude;
+      const latitude = data?.location?.latitude;
+      const longitude = data?.location?.longitude;
 
       if (latitude & longitude) {
         setLocation({ latitude, longitude });
@@ -59,7 +60,7 @@ const useMerchants = (
     ],
     queryFn: () =>
       getNearbyMerchants(
-        getLatitudeAndLongitude({ latitude, longitude }, { location })
+        getLatitudeAndLongitude({ latitude, longitude }, location)
       ),
     enabled: !locationLoading,
   });

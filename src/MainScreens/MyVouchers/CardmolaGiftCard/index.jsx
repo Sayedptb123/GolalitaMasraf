@@ -43,7 +43,7 @@ const cardWidth = width - 32;
 const CardmolaGiftCard = (props) => {
   const { isDark } = useTheme();
   const { t, i18n } = useTranslation();
-  const { id, encodedId } = props.route.params;
+  const { id,encodedId } = props.route.params;
   const user = useSelector((state) => state.authReducer.user);
   const [paymentData, setPaymentData] = useState(null);
   const giftCard = useSelector(
@@ -108,7 +108,7 @@ const CardmolaGiftCard = (props) => {
       amount: amount + getCommission(amount),
       bank_charge: getCommission(amount),
       cultureCode: giftCard?.cultureCodes[0],
-      return_url:"https://emtiazpaystatus.com/",
+      return_url:"https://masrafpaystatus.com/",
       currency_org:giftCard.currencyCode,
       amount_org:amount_org
     };

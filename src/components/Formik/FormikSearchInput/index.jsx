@@ -9,6 +9,7 @@ import { useTheme } from "../../ThemeProvider";
 import SearchSvg from "../../../assets/search.svg";
 import { getTextAlign } from "../../../../utils";
 
+import { colors } from "../../../components/colors";
 const CloseIcon = sized(CloseSvg, 14, 14, "#072536");
 
 const FormikSearchInput = (props) => {
@@ -17,7 +18,7 @@ const FormikSearchInput = (props) => {
   const { isDark } = useTheme();
 
   return (
-    <View style={[styles.wrapper, wrapperStyle]}>
+    <View style={[styles.wrapper, wrapperStyle,{borderColor: isDark ? colors.white : colors.darkBlue}]}>
       <Field name={name}>
         {({ field: { value }, form: { setFieldValue } }) => {
           const showClearIcon = Boolean(props.allowClear && value);
@@ -25,16 +26,16 @@ const FormikSearchInput = (props) => {
           return (
             <>
               <View style={styles.searchIcoWrapper}>
-                <SearchSvg color={isDark ? "#838383" : "#072536"} />
+                <SearchSvg color={isDark ? "#FFFFFF" : colors.darkBlue} />
               </View>
               <TextInput
                 {...restProps}
                 style={[
                   styles.input,
-                  { color: isDark ? "#838383" : "#072536" },
+                  { color: isDark ? "#838383" : colors.darkBlue },
                   getTextAlign(),
                 ]}
-                placeholderTextColor={isDark ? "#838383" : "#999CAD"}
+                placeholderTextColor={isDark ? "#FFFFFF" :colors.darkBlue}
                 value={value}
                 onChangeText={(val) => {
                   setFieldValue(name, val);

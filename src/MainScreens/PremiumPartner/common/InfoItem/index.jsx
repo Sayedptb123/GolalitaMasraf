@@ -1,12 +1,12 @@
 import { StyleSheet, View } from "react-native";
-import { LUSAIL_REGULAR } from "../../../../redux/types";
+import { BALOO_REGULAR } from "../../../../redux/types";
 import { colors } from "../../../../components/colors";
 import { TouchableOpacity } from "react-native";
 import { isRTL } from "../../../../../utils";
 import { TypographyText } from "../../../../components/Typography";
 
 const InfoItem = (props) => {
-  const { onPress, label, icon, style, isDark } = props;
+  const { onPress, label, icon, style } = props;
 
   return (
     <TouchableOpacity
@@ -16,9 +16,9 @@ const InfoItem = (props) => {
     >
       <View style={styles.icon}>{icon}</View>
       <TypographyText
-        textColor={isDark ? colors.white : colors.darkBlue}
+        textColor={colors.green}
         size={14}
-        font={LUSAIL_REGULAR}
+        font={BALOO_REGULAR}
         title={label}
         style={[isRTL() ? { marginRight: 8 } : { marginLeft: 8 }]}
       />

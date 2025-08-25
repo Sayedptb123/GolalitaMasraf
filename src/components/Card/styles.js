@@ -7,44 +7,37 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     borderRadius: 8,
     //padding:13,
-   // backgroundColor:'green',
-    justifyContent:'center',
-    alignItems:'center',
-    marginTop:76
+    // backgroundColor:'green',
+    justifyContent: "center",
+    alignItems: "center",
   },
   card: {
     paddingHorizontal: 17,
     paddingVertical: 15,
     width: (SCREEN_WIDTH / 100) * 86,
-   // left: -2,
+    // left: -2,
     //bottom: -2,
     height: 220,
-    justifyContent:"flex-end",
+    justifyContent: "center",
     borderRadius: 8,
-    overflow:'hidden'
-   // marginTop:16,
-   // paddingTop:16
+    overflow: "hidden",
+    // marginTop:16,
+    // paddingTop:16
   },
   nameBlock: {
-    flex: 1,flexDirection:'row',
-    justifyContent: "flex-end",
-    alignItems:'flex-end',
-  },
-  nameBlockAr: {
     flex: 1,
-    flexDirection: "row-reverse",
-    justifyContent: "flex-start",
-    //alignItems:'flex-end'
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignItems: "flex-end",
   },
-  cardNoBlock:{
-    alignItems:'flex-end',
-    marginBottom:11
+  cardNoBlock: {
+    alignItems: "flex-end",
+    marginBottom: 11,
   },
   bottomRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    flex:.3,
   },
   generalText: {
     fontWeight: "600",
@@ -54,6 +47,9 @@ const styles = StyleSheet.create({
   },
   name: {
     marginBottom: -40,
+  },
+  textWrapper: {
+    // backgroundColor:'red'
   },
 });
 

@@ -1,19 +1,21 @@
-import { TouchableOpacity } from 'react-native';
-import BackSvg from '../../../../assets/back.svg';
-import { useTheme } from '../../../ThemeProvider';
-import { colors } from '../../../colors';
-import { navigationRef } from '../../../../Navigation/navigationHelpers';
+import { TouchableOpacity } from "react-native";
+import BackSvg from "../../../../assets/back.svg";
+import { useTheme } from "../../../ThemeProvider";
+import { colors } from "../../../colors";
+import { DrawerActions, useNavigation } from "@react-navigation/native";
 
-const BackBtn = props => {
+const BackBtn = (props) => {
   const { isDark } = useTheme();
+  const navigation = useNavigation();
 
   const handlePress = () => {
-    if (props?.onPress) {
+    if (props.onPress) {
       props.onPress();
       return;
     }
 
-    navigationRef?.current?.goBack();
+    navigation.dispatch(DrawerActions.closeDrawer());
+    navigation?.goBack();
   };
 
   return (
@@ -22,7 +24,7 @@ const BackBtn = props => {
       onPress={handlePress}
     >
       <BackSvg
-        color={isDark ? colors.white : '#202226'}
+        color={isDark ? colors.white : colors.darkBlue}
         height={16}
         width={16}
       />

@@ -1,11 +1,12 @@
-import React from 'react';
-import { mainStyles } from '../../styles/mainStyles';
-import { TouchableOpacity, View } from 'react-native';
-import { colors } from '../colors';
-import { TypographyText } from '../Typography';
-import { LUSAIL_REGULAR } from '../../redux/types';
-import LinearGradient from 'react-native-linear-gradient';
-import { useTheme } from '../ThemeProvider';
+import React from "react";
+import { mainStyles } from "../../styles/mainStyles";
+import { TouchableOpacity, View } from "react-native";
+import { colors } from "../colors";
+import { TypographyText } from "../Typography";
+import { LUSAIL_REGULAR } from "../../redux/types";
+import LinearGradient from "react-native-linear-gradient";
+import { useTheme } from "../ThemeProvider";
+import { isRTL } from "../../../utils";
 
 const TwoButtons = ({
   icon1,
@@ -24,35 +25,7 @@ const TwoButtons = ({
   const { isDark } = useTheme();
 
   const iconColor = isDark ? colors.white : colors.darkBlue;
-  const iconPassiveColor = isDark ? colors.white : '#999CAD';
-
-  const getBtnStyles = isSelected => {
-    return {
-      backgroundColor: isSelected
-        ? isDark
-          ? isLight
-            ? colors.darkBlue
-            : colors.darkModeBackground
-          : isWhite
-            ? colors.white
-            : colors.darkBlue
-        : colors.transparent,
-    };
-  };
-
-  const getTextColor = isSelected => {
-    return isSelected
-      ? isWhite
-        ? iconColor
-        : isDark
-          ? colors.mainDarkMode
-          : 'white'
-      : isLight
-        ? isWhite
-          ? iconPassiveColor
-          : iconPassiveColor
-        : colors.darkBlue;
-  };
+  const iconPassiveColor = isDark ? colors.white : "#999CAD";
 
   return (
     <View style={mainStyles.centeredRow}>
@@ -62,25 +35,35 @@ const TwoButtons = ({
           {
             borderColor: isDark
               ? isLight
-                ? '#444444'
+                ? "#444444"
                 : colors.transparent
               : isWhite
-                ? colors.white
-                : colors.grey,
+              ? colors.white
+              : colors.darkBlue,
             marginVertical: 25,
-            // flexDirection: isRTL() ? "row-reverse" : "row",
+            flexDirection: isRTL() ? "row-reverse" : "row",
           },
           isDark && {
-            backgroundColor: isLight ? colors.transparent : '#444444',
+            backgroundColor: isLight ? colors.transparent : colors.navyBlue,
           },
         ]}
       >
-        <View
+        <LinearGradient
           style={[
             mainStyles.twoButtons__item,
             selectedButton === 0 && { transform: [{ translateX: -1 }] },
-            getBtnStyles(selectedButton === 0),
           ]}
+          colors={
+            selectedButton === 0
+              ? isDark
+                ? isLight
+                  ? [colors.darkBlue, colors.darkBlue]
+                  : [colors.darkBlue, colors.darkBlue]
+                : isWhite
+                ? [colors.white, colors.white]
+                : [colors.darkBlue, colors.darkBlue]
+              : [colors.transparent, colors.transparent]
+          }
         >
           <TouchableOpacity
             onPress={onPress1}
@@ -88,20 +71,42 @@ const TwoButtons = ({
           >
             {icon1}
             <TypographyText
-              textColor={getTextColor(selectedButton === 0)}
-              size={12}
+              textColor={
+                selectedButton === 0
+                  ? isWhite
+                    ? iconColor
+                    : isDark
+                    ? colors.mainDarkMode
+                    : "white"
+                  : isLight
+                  ? isWhite
+                    ? iconPassiveColor
+                    : iconPassiveColor
+                  : colors.white
+              }
+              size={11}
               font={LUSAIL_REGULAR}
               title={label1}
-              style={{ marginLeft: 5, fontWeight: '700' }}
+              style={{ marginLeft: 5, fontWeight: "700" }}
             />
           </TouchableOpacity>
-        </View>
-        <View
+        </LinearGradient>
+        <LinearGradient
           style={[
             mainStyles.twoButtons__item,
             selectedButton === 1 && { transform: [{ translateX: 1 }] },
-            getBtnStyles(selectedButton === 1),
           ]}
+          colors={
+            selectedButton === 1
+              ? isDark
+                ? isLight
+                  ? [colors.secBlue, colors.secBlue]
+                  : [colors.darkBlue, colors.darkBlue]
+                : isWhite
+                ? [colors.white, colors.white]
+                : [colors.darkBlue, colors.darkBlue]
+              : [colors.transparent, colors.transparent]
+          }
         >
           <TouchableOpacity
             onPress={onPress2}
@@ -109,21 +114,43 @@ const TwoButtons = ({
           >
             {icon2}
             <TypographyText
-              textColor={getTextColor(selectedButton === 1)}
-              size={12}
+              textColor={
+                selectedButton === 1
+                  ? isWhite
+                    ? iconColor
+                    : isDark
+                    ? colors.mainDarkMode
+                    : "white"
+                  : isLight
+                  ? isWhite
+                    ? iconPassiveColor
+                    : iconPassiveColor
+                  : colors.white
+              }
+              size={11}
               font={LUSAIL_REGULAR}
               title={label2}
-              style={{ marginLeft: 5, fontWeight: '700' }}
+              style={{ marginLeft: 5, fontWeight: "700" }}
             />
           </TouchableOpacity>
-        </View>
+        </LinearGradient>
         {label3 && (
-          <View
+          <LinearGradient
             style={[
               mainStyles.twoButtons__item,
               selectedButton === 2 && { transform: [{ translateX: 1 }] },
-              getBtnStyles(selectedButton === 2),
             ]}
+            colors={
+              selectedButton === 2
+                ? isDark
+                  ? isLight
+                    ? [colors.secBlue, colors.secBlue]
+                    : [colors.darkBlue, colors.darkBlue]
+                  : isWhite
+                  ? [colors.white, colors.white]
+                  : [colors.darkBlue, colors.darkBlue]
+                : [colors.transparent, colors.transparent]
+            }
           >
             <TouchableOpacity
               onPress={onPress3}
@@ -131,14 +158,26 @@ const TwoButtons = ({
             >
               {icon3}
               <TypographyText
-                textColor={getTextColor(selectedButton === 2)}
-                size={12}
+                textColor={
+                  selectedButton === 2
+                    ? isWhite
+                      ? iconColor
+                      : isDark
+                      ? colors.mainDarkMode
+                      : "white"
+                    : isLight
+                    ? isWhite
+                      ? iconPassiveColor
+                      : iconPassiveColor
+                    : colors.white
+                }
+                size={11}
                 font={LUSAIL_REGULAR}
                 title={label3}
-                style={{ marginLeft: 5, fontWeight: '700' }}
+                style={{ marginLeft: 5, fontWeight: "700" }}
               />
             </TouchableOpacity>
-          </View>
+          </LinearGradient>
         )}
       </View>
     </View>

@@ -9,7 +9,7 @@ import { TypographyText } from "../Typography";
 import PremiumSvg from "../../assets/premium.svg";
 import { SCREEN_HEIGHT, mainStyles } from "../../styles/mainStyles";
 import { colors } from "../colors";
-import { LUSAIL_REGULAR } from "../../redux/types";
+import { BALOO_SEMIBOLD } from "../../redux/types";
 import FastImage from "react-native-fast-image";
 import { sized } from "../../Svg";
 import { useCallback, useEffect, useState } from "react";
@@ -51,7 +51,7 @@ const Clients = (props) => {
             <TypographyText
               textColor={isDark ? colors.white : "#000"}
               size={14}
-              font={LUSAIL_REGULAR}
+              font={BALOO_SEMIBOLD}
               title={t("MainScreen.new")}
               style={styles.newText}
             />
@@ -61,7 +61,7 @@ const Clients = (props) => {
           <TypographyText
             textColor={isDark ? colors.white : "#000"}
             size={14}
-            font={LUSAIL_REGULAR}
+            font={BALOO_SEMIBOLD}
             title={
               language === "ar" ? item.x_name_arabic || item.name : item.name
             }
@@ -88,7 +88,7 @@ const Clients = (props) => {
           <TypographyText
             textColor={isDark ? colors.white : "#000"}
             size={20}
-            font={LUSAIL_REGULAR}
+            font={BALOO_SEMIBOLD}
             title={title}
             style={{ marginHorizontal: 12 }}
           />
@@ -158,7 +158,6 @@ const styles = StyleSheet.create({
   },
   name: {
     paddingRight: 16,
-    fontWeight: "700",
   },
   contentContainerStyle: {
     paddingLeft: 5,

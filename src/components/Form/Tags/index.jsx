@@ -63,7 +63,7 @@ const Tags = (props) => {
         />
 
         {data?.map((item) => {
-          const isActive = value.includes(item.value);
+          const isActive = value?.includes(item.value);
 
           if (!isActive) {
             return null;

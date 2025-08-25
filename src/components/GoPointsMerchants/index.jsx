@@ -1,7 +1,7 @@
-import { Dimensions, FlatList, StyleSheet, View } from "react-native";
+import { ActivityIndicator, FlatList, StyleSheet, View } from "react-native";
 import { TypographyText } from "../Typography";
 import PremiumSvg from "../../assets/premium.svg";
-import { mainStyles } from "../../styles/mainStyles";
+import { SCREEN_HEIGHT, mainStyles } from "../../styles/mainStyles";
 import { colors } from "../colors";
 import { LUSAIL_REGULAR } from "../../redux/types";
 import { sized } from "../../Svg";
@@ -9,15 +9,13 @@ import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { isRTL } from "../../../utils";
 import {
+  getLocalClients,
   getGoPointsMerchants,
   getMerchantDisscountForOffers,
 } from "../../api/merchants";
 import CardWithNesetedItems from "../CardWithNestedItems";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleFavourites } from "../../redux/merchant/merchant-thunks";
-import FullScreenLoader from "../Loaders/FullScreenLoader";
-import ListNoData from "../ListNoData";
-import { HEADER_HEIGHT } from "../../constants";
 
 const IMAGE_SIZE = 120;
 const PremiumIcon = sized(PremiumSvg, 24, 24, "white");
@@ -81,7 +79,7 @@ const GoPointsMerchants = (props) => {
   );
 
   return (
-    <View>
+    <View style={style}>
       {!!title && (
         <View
           style={[
@@ -103,14 +101,30 @@ const GoPointsMerchants = (props) => {
 
       <FlatList
         data={data}
+        windowSize={SCREEN_HEIGHT * 2}
         showsVerticalScrollIndicator={false}
         renderItem={renderLocalClient}
-        keyExtractor={(item) => `${item.merchant_id}`}
+        keyExtractor={(item) => `${item.id}`}
         contentContainerStyle={styles.contentContainerStyle}
-        ListFooterComponent={() =>
-          loading && <FullScreenLoader style={styles.loader} />
+        ListEmptyComponent={
+          <View style={styles.listEmptyLoader}>
+            <ActivityIndicator
+              size={"large"}
+              color={isDark ? colors.mainDarkMode : colors.darkBlue}
+            />
+          </View>
         }
-        ListEmptyComponent={!loading && <ListNoData style={styles.loader} />}
+        ListFooterComponent={
+          loading &&
+          data?.length && (
+            <View style={styles.loader}>
+              <ActivityIndicator
+                size={"large"}
+                color={isDark ? colors.mainDarkMode : colors.darkBlue}
+              />
+            </View>
+          )
+        }
       />
     </View>
   );
@@ -155,13 +169,16 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
   contentContainerStyle: {
+    paddingLeft: 5,
     flexGrow: 1,
-    paddingBottom: 160,
+  },
+  listEmptyLoader: {
+    paddingVertical: 50,
+    alignSelf: "center",
+    width: "100%",
   },
   loader: {
-    width: "100%",
-    height: Dimensions.get("window").height,
-    top: -HEADER_HEIGHT,
+    paddingVertical: 50,
   },
 });
 

@@ -3,6 +3,7 @@ import PortalContext from "./PortalContext";
 
 const Portal = ({ children, name }) => {
   const { addComponent, removeComponent } = useContext(PortalContext);
+
   useEffect(() => {
     addComponent({ name, component: children });
     return () => {

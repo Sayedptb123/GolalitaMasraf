@@ -1,26 +1,26 @@
-import { useState } from 'react';
-import { SafeAreaView, StyleSheet } from 'react-native';
-import { View } from 'react-native';
-import Pdf from 'react-native-pdf';
-import { useTheme } from '../../../components/ThemeProvider';
-import { colors } from '../../../components/colors';
-import FullScreenLoader from '../../../components/Loaders/FullScreenLoader';
-import { TypographyText } from '../../../components/Typography';
-import { useTranslation } from 'react-i18next';
-import { LUSAIL_REGULAR } from '../../../redux/types';
-import Header from '../../../components/Header';
+import { useState } from "react";
+import { SafeAreaView, StyleSheet } from "react-native";
+import { View } from "react-native";
+import CommonHeader from "../../../components/CommonHeader/CommonHeader";
+import Pdf from "react-native-pdf";
+import { useTheme } from "../../../components/ThemeProvider";
+import { useNavigation } from "@react-navigation/native";
+import { colors } from "../../../components/colors";
+import FullScreenLoader from "../../../components/Loaders/FullScreenLoader";
+import { TypographyText } from "../../../components/Typography";
+import { useTranslation } from "react-i18next";
+import { BALOO_MEDIUM } from "../../../redux/types";
 
-const Menu = props => {
+const Menu = (props) => {
   const { isDark } = useTheme();
+  const navigation = useNavigation();
   const { t } = useTranslation();
   const company_contract_url = props.route?.params?.company_contract_url;
 
   const [error, setError] = useState(!company_contract_url);
 
   const handleBackPress = () => {
-    props.navigation.goBack
-      ? props.navigation.goBack()
-      : props.navigation.navigate('Main');
+    navigation.goBack ? navigation.goBack() : navigation.navigate("Main");
   };
 
   return (
@@ -31,12 +31,11 @@ const Menu = props => {
       }}
     >
       <SafeAreaView style={{ flex: 1 }}>
-        <Header
-          btns={['back']}
-          label={t('Merchants.contract')}
-          additionalBtnsProps={{
-            onPress: handleBackPress,
-          }}
+        <CommonHeader
+          isWhite={isDark}
+          label={t("Merchants.contract")}
+          onBackPress={handleBackPress}
+          style={{ backgroundColor: isDark ? colors.darkBlue : undefined }}
         />
 
         {!!company_contract_url && !error && (
@@ -45,8 +44,8 @@ const Menu = props => {
               uri: company_contract_url,
               cache: true,
             }}
-            onError={error => {
-              console.log(error, 'pdf on error');
+            onError={(error) => {
+              console.log(error, "error");
               setError(true);
             }}
             style={styles.pdf}
@@ -60,11 +59,10 @@ const Menu = props => {
         {error && (
           <View style={styles.errorWrapper}>
             <TypographyText
-              title={t('General.error')}
+              title={t("General.error")}
               textColor={isDark ? colors.white : colors.darkBlue}
               size={18}
-              font={LUSAIL_REGULAR}
-              style={{ fontWeight: '700' }}
+              font={BALOO_MEDIUM}
             />
           </View>
         )}
@@ -76,7 +74,7 @@ const Menu = props => {
 const styles = StyleSheet.create({
   pdf: { flex: 1 },
   loader: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     left: 0,
     right: 0,
@@ -84,8 +82,8 @@ const styles = StyleSheet.create({
   },
   errorWrapper: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 

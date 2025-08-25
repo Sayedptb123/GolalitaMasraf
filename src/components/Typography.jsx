@@ -1,15 +1,15 @@
-import React from 'react';
-import { Text, StyleSheet } from 'react-native';
+import React from "react";
+import { Text, StyleSheet } from "react-native";
 
-import { LUSAIL_REGULAR } from '../redux/types';
-import { isRTL } from '../../utils';
+import { LUSAIL_REGULAR } from "../redux/types";
+import { isRTL } from "../../utils";
 
-export const TypographyText = props => {
+export const TypographyText = (props) => {
   const {
     title,
-    textColor = 'grey',
+    textColor = "grey",
     size = 14,
-    weight = 'normal',
+    weight = "normal",
     font = LUSAIL_REGULAR,
     transform,
     style,
@@ -21,7 +21,7 @@ export const TypographyText = props => {
       fontSize: size,
       textTransform: transform,
       fontFamily: font,
-      textAlign: isRTL() ? 'right' : 'left',
+      textAlign: isRTL() ? "right" : "left",
     },
   ];
 
@@ -38,18 +38,18 @@ const styles = StyleSheet.create({
   },
   medium: {
     fontFamily: LUSAIL_REGULAR,
-    fontWeight: '700',
+    fontWeight: "700",
   },
   semiBold: {
     fontFamily: LUSAIL_REGULAR,
-    fontWeight: '700',
+    fontWeight: "700",
   },
   bold: {
     fontFamily: LUSAIL_REGULAR,
-    fontWeight: '900',
+    fontWeight: "900",
   },
   extraBold: {
     fontFamily: LUSAIL_REGULAR,
-    fontWeight: '900',
+    fontWeight: "900",
   },
 });

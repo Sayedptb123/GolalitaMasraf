@@ -1,16 +1,17 @@
-import React, { useCallback, useState, useRef } from "react";
+import React, { useCallback } from "react";
 import {
   Keyboard,
   Platform,
+  SafeAreaView,
   TouchableOpacity,
   View,
   StyleSheet,
-  ScrollView,
 } from "react-native";
-import i18next from "i18next";
 import { colors } from "../../components/colors";
 import Input from "../../components/Input/Input";
-import { mainStyles, SCREEN_HEIGHT } from "../../styles/mainStyles";
+import { connect, useDispatch } from "react-redux";
+import { getPixel, mainStyles, SCREEN_HEIGHT } from "../../styles/mainStyles";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { TypographyText } from "../../components/Typography";
 import { LUSAIL_REGULAR } from "../../redux/types";
 import { Formik } from "formik";
@@ -18,178 +19,206 @@ import * as Yup from "yup";
 import CommonButton from "../../components/CommonButton/CommonButton";
 import { useTheme } from "../../components/ThemeProvider";
 import { useTranslation } from "react-i18next";
-import { connect } from "react-redux";
-import { verifyMoiCode } from "../../redux/auth/auth-thunks";
-import Header from "../../components/Header";
-import MainLayout from "../../components/MainLayout";
-import FormikDateSelect from "../../components/Formik/FormikDateSelect";
+import authApi from "../../redux/auth/auth-api";
+import { verifyRegisterCode } from "../../redux/auth/auth-thunks";
+import TopCircleShadow from "../../components/TopCircleShadow";
+import BackBtn from "../../components/Btns/BackBtn";
+import { setRegisterationcodeLoading } from "../../redux/auth/auth-actions";
 
-const RegCodeVerification = ({ route, navigation, verifyMoiCode }) => {
+const RegCodeVerification = ({
+  route,
+  navigation,
+  verifyRegisterCode,
+  registrationcodeLoading,
+}) => {
   let params = route.params;
+  const dispatch = useDispatch();
   const { isDark } = useTheme();
   const { t } = useTranslation();
-  const ref_to_input3 = useRef(null);
 
   const toLogin = useCallback(() => {
     navigation.navigate("Login");
   }, []);
-
-  const getDateStringPayload = (date) => {
-    if (!date?.getFullYear) return "";
-    console.log(
-      "ffff",
-      `${date.getFullYear()}-${(date.getMonth() + 1)
-        .toString()
-        .padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}`
-    );
-    return `${date.getFullYear()}-${(date.getMonth() + 1)
-      .toString()
-      .padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}`;
-  };
-
   return (
-    <MainLayout
-      outsideScroll={true}
-      headerChildren={<Header label={""} btns={["back"]} />}
-      headerHeight={50}
-      contentStyle={{ flex: 1 }}
-      style={{ backgroundColor: isDark ? colors.darkBlue : colors.white }}
+    <View
+      scrollEnabled={Platform.OS === "android"}
+      style={{
+        backgroundColor: isDark ? colors.darkBlue : colors.bg,
+        height: SCREEN_HEIGHT,
+      }}
     >
-      <ScrollView
-        contentContainerStyle={{ flexGrow: 1 }}
-        showsVerticalScrollIndicator={false}
-      >
-        <TouchableOpacity
-          activeOpacity={1}
-          onPress={Keyboard.dismiss}
-          style={{ flex: 1 }}
-        >
-          <View
-            style={[
-              mainStyles.centeredRow,
-              { marginTop: 30, flexDirection: "column" },
-            ]}
+      <SafeAreaView style={{ flex: 1 }}>
+        <KeyboardAwareScrollView contentContainerStyle={{ flex: 1 }}>
+          <TopCircleShadow />
+          <TouchableOpacity
+            activeOpacity={1}
+            onPress={Keyboard.dismiss}
+            style={{ flex: 1 }}
           >
-            <TypographyText
-              title={t("Login.enterRegisterCode")}
-              textColor={isDark ? colors.mainDarkMode : colors.darkBlue}
-              size={23}
-              font={LUSAIL_REGULAR}
+            <View style={styles.goldShadeWrapper}></View>
+            <BackBtn onPress={() => navigation?.goBack()} noTitle />
+            <View
               style={[
-                mainStyles.centeredText,
-                { marginTop: 30, paddingHorizontal: 50, fontWeight: "700" },
+                mainStyles.centeredRow,
+                { marginTop: getPixel(10), flexDirection: "column", flex: 1 },
               ]}
-            />
-
-            <TypographyText
-              title={t("Login.registerCodeHint")}
-              textColor={isDark ? colors.darkGrey : colors.darkGrey}
-              size={16}
-              font={LUSAIL_REGULAR}
-              style={[
-                mainStyles.centeredText,
-                { marginTop: 5, paddingHorizontal: 50, fontWeight: "700" },
-              ]}
-            />
-          </View>
-          <View style={[mainStyles.p20, { marginTop: 20, flex: 1 }]}>
-            <Formik
-              initialValues={{
-                registration_code: "",
-                qidExpiry: "",
-              }}
-              onSubmit={(values, { setFieldError }) => {
-                verifyMoiCode(
-                  {
-                    params: {
-                      activationCode: values.registration_code,
-                      idCardExpDate: getDateStringPayload(values.qidExpiry),
-                    },
-                  },
-                  navigation,
-                  setFieldError,
-                  t,
-                  params?.registerBody,
-                  params?.isForgotPassword
-                );
-              }}
-              validationSchema={Yup.object({
-                registration_code: Yup.string().required(t("Login.required")),
-                qidExpiry: Yup.string().required(t("Login.required")),
-              })}
             >
-              {({
-                values,
-                handleChange,
-                handleSubmit,
-                errors,
-                submitCount,
-                setFieldValue,
-              }) => {
-                errors = submitCount > 0 ? errors : {};
-                return (
-                  <>
-                    <Input
-                      innerRef={ref_to_input3}
-                      placeholder={t("Login.code")}
-                      value={values.registration_code}
-                      onChangeText={handleChange("registration_code")}
-                      error={errors.registration_code}
-                      returnKeyType={"next"}
-                      wrapperStyle={{ marginBottom: 10 }}
-                    />
+              <TypographyText
+                title={t("Login.enterRegisterCode")}
+                textColor={isDark ? colors.mainDarkMode : colors.darkBlue}
+                size={23}
+                font={LUSAIL_REGULAR}
+                style={[
+                  mainStyles.centeredText,
+                  { marginTop: 20, paddingHorizontal: 50, fontWeight: "700" },
+                ]}
+              />
+            </View>
+            <View style={[mainStyles.p20, { marginTop: getPixel(7), flex: 2 }]}>
+              <Formik
+                initialValues={{
+                  registration_code: "",
+                  email: "",
+                }}
+                onSubmit={async (values, { setFieldError }) => {
+                  console.log("here");
+                  try {
+                    dispatch(setRegisterationcodeLoading(true));
 
-                    <FormikDateSelect
-                      name="qidExpiry"
-                      placeholder={t("Login.qidExpDate")}
-                      error={errors.qidExpiry}
-                    />
+                    const { email } = values;
 
-                    <View style={{ marginTop: 50 }}>
-                      <CommonButton
-                        onPress={handleSubmit}
-                        label={t("Login.verify")}
-                        textColor={
-                          isDark ? colors.mainDarkModeText : colors.white
-                        }
-                      />
+                    const res = await authApi.checkEmail({
+                      params: { email },
+                    });
 
-                      <TouchableOpacity style={styles.bottom} onPress={toLogin}>
-                        <TypographyText
-                          title={t("Login.haveAccount")}
-                          textColor={isDark ? colors.mainDarkMode : colors.grey}
-                          size={14}
-                          font={LUSAIL_REGULAR}
+                    if (res.data.result?.error) {
+                      setFieldError("email", t("Profile.emailExists"));
+                      throw "err";
+                    }
+                    verifyRegisterCode(
+                      {
+                        params: {
+                          code: values.registration_code,
+                          email: values.email,
+                        },
+                      },
+                      navigation,
+                      setFieldError,
+                      t,
+                      params?.registerBody,
+                      params?.isForgotPassword
+                    );
+                  } catch (err) {
+                    console.log(err, "error");
+                  } finally {
+                    dispatch(setRegisterationcodeLoading(false));
+                  }
+                }}
+                validationSchema={Yup.object({
+                  registration_code: Yup.string().required(t("Login.required")),
+                  email: Yup.string()
+                    .email(t("Login.invalidEmail"))
+                    .required(t("Login.required")),
+                })}
+              >
+                {({
+                  values,
+                  handleChange,
+                  handleSubmit,
+                  errors,
+                  submitCount,
+                }) => {
+                  errors = submitCount > 0 ? errors : {};
+
+                  return (
+                    <View
+                      style={{
+                        flex: 1,
+                        justifyContent: "space-between",
+                        paddingBottom: 26,
+                        marginBottom: 19,
+                      }}
+                    >
+                      <View
+                        style={{
+                          //flex: 1,
+                          height: "30%",
+                          paddingVertical: 26,
+                          marginBottom: 19,
+                        }}
+                      >
+                        <Input
+                          label={t("Login.code")}
+                          placeholder={t("Login.code")}
+                          value={values.registration_code}
+                          onChangeText={handleChange("registration_code")}
+                          error={errors.registration_code}
+                          returnKeyType={"next"}
                         />
 
-                        <View style={styles.link}>
+                        <Input
+                          label={t("Login.email")}
+                          placeholder={t("Login.emailPlaceholder")}
+                          value={values.email}
+                          onChangeText={(e) => {
+                            handleChange("email")(e.toLowerCase());
+                          }}
+                          error={errors.email}
+                          returnKeyType={"next"}
+                          autoCapitalize="none"
+                          wrapperStyle={{ marginTop: 20 }}
+                          style={{ fontSize: 16 }}
+                        />
+                      </View>
+                      <View>
+                        <CommonButton
+                          onPress={handleSubmit}
+                          label={t("Login.verify")}
+                          textColor={"white"}
+                          loading={registrationcodeLoading}
+                        />
+
+                        <TouchableOpacity
+                          style={styles.bottom}
+                          onPress={toLogin}
+                        >
                           <TypographyText
-                            title={t("Login.login")}
+                            title={t("Login.haveAccount")}
                             textColor={
-                              isDark ? colors.mainDarkMode : colors.darkBlue
+                              isDark
+                                ? colors.mainDarkMode
+                                : colors.mainDarkModeText
                             }
-                            size={18}
-                            style={mainStyles.underline}
+                            size={14}
                             font={LUSAIL_REGULAR}
                           />
-                        </View>
-                      </TouchableOpacity>
+
+                          <View style={styles.link}>
+                            <TypographyText
+                              title={t("Login.signInShort")}
+                              textColor={
+                                isDark ? colors.mainDarkMode : colors.darkBlue
+                              }
+                              size={18}
+                              style={mainStyles.underline}
+                              font={LUSAIL_REGULAR}
+                            />
+                          </View>
+                        </TouchableOpacity>
+                      </View>
                     </View>
-                  </>
-                );
-              }}
-            </Formik>
-          </View>
-        </TouchableOpacity>
-      </ScrollView>
-    </MainLayout>
+                  );
+                }}
+              </Formik>
+            </View>
+          </TouchableOpacity>
+        </KeyboardAwareScrollView>
+      </SafeAreaView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  contentHeight: {
-    height: SCREEN_HEIGHT - 120,
-  },
   codeWrapper: {
     marginBottom: 80,
     paddingHorizontal: 30,
@@ -236,4 +265,9 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect(null, { verifyMoiCode })(RegCodeVerification);
+export default connect(
+  (state) => ({
+    registrationcodeLoading: state.authReducer.registrationcodeLoading,
+  }),
+  { verifyRegisterCode }
+)(RegCodeVerification);

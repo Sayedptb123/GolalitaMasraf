@@ -3,15 +3,16 @@ import { StyleSheet } from "react-native";
 import { View } from "react-native";
 import CommonButton from "../../../../components/CommonButton/CommonButton";
 import { useTranslation } from "react-i18next";
+import CategoriesSelect from "./components/CategoriesSelect";
 import MerchantsSelect from "./components/MerchantsSelect";
 import LocationSelect from "./components/LocationSelect";
 
 const FiltersForm = ({ onSubmit, filters: mapFilters }) => {
   const [filters, setFilters] = useState({
+    category_id: [],
     location: mapFilters?.location,
     merchant: null,
   });
-
   const { t } = useTranslation();
 
   const handleFilterChange = (name, value) => {
@@ -22,7 +23,7 @@ const FiltersForm = ({ onSubmit, filters: mapFilters }) => {
   };
 
   const handleMerchantChange = (value) => handleFilterChange("merchant", value);
-
+  const handleCategoryChange = (value) => handleFilterChange("category_id", value);
   const handleLocationChange = (value, fullLocationData) => {
     handleFilterChange("location", fullLocationData);
   };
@@ -34,20 +35,27 @@ const FiltersForm = ({ onSubmit, filters: mapFilters }) => {
   return (
     <View style={styles.wrapper}>
       <View style={styles.form}>
+        {/* <CategoriesSelect
+          value={filters?.category_id}
+          placeholder={t("MapPage.categoriesPlaceholder")}
+          onChange={handleCategoryChange}
+          single={false}
+          allowClear
+        /> */}
         <LocationSelect
           value={filters?.location?.id}
           placeholder={t("MapPage.locationPlaceholder")}
           onChange={handleLocationChange}
         />
 
-        <MerchantsSelect
+        {/* <MerchantsSelect
           onChange={handleMerchantChange}
           value={filters?.merchant}
-          locationId={filters?.location?.id}
+          categoryId={filters?.category_id}
           placeholder={t("MapPage.merchantsPlaceholder")}
           latitude={filters?.location?.latitude}
           longitude={filters?.location?.longitude}
-        />
+        /> */}
       </View>
 
       <CommonButton
@@ -69,7 +77,8 @@ const styles = StyleSheet.create({
   },
   form: {
     height: 150,
-    justifyContent: "space-around",
+    //justifyContent: "space-around",
+    flex:1
   },
 
   controllBtn: {

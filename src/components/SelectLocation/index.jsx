@@ -1,10 +1,10 @@
 import React from "react";
 import { StyleSheet, View, TouchableOpacity } from "react-native";
 import { LocationIcon } from "../../assets/delivery_assets";
+import { BALOO_MEDIUM } from "../../redux/types";
 import { TypographyText } from "../Typography";
 import { colors } from "../colors";
 import { useTranslation } from "react-i18next";
-import { LUSAIL_REGULAR } from "../../redux/types";
 
 const SelectLocation = ({ onPress, location, style = {}, isDark }) => {
   const { t } = useTranslation();
@@ -29,14 +29,14 @@ const SelectLocation = ({ onPress, location, style = {}, isDark }) => {
           title={`${t("Location.deliverTo")}:`}
           textColor={themeColor}
           size={11}
-          font={LUSAIL_REGULAR}
+          font={BALOO_MEDIUM}
           style={styles.subTitle}
         />
         <TypographyText
           title={text}
           textColor={themeColor}
           size={14}
-          font={LUSAIL_REGULAR}
+          font={BALOO_MEDIUM}
           style={styles.title}
           numberOfLines={2}
         />
@@ -47,7 +47,7 @@ const SelectLocation = ({ onPress, location, style = {}, isDark }) => {
           title={editText}
           textColor={themeColor}
           size={14}
-          font={LUSAIL_REGULAR}
+          font={BALOO_MEDIUM}
           style={[styles.title, { marginHorizontal: 12 }]}
           numberOfLines={2}
         />
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 12,
   },
   subTitle: {
-    fontWeight: "700",
+    fontWeight: "500",
     fontSize: 11,
     lineHeight: 18,
   },

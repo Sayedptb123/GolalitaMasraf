@@ -1,54 +1,52 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from "react";
 import {
   Keyboard,
   Platform,
   TouchableOpacity,
   View,
   Image,
-} from 'react-native';
-import LogoSvg from '../assets/logo.svg';
-import { TypographyText } from '../components/Typography';
-import { LUSAIL_REGULAR } from '../redux/types';
-import { colors } from '../components/colors';
-import Input from '../components/Input/Input';
-import CommonButton from '../components/CommonButton/CommonButton';
-import { useTheme } from '../components/ThemeProvider';
-import { connect, useDispatch } from 'react-redux';
-import {
-  getUserData,
-  login as loginAction,
-  getInitialData,
-} from '../redux/auth/auth-thunks';
-import { Formik } from 'formik';
-import * as Yup from 'yup';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { useTranslation } from 'react-i18next';
-import { showMessage } from 'react-native-flash-message';
-import '../pushNotifications/pushNotificationBootStrap';
-import TouchID from 'react-native-touch-id';
-import TwoButtons from '../components/TwoButtons/TwoButtons';
-import { getFlexDirection, phoneRegExp } from '../../utils';
+} from "react-native";
+import { TypographyText } from "../components/Typography";
+import { LUSAIL_REGULAR } from "../redux/types";
+import { colors } from "../components/colors";
+import i18next from "i18next";
+import Input from "../components/Input/Input";
+import CommonButton from "../components/CommonButton/CommonButton";
+import { useTheme } from "../components/ThemeProvider";
+import { connect, useDispatch } from "react-redux";
+import { getUserData, login, getInitialData } from "../redux/auth/auth-thunks";
+import { Formik } from "formik";
+import * as Yup from "yup";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { useTranslation } from "react-i18next";
+import { showMessage } from "react-native-flash-message";
+import "../pushNotifications/pushNotificationBootStrap";
+import usePushNotifications from "../pushNotifications/usePushNotifications";
+import TouchID from "react-native-touch-id";
+import TwoButtons from "../components/TwoButtons/TwoButtons";
+import { getFlexDirection, phoneRegExp } from "../../utils";
 import {
   setIsAuthorized,
   setToken,
   setUserId,
-} from '../redux/auth/auth-actions';
-import authApi from '../redux/auth/auth-api';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import ContinueAsGuestBtn from './component/ContinueAsGuestBtn';
-import AuthLayout from './component/AuthLayout';
-import TopCircleShadow from '../components/TopCircleShadow';
-import SaveMe from './component/SaveMe';
-import { getIsSaveMe, setIsSaveMe } from '../api/asyncStorage';
-import PhoneInput from '../components/Form/PhoneInput';
+} from "../redux/auth/auth-actions";
+import authApi from "../redux/auth/auth-api";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import ContinueAsGuestBtn from "./component/ContinueAsGuestBtn";
+import AuthLayout from "./component/AuthLayout";
+import TopCircleShadow from "../components/TopCircleShadow";
+import SaveMe from "./component/SaveMe";
+import { getIsSaveMe, setIsSaveMe } from "../api/asyncStorage";
+import PhoneInput from "../components/Form/PhoneInput";
 
-export const LOGIN_INPUT_TYPES = {
-  email: 'email',
-  phone: 'phone',
+const LOGIN_INPUT_TYPES = {
+  email: "email",
+  phone: "phone",
 };
 
 const Login = ({
   navigation,
+  login,
   isLoginError,
   user,
   isUserJustLogOut,
@@ -61,32 +59,28 @@ const Login = ({
   const [loginInputType, setLoginInputType] = useState(LOGIN_INPUT_TYPES.email);
   const dispatch = useDispatch();
   const { t } = useTranslation();
-
+  usePushNotifications();
   const [isRememberMeActive, setIsRememberMeActive] = useState(false);
 
-  const loginBg = require('../assets/loginBg.png');
+  const loginBg = isDark
+    ? require("../assets/horizontal_logo_white.png")
+    : require("../assets/horizontal_logo.png");
 
   useEffect(() => {
     TouchID.isSupported().then(() => {
       isCompatible(true);
     });
   }, []);
-  useEffect(() => {
-    if (isLoginError) {
-      dispatch({ type: 'RESET_LOGIN_ERROR' });
-    }
-  }, []);
 
   useEffect(() => {
     (async () => {
-      const isUserLoggedOut = await AsyncStorage.getItem('isUserLoggedOut');
+      const isUserLoggedOut = await AsyncStorage.getItem("isUserLoggedOut");
       const isRememberMe = await getIsSaveMe();
 
       setIsRememberMeActive(
-        isRememberMe === 'true' || isRememberMe === null ? true : false,
+        isRememberMe === "true" || isRememberMe === null ? true : false
       );
-
-      if (isUserLoggedOut === 'true' && !isUserJustLogOut) {
+      if (isUserLoggedOut === "true" && !isUserJustLogOut) {
         authenticateWithTouchId();
       }
     })();
@@ -94,12 +88,12 @@ const Login = ({
 
   const authenticateWithTouchId = async () => {
     try {
-      const token = await AsyncStorage.getItem('token');
+      const token = await AsyncStorage.getItem("token");
 
       if (!token) {
         showMessage({
-          message: t('Login.loginMessage'),
-          type: 'danger',
+          message: t("Login.loginMessage"),
+          type: "danger",
         });
 
         return;
@@ -114,14 +108,14 @@ const Login = ({
 
         if (res?.data?.result?.error) {
           showMessage({
-            message: t('Login.loginMessage'),
-            type: 'danger',
+            message: t("Login.loginMessage"),
+            type: "danger",
           });
 
           return;
         }
 
-        const userId = await AsyncStorage.getItem('userId');
+        const userId = await AsyncStorage.getItem("userId");
 
         if (userId) {
           dispatch(setUserId(userId));
@@ -132,25 +126,25 @@ const Login = ({
         dispatch(getInitialData());
         dispatch(setIsAuthorized(true));
 
-        await AsyncStorage.setItem('isUserLoggedOut', 'false');
+        await AsyncStorage.setItem("isUserLoggedOut", "false");
       } catch (err) {
         showMessage({
-          message: t('Login.loginMessage'),
-          type: 'danger',
+          message: t("Login.loginMessage"),
+          type: "danger",
         });
 
         return;
       }
     } catch {
       showMessage({
-        message: 'Authentication Failed',
-        type: 'danger',
+        message: "Authentication Failed",
+        type: "danger",
       });
     }
   };
 
-  const handleSaveMeChange = async val => {
-    await setIsSaveMe(val ? 'true' : 'false');
+  const handleSaveMeChange = async (val) => {
+    await setIsSaveMe(val ? "true" : "false");
 
     setIsRememberMeActive(val);
   };
@@ -159,21 +153,21 @@ const Login = ({
 
   if (loginInputType === LOGIN_INPUT_TYPES.email) {
     validationSchema = Yup.object({
-      email: Yup.string().required(t('Login.required')),
-      password: Yup.string().required(t('Login.required')),
+      email: Yup.string().required(t("Login.required")),
+      password: Yup.string().required(t("Login.required")),
     });
   }
 
   if (loginInputType === LOGIN_INPUT_TYPES.phone) {
     validationSchema = Yup.object({
       phone: Yup.string()
-        .matches(phoneRegExp, t('Login.invalidPhone'))
-        .required(t('Login.required')),
-      password: Yup.string().required(t('Login.required')),
+        .matches(phoneRegExp, t("Login.invalidPhone"))
+        .required(t("Login.required")),
+      password: Yup.string().required(t("Login.required")),
     });
   }
 
-  const logoColor = isDark ? colors.mainDarkMode : 'white';
+  const logoColor = isDark ? colors.mainDarkMode : "white";
 
   return (
     <AuthLayout>
@@ -181,52 +175,35 @@ const Login = ({
         <KeyboardAwareScrollView
           contentContainerStyle={{
             flex: 1,
-            // justifyContent: "center",
-            flexGrow: 1,
+            justifyContent: "center",
           }}
           bounces={false}
           showsVerticalScrollIndicator={false}
         >
-          <View style={styles.bgtop}>
-            {!isDark && <Image source={loginBg} style={styles.logo} />}
-            <View style={styles.logoWrapper}></View>
-          </View>
-
           <TouchableOpacity
             activeOpacity={1}
             onPress={Keyboard.dismiss}
-            style={{ flex: 1, justifyContent: 'center' }}
+            style={{ flex: 1, justifyContent: "center" }}
           >
             <View style={styles.logoWrapper}>
-              <LogoSvg color={logoColor} style={styles.logo} />
+              <Image source={loginBg} style={[styles.logo]} />
             </View>
-
-            <TypographyText
-              title={t('Login.logInWith')}
-              textColor={colors.white}
-              size={14}
-              font={LUSAIL_REGULAR}
-              style={{
-                alignSelf: 'center',
-                marginTop: 50,
-              }}
-            />
 
             <View
               style={[
                 styles.formikWrapper,
                 {
-                  backgroundColor: isDark ? '#000' : '#fff',
+                  backgroundColor: isDark ? colors.darkBlue : "#fff",
                 },
               ]}
             >
               <Formik
                 initialValues={{
-                  email: '',
-                  phone: '+974',
-                  password: '',
+                  email: "",
+                  phone: "+974",
+                  password: "",
                 }}
-                onSubmit={(values, { setFieldError }) => {
+                onSubmit={(values) => {
                   isLoggedInWithCredentialsRef.current = true;
 
                   let loginValue = values.email;
@@ -235,17 +212,11 @@ const Login = ({
                     loginValue = values.phone;
                   }
 
-                  dispatch(
-                    loginAction(
-                      {
-                        login: loginValue.toLowerCase(),
-                        password: values.password,
-                        device_type: Platform.OS,
-                      },
-                      loginInputType,
-                      setFieldError,
-                    ),
-                  );
+                  login({
+                    login: loginValue.toLowerCase(),
+                    password: values.password,
+                    device_type: Platform.OS,
+                  });
                 }}
                 validationSchema={validationSchema}
               >
@@ -255,7 +226,6 @@ const Login = ({
                   handleSubmit,
                   errors,
                   submitCount,
-                  setFieldValue,
                 }) => {
                   errors = submitCount > 0 ? errors : {};
                   // if (isLoginError && !errors.password && !errors.password) setFieldError('password', t('Login.somethingWrong'))
@@ -269,75 +239,81 @@ const Login = ({
                         onPress1={() => {
                           if (loginInputType !== LOGIN_INPUT_TYPES.email) {
                             setLoginInputType(LOGIN_INPUT_TYPES.email);
-                            handleChange('phone')('');
+                            handleChange("phone")("");
                           }
                         }}
                         onPress2={() => {
                           if (loginInputType !== LOGIN_INPUT_TYPES.phone) {
                             setLoginInputType(LOGIN_INPUT_TYPES.phone);
-                            handleChange('email')('');
-                            setFieldValue('phone', '+974'); // Set the initial value for the phone input
+                            handleChange("email")("");
                           }
                         }}
-                        label1={t('Login.email')}
-                        label2={t('Login.phone')}
+                        label1={t("Login.email")}
+                        label2={t("Login.phone")}
                         style={{ marginVertical: 0 }}
                       />
 
                       {loginInputType === LOGIN_INPUT_TYPES.email && (
                         <Input
-                          // label={t("Login.email")}
-                          placeholder={t('Login.emailPlaceholder')}
+                          label={t("Login.email")}
+                          isLogin={true}
+                          placeholder={t("Login.emailPlaceholder")}
                           value={values.email}
-                          onChangeText={e => {
-                            handleChange('email')(e.toLowerCase());
-                            dispatch({ type: 'RESET_LOGIN_ERROR' });
-                          }}
+                          onChangeText={(e) =>
+                            handleChange("email")(e.toLowerCase())
+                          }
                           error={errors.email}
-                          returnKeyType={'next'}
+                          returnKeyType={"next"}
                           autoCapitalize="none"
                           onSubmitEditing={() => ref_to_input2.current.focus()}
                           keyboardType={
-                            Platform.OS === 'android'
-                              ? 'visible-password'
+                            Platform.OS === "android"
+                              ? "visible-password"
                               : undefined
                           }
                           secureTextEntry={
-                            Platform.OS === 'android' ? true : false
+                            Platform.OS === "android" ? true : false
                           }
                           wrapperStyle={{ marginTop: 10 }}
                         />
                       )}
 
                       {loginInputType === LOGIN_INPUT_TYPES.phone && (
+                        // <Input
+                        //   initialValue={values.phone}
+                        //   onChangePhoneNumber={handleChange("phone")}
+                        //   error={errors.phone}
+                        //   returnKeyType={"next"}
+                        //   onSubmitEditing={() => ref_to_input2.current.focus()}
+                        //   label={t("ContactUs.mobileNumber")}
+                        //   placeholder={t("Login.yourPhone")}
+                        //   disableInputRtl
+                        //   wrapperStyle={{ marginTop: 10 }}
+                        // />
+
                         <PhoneInput
-                          placeholder={t('Login.yourPhone')}
-                          value={values.phone}
-                          error={errors.phone}
-                          onChange={handleChange('phone')}
-                          defaultPhoneSchema={'+974'}
-                          wrapperStyle={{ marginTop: 27 }}
-                          disableInputRtl
-                          onSubmitEditing={() => ref_to_input2.current.focus()}
-                        />
+                         label={t("ContactUs.mobileNumber")}
+                         value={values.phone}
+                         error={errors.phone}
+                         onChange={handleChange("phone")}
+                         defaultPhoneSchema={"+974"}
+                       />
                       )}
 
                       <Input
-                        label={t('Login.password')}
-                        placeholder={t('Login.passwordPlaceholder')}
+                          isLogin={true}
+                        label={t("Login.password")}
+                        placeholder={t("Login.passwordPlaceholder")}
                         secureTextEntry={true}
                         innerRef={ref_to_input2}
                         value={values.password}
-                        onChangeText={e => {
-                          (dispatch({ type: 'RESET_LOGIN_ERROR' }),
-                            handleChange('password')(e));
-                        }}
+                        onChangeText={handleChange("password")}
                         error={
                           isLoginError
-                            ? t('Login.somethingWrong')
+                            ? t("Login.somethingWrong")
                             : errors.password
                         }
-                        returnKeyType={'next'}
+                        returnKeyType={"next"}
                         onSubmitEditing={Keyboard.dismiss}
                         wrapperStyle={{ marginTop: 20 }}
                       />
@@ -351,7 +327,7 @@ const Login = ({
                         />
 
                         <TouchableOpacity
-                          onPress={() => navigation.navigate('ForgotPassword')}
+                          onPress={() => navigation.navigate("ForgotPassword")}
                           style={[
                             styles.forgotPasswordBtn,
                             {
@@ -362,9 +338,9 @@ const Login = ({
                           ]}
                         >
                           <TypographyText
-                            title={t('Login.forgotPassword')}
+                            title={t("Login.forgotPassword")}
                             textColor={
-                              isDark ? colors.darkGrey : colors.darkBlue
+                              isDark ? "white" : colors.mainDarkModeText
                             }
                             size={14}
                             font={LUSAIL_REGULAR}
@@ -375,27 +351,29 @@ const Login = ({
                       <View style={styles.bottom}>
                         <TouchableOpacity
                           onPress={() =>
-                            navigation.navigate('RegCodeVerification')
+                            navigation.navigate("RegCodeVerification")
                           }
                           style={styles.link}
                         >
                           <TypographyText
-                            title={t('Login.register')}
+                            title={t("Login.register")}
                             textColor={
-                              isDark ? colors.mainDarkMode : colors.darkBlue
+                              isDark
+                                ? colors.mainDarkMode
+                                : colors.mainDarkModeText
                             }
                             size={14}
                             font={LUSAIL_REGULAR}
-                            style={{ fontWeight: '700' }}
+                            style={{ fontWeight: "700" }}
                           />
                         </TouchableOpacity>
                       </View>
 
                       <CommonButton
                         onPress={handleSubmit}
-                        label={t('Login.login')}
+                        label={t("Login.login")}
                         loading={loginLoading}
-                        textColor={isDark ? colors.black : colors.white}
+                        textColor={colors.white}
                         style={styles.loginBtn}
                       />
                       <ContinueAsGuestBtn />
@@ -414,20 +392,18 @@ const Login = ({
 
 const styles = {
   logoWrapper: {
-    width: '100%',
-    alignItems: 'center',
-    paddingTop: 100,
-    paddingBottom: 45,
-    backgroundColor: 'transparent',
+    alignItems: "center",
+    width: "100%",
+    marginTop: 100,
   },
   goldShadeWrapper: {
     width: 500,
     height: 500,
     borderRadius: 250,
-    position: 'absolute',
+    position: "absolute",
     right: -200,
     top: -220,
-    shadowColor: '#DDBD6B',
+    shadowColor: "#DDBD6B",
     shadowOffset: {
       width: 120,
       height: 120,
@@ -438,28 +414,28 @@ const styles = {
     zIndex: 10000,
   },
   bg: {
-    position: 'absolute',
-    left: '5%',
-    right: '5%',
+    position: "absolute",
+    left: "5%",
+    right: "5%",
     top: 0,
-    width: '100%',
+    width: "100%",
   },
   bottom: {
-    width: '100%',
-    alignItems: 'center',
+    width: "100%",
+    alignItems: "center",
     marginTop: 20,
   },
   link: {
     paddingVertical: 5,
   },
   logo: {
-    width: '100%',
-    height: '100%',
+    width: 250,
+    height: 150,
   },
   emtiyazWhiteLogo: {
     width: 150,
     height: 150,
-    resizeMode: 'contain',
+    resizeMode: "contain",
   },
   logo2: {},
   formikWrapper: {
@@ -467,18 +443,19 @@ const styles = {
     paddingHorizontal: 20,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
+    marginTop: 30,
   },
   bgtop: {
-    width: '100%',
-    height: '50%',
-    position: 'absolute',
-    top: '0%',
+    width: "100%",
+    height: "50%",
+    position: "absolute",
+    top: "0%",
     zIndex: -10,
   },
   horizontalBlock: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     marginTop: 20,
   },
   firstInput: {
@@ -492,11 +469,11 @@ const styles = {
   },
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isLoginError: state.authReducer.isLoginError,
   token: state.authReducer.token,
   isUserJustLogOut: state.authReducer.isUserJustLogOut,
   loginLoading: state.authReducer.loginLoading,
 });
 
-export default connect(mapStateToProps, {})(Login);
+export default connect(mapStateToProps, { login })(Login);

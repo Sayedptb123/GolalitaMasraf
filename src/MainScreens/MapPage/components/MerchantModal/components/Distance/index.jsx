@@ -71,6 +71,7 @@ const styles = StyleSheet.create({
   wrapper: {
     width: 100,
     flexDirection: "row",
+    justifyContent: "center",
     alignItems: "center",
   },
 });

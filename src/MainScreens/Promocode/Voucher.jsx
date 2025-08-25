@@ -1,31 +1,31 @@
-import React, { useCallback, useRef, useState } from 'react';
-import { colors } from '../../components/colors';
-import { mainStyles } from '../../styles/mainStyles';
-import { styles } from './styles';
-import { SafeAreaView, ScrollView, TouchableOpacity, View } from 'react-native';
-import { useTheme } from '../../components/ThemeProvider';
-import { LUSAIL_REGULAR } from '../../redux/types';
-import { TypographyText } from '../../components/Typography';
-import { useTranslation } from 'react-i18next';
-import DeliverySvg from '../../assets/delivery.svg';
-import DeliveryWhiteSvg from '../../assets/delivery_white.svg';
-import { sized } from '../../Svg';
-import CommonButton from '../../components/CommonButton/CommonButton';
-import IconButton from '../../components/IconButton/IconButton';
-import Slider from 'react-native-slide-to-unlock';
-import SwipeSvg from '../../assets/swipe.svg';
-import CopySvg from '../../assets/copy.svg';
-import { connect } from 'react-redux';
+import React, { useCallback, useRef, useState } from "react";
+import { colors } from "../../components/colors";
+import CommonHeader from "../../components/CommonHeader/CommonHeader";
+import { mainStyles } from "../../styles/mainStyles";
+import { styles } from "./styles";
+import { SafeAreaView, ScrollView, TouchableOpacity, View } from "react-native";
+import { useTheme } from "../../components/ThemeProvider";
+import { BALOO_REGULAR, BALOO_SEMIBOLD } from "../../redux/types";
+import { TypographyText } from "../../components/Typography";
+import { useTranslation } from "react-i18next";
+import DeliverySvg from "../../assets/delivery.svg";
+import DeliveryWhiteSvg from "../../assets/delivery_white.svg";
+import { sized } from "../../Svg";
+import CommonButton from "../../components/CommonButton/CommonButton";
+import IconButton from "../../components/IconButton/IconButton";
+import Slider from "react-native-slide-to-unlock";
+import SwipeSvg from "../../assets/swipe.svg";
+import CopySvg from "../../assets/copy.svg";
+import { connect } from "react-redux";
 import {
   getMerchantDetails,
   saveOffer,
   track,
-} from '../../redux/merchant/merchant-thunks';
-import Clipboard from '@react-native-clipboard/clipboard';
-import RNPrint from 'react-native-print';
-import { captureRef } from 'react-native-view-shot';
-import Share from 'react-native-share';
-import Header from '../../components/Header';
+} from "../../redux/merchant/merchant-thunks";
+import Clipboard from "@react-native-clipboard/clipboard";
+// import RNPrint from "react-native-print";
+// import { captureRef } from "react-native-view-shot";
+// import Share from "react-native-share";
 
 const DeliveryIcon = sized(DeliverySvg, 24);
 const DeliveryWhiteIcon = sized(DeliveryWhiteSvg, 24);
@@ -44,22 +44,20 @@ const Voucher = ({
   const { t } = useTranslation();
   const [isSlided, setIsSlided] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
-  const [isHideButtons, setIsHideButtons] = useState(false);
+  // const [isHideButtons, setIsHideButtons] = useState(false);
   const viewRef = useRef();
-
   const toContactUs = useCallback(() => {
-    navigation.navigate('ContactUs');
+    navigation.navigate("ContactUs");
   }, []);
-
-  const downloadPromocode = async isShare => {
+  const downloadPromocode = async (isShare) => {
     setIsHideButtons(true);
     setTimeout(async () => {
       const base64 = await captureRef(viewRef, {
-        result: 'base64',
+        result: "base64",
         height: 545,
         width: 345,
         quality: 1,
-        format: 'png',
+        format: "png",
       });
 
       if (isShare) {
@@ -98,9 +96,8 @@ const Voucher = ({
       }}
     >
       <SafeAreaView>
-        <Header label={params?.merchant_name} btns={['back']} />
-
-        <ScrollView contentContainerStyle={styles.contentContainer}>
+        <CommonHeader isWhite={isDark} label={params?.merchant_name} />
+        <ScrollView>
           <View style={mainStyles.p20}>
             <View
               ref={viewRef}
@@ -112,15 +109,15 @@ const Voucher = ({
               <TypographyText
                 textColor={!isDark ? colors.green : colors.white}
                 size={24}
-                font={LUSAIL_REGULAR}
+                font={BALOO_SEMIBOLD}
                 title={params?.name}
-                style={[mainStyles.centeredText, { fontWeight: '700' }]}
+                style={mainStyles.centeredText}
               />
               <TypographyText
                 textColor={!isDark ? colors.darkBlue : colors.white}
                 size={18}
-                font={LUSAIL_REGULAR}
-                title={t('PremiumPartner.getDiscount', {
+                font={BALOO_REGULAR}
+                title={t("PremiumPartner.getDiscount", {
                   discount: params?.name,
                 })}
                 style={mainStyles.centeredText}
@@ -130,9 +127,9 @@ const Voucher = ({
                 <TypographyText
                   textColor={!isDark ? colors.darkBlue : colors.white}
                   size={14}
-                  font={LUSAIL_REGULAR}
-                  title={t('PremiumPartner.delivery')}
-                  style={{ marginLeft: 11, fontWeight: '700' }}
+                  font={BALOO_SEMIBOLD}
+                  title={t("PremiumPartner.delivery")}
+                  style={{ marginLeft: 11 }}
                 />
               </View>
               {
@@ -140,17 +137,34 @@ const Voucher = ({
                   onEndReached={() => {
                     setIsSlided(true);
                     saveOffer(params?.id, t, true);
-                    track('promocode', params?.id, true, params?.promocode);
-                    track('promocode', params?.id, false, params?.promocode);
+                    track(
+                      "promocode",
+                      params?.id,
+                      false,
+                      params?.promocode,
+                      () => {
+                        track(
+                          "promocode",
+                          params?.id,
+                          true,
+                          params?.promocode,
+                          () => {
+                            setTimeout(() => {
+                              navigation.navigate("Main");
+                            }, 3000);
+                          }
+                        );
+                      }
+                    );
                   }}
                   containerStyle={{
                     margin: 8,
-                    backgroundColor: isCopied ? '#8286B1' : colors.navyBlue,
+                    backgroundColor: isCopied ? "#8286B1" : colors.navyBlue,
                     borderRadius: 10,
-                    overflow: 'hidden',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    width: '95%',
+                    overflow: "hidden",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: "95%",
                   }}
                   sliderElement={
                     isSlided ? (
@@ -165,14 +179,13 @@ const Voucher = ({
                       <TypographyText
                         textColor={colors.white}
                         size={24}
-                        font={LUSAIL_REGULAR}
-                        title={`${params?.promocode ?? ''} |`}
-                        style={{ fontWeight: '700' }}
+                        font={BALOO_SEMIBOLD}
+                        title={`${params?.promocode ?? ""} |`}
                       />
                       <TouchableOpacity
                         onPress={async () => {
                           setIsCopied(true);
-                          Clipboard.setString(params?.promocode ?? '');
+                          Clipboard.setString(params?.promocode ?? "");
                         }}
                         style={mainStyles.row}
                       >
@@ -180,9 +193,8 @@ const Voucher = ({
                         <TypographyText
                           textColor={colors.white}
                           size={24}
-                          font={LUSAIL_REGULAR}
-                          style={{ fontWeight: '700' }}
-                          title={isCopied ? 'Copied' : 'Copy'}
+                          font={BALOO_SEMIBOLD}
+                          title={isCopied ? "Copied" : "Copy"}
                         />
                       </TouchableOpacity>
                     </View>
@@ -190,12 +202,9 @@ const Voucher = ({
                     <TypographyText
                       textColor={colors.white}
                       size={18}
-                      font={LUSAIL_REGULAR}
-                      title={t('PremiumPartner.swipeToGetCode')}
-                      style={[
-                        mainStyles.centeredText,
-                        { marginLeft: 30, fontWeight: '700' },
-                      ]}
+                      font={BALOO_SEMIBOLD}
+                      title={t("PremiumPartner.swipeToGetCode")}
+                      style={[mainStyles.centeredText, { marginLeft: 30 }]}
                     />
                   )}
                 </Slider>
@@ -203,17 +212,14 @@ const Voucher = ({
               <TypographyText
                 textColor={!isDark ? colors.darkBlue : colors.white}
                 size={14}
-                font={LUSAIL_REGULAR}
-                title={t('PremiumPartner.applyPromo', {
+                font={BALOO_SEMIBOLD}
+                title={t("PremiumPartner.applyPromo", {
                   name: params?.merchant_name,
                 })}
-                style={[
-                  mainStyles.centeredText,
-                  { marginVertical: 35, fontWeight: '700' },
-                ]}
+                style={[mainStyles.centeredText, { marginVertical: 35 }]}
               />
               <CommonButton
-                label={t('PremiumPartner.visitStore', {
+                label={t("PremiumPartner.visitStore", {
                   name:
                     params?.merchant_name?.length > 15
                       ? `${params?.merchant_name.slice(0, 15)}...`
@@ -231,25 +237,63 @@ const Voucher = ({
                   getMerchantDetails(params?.merchant_id, navigation, t);
                 }}
               />
-
+              {/* {isSlided && !isHideButtons && (
+                <>
+                  <CommonButton
+                    label={t("PremiumPartner.downloadPromocode")}
+                    icon={isDark ? <PDFWhiteIcon /> : <PDFIcon />}
+                    textColor={isDark ? colors.white : colors.green}
+                    style={{
+                      ...mainStyles.borderButton,
+                      ...mainStyles.mb20,
+                      borderColor: isDark ? colors.white : colors.green,
+                      backgroundColor: isDark ? colors.darkBlue : colors.white,
+                    }}
+                    onPress={() => downloadPromocode()}
+                  />
+                  <CommonButton
+                    label={t("PremiumPartner.sharePromocode")}
+                    icon={isDark ? <ShareWhiteIcon /> : <ShareIcon />}
+                    textColor={isDark ? colors.white : colors.green}
+                    style={{
+                      ...mainStyles.borderButton,
+                      borderColor: isDark ? colors.white : colors.green,
+                      backgroundColor: isDark ? colors.darkBlue : colors.white,
+                    }}
+                    onPress={() => downloadPromocode(true)}
+                  />
+                </>
+              )} */}
               <View style={[mainStyles.centeredRow, { marginTop: 30 }]}>
                 <IconButton
                   onPress={toContactUs}
                   color={isDark ? colors.white : null}
-                  label={t('PremiumPartner.reportAnIssue')}
+                  label={t("PremiumPartner.reportAnIssue")}
                 />
               </View>
               {params?.expiryDate && (
                 <TypographyText
                   textColor={!isDark ? colors.grey : colors.white}
                   size={12}
-                  font={LUSAIL_REGULAR}
-                  title={`${t('PremiumPartner.validTill')} ${
+                  font={BALOO_REGULAR}
+                  title={`${t("PremiumPartner.validTill")} ${
                     params.expiryDate
                   }`}
                   style={[mainStyles.centeredText, { marginTop: 20 }]}
                 />
               )}
+              {/* <Text style={styles.label}>
+                {t("PremiumPartner.offersAre")}
+                <TouchableOpacity>
+                  <Text
+                    style={{ color: isDark ? colors.white : colors.darkBlue }}
+                  >
+                    {" "}
+                    {t("PremiumPartner.rulesOfUse")}
+                  </Text>
+                </TouchableOpacity>
+              </Text> */}
+              <View style={mainStyles.mb20} />
             </View>
           </View>
         </ScrollView>

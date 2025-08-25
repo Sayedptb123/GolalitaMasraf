@@ -1,57 +1,40 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
-import CloseSvg from "../../../assets/close.svg";
-import { sized } from "../../../Svg";
+import { StyleSheet } from "react-native";
 import { Field } from "formik";
-import { TouchableOpacity } from "react-native";
 import { BALOO_REGULAR } from "../../../redux/types";
-import { useTheme } from "../../ThemeProvider";
 import Input from "../../Input/Input";
 
-const CloseIcon = sized(CloseSvg, 14, 14, "#312B3E");
-
 const FormikTextInput = (props) => {
-  const { name, wrapperStyle, ...restProps } = props;
-
-  const { isDark } = useTheme();
+  const { name, ...restProps } = props;
 
   return (
-    <View style={[styles.wrapper, wrapperStyle]}>
-      <Field name={name}>
-        {({ field: { value }, form: { setFieldValue } }) => {
-          const showClearIcon = Boolean(props.allowClear && value);
-
-          return (
-            <>
-              <Input
-                {...restProps}
-                style={[styles.input, { color: isDark ? "#fff" : "#312B3E" }]}
-                placeholderTextColor={isDark ? "#fff" : "#999CAD"}
-                value={value}
-                onChangeText={(val) => {
-                  setFieldValue(name, val);
-                }}
-              />
-
-              {showClearIcon && (
-                <TouchableOpacity
-                  onPress={() => setFieldValue(name, "")}
-                  style={styles.iconWrap}
-                >
-                  <CloseIcon />
-                </TouchableOpacity>
-              )}
-            </>
-          );
-        }}
-      </Field>
-    </View>
+    <Field name={name}>
+      {({ field: { value }, form: { setFieldValue } }) => {
+        return (
+          <>
+            <Input
+              {...restProps}
+              value={value}
+              onChangeText={(val) => {
+                setFieldValue(name, val);
+              }}
+            />
+          </>
+        );
+      }}
+    </Field>
   );
 };
 
 const styles = StyleSheet.create({
   wrapper: {
-    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    borderWidth: 1.5,
+    borderRadius: 4,
+    borderColor: "#999CAD",
+    height: 36,
+    paddingLeft: 10,
   },
   iconWrap: {
     alignItems: "center",

@@ -1,11 +1,13 @@
 import { View } from "react-native";
 import { TypographyText } from "../Typography";
-import { LUSAIL_REGULAR } from "../../redux/types";
+import { BALOO_SEMIBOLD } from "../../redux/types";
 import { useTheme } from "../ThemeProvider";
 import { colors } from "../colors";
+import { useTranslation } from "react-i18next";
 
 const ListNoData = (props) => {
   const { isDark } = useTheme();
+  const { t } = useTranslation();
 
   return (
     <View
@@ -16,11 +18,10 @@ const ListNoData = (props) => {
       }}
     >
       <TypographyText
-        title={props.text}
-        textColor={isDark ? "white" : colors.darkBlue}
+        title={props.text || t("General.noData")}
+        textColor={isDark ? colors.white : colors.darkBlue}
         size={16}
-        font={LUSAIL_REGULAR}
-        style={{ fontWeight: "700" }}
+        font={BALOO_SEMIBOLD}
       />
     </View>
   );

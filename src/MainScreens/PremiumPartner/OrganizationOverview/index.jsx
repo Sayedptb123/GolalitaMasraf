@@ -15,7 +15,7 @@ import {
 } from "../../../styles/mainStyles";
 import { sized } from "../../../Svg";
 import { colors } from "../../../components/colors";
-import { LUSAIL_REGULAR } from "../../../redux/types";
+import { BALOO_SEMIBOLD } from "../../../redux/types";
 import { TypographyText } from "../../../components/Typography";
 import Swiper from "react-native-swiper";
 import IconButton from "../../../components/IconButton/IconButton";
@@ -77,7 +77,7 @@ const OrganizationOverview = ({ merchantDetails }) => {
     <ScrollView style={styles.wrapper}>
       <View
         style={{
-          backgroundColor: isDark ? "#08003B" : "#fff",
+          backgroundColor: isDark ? "#b49056" : "#fff",
         }}
       >
         <CommonHeader
@@ -101,9 +101,9 @@ const OrganizationOverview = ({ merchantDetails }) => {
             <TypographyText
               textColor={isDark ? colors.white : colors.darkBlue}
               size={18}
-              font={LUSAIL_REGULAR}
+              font={BALOO_SEMIBOLD}
               title={merchantDetails.merchant_name ?? merchantDetails.org_name}
-              style={{ marginLeft: 8, fontWeight: "700" }}
+              style={{ marginLeft: 8 }}
               numberOfLines={1}
               ellipsizeMode="tail"
             />
@@ -123,13 +123,9 @@ const OrganizationOverview = ({ merchantDetails }) => {
                 <TypographyText
                   textColor={colors.white}
                   size={14}
-                  font={LUSAIL_REGULAR}
+                  font={BALOO_SEMIBOLD}
                   title={merchantDetails.ribbon_text}
-                  style={{
-                    width: "75%",
-                    textAlign: "center",
-                    fontWeight: "700",
-                  }}
+                  style={{ width: "75%", textAlign: "center" }}
                   numberOfLines={1}
                   textElipsis={"tail"}
                 />
@@ -217,9 +213,10 @@ const OrganizationOverview = ({ merchantDetails }) => {
           }}
         >
           <IconButton
-            icon={<ArrowUpIcon />}
+            icon={<ArrowUpIcon style={{ fill: 'black' }} />}
             label={t("PremiumPartner.getDirections")}
-            color={colors.green}
+            color=  {"#000"} 
+            
             onPress={() =>
               Linking.openURL(
                 `https://www.google.com/maps/dir/Current+Location/${merchantDetails.partner_latitude},${merchantDetails.partner_longitude}`
@@ -227,7 +224,7 @@ const OrganizationOverview = ({ merchantDetails }) => {
             }
           />
 
-          <IconButton
+         { merchantDetails.whatsapp_number && <IconButton
             icon={<WhatsappIcon />}
             label="WhatsApp"
             style={{
@@ -240,7 +237,7 @@ const OrganizationOverview = ({ merchantDetails }) => {
                 `https://wa.me/${merchantDetails.whatsapp_number}?text=${merchantDetails.whatsappx_prefill_message}`
               )
             }
-          />
+          />}
         </View>
 
         <MapView

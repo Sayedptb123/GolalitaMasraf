@@ -32,8 +32,7 @@ const NotificationModal = ({
   setIsNotificationModal,
   setPressedNotification,
 }) => {
-  const { i18n, t } = useTranslation();
-  const language = i18n.language;
+  const { t } = useTranslation();
   const navigation = useNavigation();
   const [fullImage, setFullImage] = useState(false);
 
@@ -51,10 +50,7 @@ const NotificationModal = ({
         contentContainerStyle={{ marginHorizontal: 16 }}
         style={{ marginTop: 16 }}
       >
-        <TouchableOpacity
-          activeOpacity={1}
-          style={{ height: SCREEN_HEIGHT / 1.7 }}
-        >
+        <TouchableOpacity activeOpacity={1} style={{height: SCREEN_HEIGHT / 1.7}}>
           <Swiper
             // style={{height: SCREEN_WIDTH / 100 * 95 + 100}}
             autoplay={true}
@@ -91,15 +87,9 @@ const NotificationModal = ({
                   />
                   <HTMLRenderer
                     style={{ marginTop: 16 }}
-                    isBlack={true}
                     value={
-                      language === "ar"
-                        ? notification?.html_description_arabic ||
-                          notification.x_description_arabic
-                        : notification.html_description ??
-                          notification.description
+                      notification.html_description ?? notification.description
                     }
-                    color={colors.darkBlue}
                   />
 
                   <View

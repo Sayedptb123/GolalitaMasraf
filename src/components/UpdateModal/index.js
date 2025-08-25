@@ -8,31 +8,27 @@ import {
 import PhoneSvg from "../../assets/app_update.svg";
 import { sized } from "../../Svg";
 import { colors } from "../colors";
-import { LUSAIL_REGULAR } from "../../redux/types";
+import { BALOO_REGULAR, BALOO_SEMIBOLD } from "../../redux/types";
 import { TypographyText } from "../Typography";
 import { useTranslation } from "react-i18next";
 import CommonButton from "../CommonButton/CommonButton";
 
-const isIos = Platform.OS === "ios";
-const isAndroid = Platform.OS === "android";
-const Brand = Platform.constants.Brand;
-const Manufacturer = Platform.constants.Manufacturer;
 const PhoneIcon = sized(PhoneSvg, 120, 160);
 
 const CONFIG = {
-  ios: "https://apps.apple.com/app/id6473549296",
-  android: "https://play.google.com/store/apps/details?id=com.emtiazapp",
+  ios: "https://apps.apple.com/us/app/masraf-al-rayan/id6466660993",
+  android: "https://play.google.com/store/apps/details?id=com.golalitamasraf",
+  HUAWEI: "https://appgallery.cloud.huawei.com/ag/n/app/C110741991?locale=en_GB&source=appshare&subsource=C110741991&shareTo=com.android.bluetooth&shareFrom=appmarket&shareIds=102d0c05ad604afd8908e1662c46164c_com.android.bluetooth&callType=SHARE"
 };
+
+const Brand = Platform.constants.Brand;
+const Manufacturer = Platform.constants.Manufacturer;
 
 const UpdateModal = ({ updateModal, setUpdateModal, version }) => {
   const { t } = useTranslation();
 
   const handleLinkPress = () => {
-    if (isAndroid && (Manufacturer === "HUAWEI" || Brand === "HUAWEI")) {
-      Linking.openURL("https://appgallery.cloud.huawei.com/ag/n/app/C113012855?locale=en_GB&source=appshare&subsource=C113012855&shareTo=com.android.bluetooth&shareFrom=appmarket&shareIds=951dd4d7f2234a00adade57f572ef3d1_com.android.bluetooth&callType=SHARE"); return;
-    }
-    console.log("CONFIG[Platform.OS]:",CONFIG[Platform.OS])
-    Linking.openURL(CONFIG[Platform.OS]);
+    Manufacturer === "HUAWEI" || Brand === "HUAWEI" ? Linking.openURL(CONFIG.HUAWEI) : Linking.openURL(CONFIG[Platform.OS]);
   };
 
   return (
@@ -62,21 +58,18 @@ const UpdateModal = ({ updateModal, setUpdateModal, version }) => {
         <TypographyText
           textColor={colors.black}
           size={26}
-          font={LUSAIL_REGULAR}
+          font={BALOO_SEMIBOLD}
           title={
             updateModal === "easy"
               ? t("Profile.updateApp")
               : t("Profile.outdatedApp")
           }
-          style={[
-            mainStyles.centeredText,
-            { marginTop: 30, fontWeight: "700" },
-          ]}
+          style={[mainStyles.centeredText, { marginTop: 30 }]}
         />
         <TypographyText
           textColor={colors.black}
           size={20}
-          font={LUSAIL_REGULAR}
+          font={BALOO_REGULAR}
           title={
             updateModal === "easy"
               ? t("Profile.updateAppDescription")
@@ -87,7 +80,7 @@ const UpdateModal = ({ updateModal, setUpdateModal, version }) => {
         <TypographyText
           textColor={colors.black}
           size={20}
-          font={LUSAIL_REGULAR}
+          font={BALOO_REGULAR}
           title={`v${version}`}
           style={mainStyles.centeredText}
         />

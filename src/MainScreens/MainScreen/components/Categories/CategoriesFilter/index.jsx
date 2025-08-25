@@ -4,7 +4,6 @@ import { TypographyText } from "../../../../../components/Typography";
 import { useTheme } from "../../../../../components/ThemeProvider";
 import { colors } from "../../../../../components/colors";
 import { useTranslation } from "react-i18next";
-import { getFlexDirection } from "../../../../../../utils";
 
 const CategoriesFilter = ({ type, onChange, style }) => {
   const { isDark } = useTheme();
@@ -17,7 +16,7 @@ const CategoriesFilter = ({ type, onChange, style }) => {
       return isDark ? styles.activeWrapperDark : styles.activeWrapperLight;
     }
 
-    return isDark ? styles.passiveWrapperDark : styles.passiveWrapperLights;
+    return isDark ? styles.passiveWrapperDark : styles.passiveWrapperLight;
   };
 
   const getTextColor = (itemType) => {
@@ -44,14 +43,10 @@ const CategoriesFilter = ({ type, onChange, style }) => {
   ];
 
   return (
-    <View style={[styles.wrapper, style, getFlexDirection()]}>
+    <View style={[styles.wrapper, style]}>
       {config.map((data, index) => (
         <TouchableOpacity
-          style={[
-            styles.filterBtn,
-            getWrapperStyle(data.value),
-            { marginLeft: !index ? 0 : 10 },
-          ]}
+          style={[styles.filterBtn, getWrapperStyle(data.value)]}
           onPress={() => onChange(data.value)}
         >
           <TypographyText
@@ -72,20 +67,19 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   activeWrapperLight: {
-    backgroundColor: colors.navyBlue,
+    backgroundColor: colors.darkBlue,
   },
   passiveWrapperLight: {},
   activeWrapperDark: {
-    backgroundColor: colors.mainDarkMode,
+    backgroundColor: colors.navyBlue,
   },
-  passiveWrapperDark: {
-    backgroundColor: colors.mainDarkModeText,
-  },
+  passiveWrapperDark: {},
 
   filterBtn: {
     paddingHorizontal: 14,
     paddingVertical: 6,
     borderRadius: 12,
+    marginLeft: 5,
   },
   text: {
     fontWeight: "600",

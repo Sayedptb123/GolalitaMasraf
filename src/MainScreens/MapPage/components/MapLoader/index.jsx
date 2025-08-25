@@ -6,7 +6,11 @@ import { colors } from "../../../../components/colors";
 
 const MapLoader = () => {
   return (
-    <FullScreenLoader absolutePosition style={styles.loader} color={"black"} />
+    <FullScreenLoader
+      absolutePosition
+      style={styles.loader}
+      color={colors.darkBlue}
+    />
   );
 };
 

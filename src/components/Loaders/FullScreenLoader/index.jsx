@@ -5,21 +5,19 @@ import { useTheme } from "../../ThemeProvider";
 const FullScreenLoader = (props) => {
   const { isDark } = useTheme();
 
+  const color = props.color || isDark ? colors.white : colors.darkBlue;
+
   if (props.absolutePosition) {
     return (
       <View style={[styles.absoluteWrapper, props?.style]}>
-        <ActivityIndicator
-          color={isDark ? colors.mainDarkMode : colors.darkBlue}
-        />
+        <ActivityIndicator color={color} />
       </View>
     );
   }
 
   return (
     <View style={[styles.wrapper, props?.style]}>
-      <ActivityIndicator
-        color={isDark ? colors.mainDarkMode : colors.darkBlue}
-      />
+      <ActivityIndicator color={color} />
     </View>
   );
 };

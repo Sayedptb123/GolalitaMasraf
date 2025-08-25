@@ -31,19 +31,18 @@ const CardWithNesetedItems = (props) => {
   const { isDark } = useTheme();
   const [openedIndex, setOpenedIndex] = useState(null);
 
-  const isArabic = i18n.language === "ar";
   const ArrowIconSmall = sized(
     ArrowSvg,
     18,
     18,
-    isDark ? colors.mainDarkModeText : colors.darkBlue
+    isDark ? colors.white : colors.darkBlue
   );
 
   const StartIconSmall = sized(
     StartIcon,
     18,
     18,
-    isDark ? colors.mainDarkModeText : colors.darkBlue
+    isDark ? colors.white : colors.darkBlue
   );
 
   const renderToggleBtn = (item, index) => {
@@ -70,22 +69,15 @@ const CardWithNesetedItems = (props) => {
       </TouchableOpacity>
     );
   };
-  const isRtl = isRTL();
-  const newIconStyles = {
-    borderTopLeftRadius: isRtl ? 0 : 4,
-    borderBottomLeftRadius: isRtl ? 0 : 4,
-    borderTopRightRadius: isRtl ? 4 : 0,
-    borderBottomRightRadius: isRtl ? 4 : 0,
-  };
 
   const renderParent = (
     <View>
       <TouchableOpacity
         onPress={() => parentProps.onPress()}
-        style={[styles.row, getFlexDirection(), { paddingVertical: 10 }]}
+        style={[styles.row, getFlexDirection()]}
       >
         {parentProps.new && (
-          <View style={[styles.newIcon, newIconStyles]}>
+          <View style={styles.newIcon}>
             <TypographyText
               textColor={isDark ? colors.white : "#000"}
               size={14}
@@ -94,9 +86,9 @@ const CardWithNesetedItems = (props) => {
               style={styles.newText}
             />
           </View>
-        )}
-        {parentProps.goPoints && (
-          <View style={[styles.newIcon, newIconStyles]}>
+        )} 
+         {parentProps.goPoints && (
+          <View style={styles.newIcon}>
             <TypographyText
               textColor={isDark ? colors.white : "#000"}
               size={14}
@@ -107,7 +99,7 @@ const CardWithNesetedItems = (props) => {
           </View>
         )}
         {parentProps.premium && (
-          <View style={[styles.newIcon, newIconStyles]}>
+          <View style={styles.newIcon}>
             <TypographyText
               textColor={isDark ? colors.white : "#000"}
               size={14}
@@ -121,7 +113,7 @@ const CardWithNesetedItems = (props) => {
           style={[
             styles.image,
             {
-              backgroundColor: isDark ? "#fff" : "#F5F5F5",
+              backgroundColor: isDark ? colors.darkBlue : "#F5F5F5",
               overflow: "hidden",
               marginLeft: isRTL() ? 15 : 0,
             },
@@ -136,7 +128,7 @@ const CardWithNesetedItems = (props) => {
             size={18}
             font={BALOO_SEMIBOLD}
             title={parentProps.name}
-            numberOfLines={1}
+            numberOfLines={2}
           />
 
           {parentProps.loadingDescription && (
@@ -168,17 +160,24 @@ const CardWithNesetedItems = (props) => {
         </View>
 
         <TouchableOpacity
-          style={{ padding: 13 }}
+          style={{
+            paddingLeft: !isRTL() ? 13 : 0,
+            paddingRight: isRTL() ? 13 : 0,
+          }}
           onPress={() => parentProps.onPressFavourite()}
         >
           {parentProps.isSaved ? (
             <StartIconSmall
               color={isDark ? colors.mainDarkMode : colors.darkBlue}
               fill={isDark ? colors.mainDarkMode : colors.darkBlue}
+              height={20}
+              width={20}
             />
           ) : (
             <StartIconSmall
               color={isDark ? colors.mainDarkMode : colors.darkBlue}
+              height={20}
+              width={20}
             />
           )}
         </TouchableOpacity>
@@ -191,9 +190,7 @@ const CardWithNesetedItems = (props) => {
       style={[
         styles.wrapper,
         {
-          backgroundColor: isDark ? colors.black : colors.white,
-          borderBottomWidth: 2,
-          borderColor: isDark ? colors.borderGrey : colors.highlatedGrey,
+          backgroundColor: isDark ? colors.navyBlue : "#F5F5F5",
         },
       ]}
     >
@@ -232,15 +229,15 @@ const CardWithNesetedItems = (props) => {
 const styles = StyleSheet.create({
   wrapper: {
     padding: 16,
-    // shadowColor: "#000000",
-    // shadowOffset: {
-    //   width: 0,
-    //   height: 3,
-    // },
-    // shadowOpacity: 0.18,
-    // shadowRadius: 4.59,
-    //elevation: 5,
-    // borderRadius: 10,
+    shadowColor: "#000000",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.18,
+    shadowRadius: 4.59,
+    elevation: 5,
+    borderRadius: 10,
     marginHorizontal: 5,
     marginTop: 16,
     marginBottom: 16,

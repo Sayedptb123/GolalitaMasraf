@@ -5,6 +5,7 @@ import CommonButton from "../../../../PremiumPartner/common/CommonButton";
 import { isRTL } from "../../../../../../utils";
 
 const InfoButtons = ({ data }) => {
+  console.log("InfoButtons::",data)
   const { isDark } = useTheme();
 
   const btnColor = isDark ? colors.mainDarkMode : colors.darkBlue;

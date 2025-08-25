@@ -1,16 +1,16 @@
-import React from 'react';
+import React from "react";
 import {
   TouchableOpacity,
   StyleSheet,
   View,
   ActivityIndicator,
-} from 'react-native';
-import { colors } from '../colors';
-import { BALOO_SEMIBOLD } from '../../redux/types';
-import { TypographyText } from '../Typography';
-import { mainStyles } from '../../styles/mainStyles';
-import LinearGradient from 'react-native-linear-gradient';
-import { useTheme } from '../ThemeProvider';
+} from "react-native";
+import { colors } from "../colors";
+import { BALOO_SEMIBOLD } from "../../redux/types";
+import { TypographyText } from "../Typography";
+import { mainStyles } from "../../styles/mainStyles";
+import LinearGradient from "react-native-linear-gradient";
+import { useTheme } from "../ThemeProvider";
 
 const CommonButton = ({
   label,
@@ -19,7 +19,6 @@ const CommonButton = ({
   icon,
   textColor,
   loading,
-  loadingIsCard,
   ...props
 }) => {
   const { isDark } = useTheme();
@@ -30,23 +29,25 @@ const CommonButton = ({
         style,
         isError && {
           backgroundColor: colors.lightGrey,
+          ...mainStyles.lightShadow,
         },
+        { backgroundColor: colors.navyBlue },
       ]}
       colors={
         isError
           ? [colors.grey, colors.grey]
           : style?.backgroundColor
-            ? [style.backgroundColor, style.backgroundColor]
-            : isDark
-              ? [colors.mainDarkMode, colors.mainDarkMode]
-              : [colors.darkBlue, colors.darkBlue]
+          ? [style.backgroundColor, style.backgroundColor]
+          : isDark
+          ? [colors.navyBlue, colors.navyBlue]
+          : [colors.darkBlue, colors.darkBlue]
       }
     >
       <TouchableOpacity
         style={{
-          width: '100%',
-          height: '100%',
-          justifyContent: 'center',
+          width: "100%",
+          height: "100%",
+          justifyContent: "center",
           ...mainStyles.centeredRow,
         }}
         activeOpacity={0.6}
@@ -64,13 +65,7 @@ const CommonButton = ({
 
         {loading && (
           <ActivityIndicator
-            color={isDark ? colors.black : colors.white}
-            style={styles.loader}
-          />
-        )}
-        {loadingIsCard && (
-          <ActivityIndicator
-            color={isDark ? colors.mainDarkMode : colors.darkBlue}
+            color={isDark ? "white" : colors.white}
             style={styles.loader}
           />
         )}
@@ -81,11 +76,12 @@ const CommonButton = ({
 
 const styles = StyleSheet.create({
   button: {
-    flexDirection: 'row',
-    width: '100%',
+    ...mainStyles.shadow,
+    flexDirection: "row",
+    width: "100%",
     height: 60,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     backgroundColor: colors.darkBlue,
     borderRadius: 8,
   },

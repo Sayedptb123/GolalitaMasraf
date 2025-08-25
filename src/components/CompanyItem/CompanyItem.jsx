@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { TouchableOpacity, StyleSheet, View } from "react-native";
 import { mainStyles, SCREEN_WIDTH } from "../../styles/mainStyles";
 import { colors } from "../colors";
-import { LUSAIL_REGULAR } from "../../redux/types";
+import { BALOO_SEMIBOLD } from "../../redux/types";
 import { TypographyText } from "../Typography";
 import FullStarSvg from "../../assets/full_star.svg";
 import HalfStarSvg from "../../assets/half_star.svg";
@@ -11,9 +11,9 @@ import { useTheme } from "../ThemeProvider";
 import { connect } from "react-redux";
 import { getMerchantDetails } from "../../redux/merchant/merchant-thunks";
 import { useNavigation } from "@react-navigation/native";
-
+import { subscribeNotification } from "../../redux/notifications/notifications-thunks";
 import FastImage from "react-native-fast-image";
-import { getFlexDirection } from "../../../utils";
+import { dateForWeeks, getFlexDirection, isRTL } from "../../../utils";
 import { useTranslation } from "react-i18next";
 import { getCategoryNameByIdAndLang } from "../Categories/helpres";
 
@@ -54,9 +54,9 @@ const CompanyItem = ({ width, merchant, getMerchantDetails, isPadding }) => {
           <TypographyText
             textColor={colors.white}
             size={14}
-            font={LUSAIL_REGULAR}
+            font={BALOO_SEMIBOLD}
             title={merchant.ribbon_text}
-            style={{ width: "75%", textAlign: "center", fontWeight: "700" }}
+            style={{ width: "75%", textAlign: "center" }}
             numberOfLines={1}
             textElipsis={"tail"}
           />
@@ -123,9 +123,9 @@ const CompanyItem = ({ width, merchant, getMerchantDetails, isPadding }) => {
         <TypographyText
           textColor={isDark ? colors.white : colors.darkBlue}
           size={18}
-          font={LUSAIL_REGULAR}
+          font={BALOO_SEMIBOLD}
           numberOfLines={1}
-          style={{ width: "70%", fontWeight: "700" }}
+          style={{ width: "70%" }}
           title={
             merchant.name ??
             merchant.merchant_name ??
@@ -136,9 +136,8 @@ const CompanyItem = ({ width, merchant, getMerchantDetails, isPadding }) => {
           <TypographyText
             textColor={colors.orange}
             size={18}
-            font={LUSAIL_REGULAR}
+            font={BALOO_SEMIBOLD}
             title={(+(merchant.merchant_rating ?? merchant.rating)).toFixed(1)}
-            style={{ fontWeight: "700" }}
           />
           <View style={[mainStyles.row, { marginBottom: 4 }]}>
             {[1, 2, 3, 4, 5].map((i) => {

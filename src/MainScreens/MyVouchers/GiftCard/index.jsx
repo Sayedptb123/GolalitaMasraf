@@ -43,6 +43,7 @@ const GiftCard = (props) => {
   const [paymentData, setPaymentData] = useState(null);
 
   const [amount, setAmount] = useState(0);
+  
   const [amount_org, setAmount_org] = useState(0);
 
   const handleLocationPress = () => {
@@ -52,6 +53,7 @@ const GiftCard = (props) => {
   const handlePaymentPress = async () => {
     setLoading(true);
     let tAmount = amount + getCommission(amount);
+
     const data = {
       reference_id: new Date().getTime(),
       brand_code: giftCard.brand_code,
@@ -62,7 +64,7 @@ const GiftCard = (props) => {
       receiver_email: user.email,
       receiver_phone: user.phone,
       customer_id: user.partner_id,
-      return_url: "https://emtiazpaystatus.com/",
+      return_url:"https://masrafpaystatus.com/",
       currency_org:giftCard.brand_accepted_currency,
       amount_org:amount_org
     };

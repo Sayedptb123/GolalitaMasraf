@@ -1,21 +1,17 @@
-import { LOCATION_STATUSES } from '../../hooks/useUserLocation';
-import { GLOBAL_SET_USER_LOCATION } from './global-types';
+import { SET_COUNTRIES, SET_LOCATIONSFORFILTERS } from "./global-types";
 
 const initialState = {
-  location: {
-    coordinates: {},
-    status: LOCATION_STATUSES.NOT_REQUESTED,
-  },
+  selectedCountry: "QA",
+  coutries: [],
+  locations:[]
 };
 
 export const globalReducer = (state = initialState, action) => {
   switch (action.type) {
-    case GLOBAL_SET_USER_LOCATION:
-      return {
-        ...state,
-        location: { coordinates: action.coordinates, status: action.status },
-      };
-
+    case SET_COUNTRIES:
+      return { ...state, countries: action.countries };
+        case SET_LOCATIONSFORFILTERS:
+          return { ...state, locations: action.locations };
     default:
       return state;
   }

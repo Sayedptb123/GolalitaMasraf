@@ -1,7 +1,8 @@
 import { View, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { TypographyText } from "../Typography";
-import { LUSAIL_REGULAR } from "../../redux/types";
+import { BALOO_SEMIBOLD } from "../../redux/types";
 import { colors } from "../colors";
+import { sized } from "../../Svg";
 import LinearGradient from "react-native-linear-gradient";
 
 const IlustrationCard = (props) => {
@@ -23,10 +24,9 @@ const IlustrationCard = (props) => {
           <TypographyText
             textColor={colors.white}
             size={12}
-            font={LUSAIL_REGULAR}
+            font={BALOO_SEMIBOLD}
             title={title}
             numberOfLines={2}
-            style={{ fontWeight: "700" }}
           />
         </TouchableOpacity>
       </LinearGradient>
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
   },
   btn: {
     height: 32,
-    backgroundColor: "#027DC1",
+    backgroundColor: "#350d05",
     borderRadius: 100,
     paddingHorizontal: 15,
     justifyContent: "center",

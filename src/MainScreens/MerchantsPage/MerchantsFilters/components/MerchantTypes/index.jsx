@@ -3,18 +3,15 @@ import { View } from "react-native";
 import { colors } from "../../../../../components/colors";
 import { getFlexDirection, isRTL } from "../../../../../../utils";
 import FormikButtonCheckbox from "../../../../../components/Formik/FormikButtonCheckbox";
-import { useTranslation } from "react-i18next";
 
 const MerchantTypes = ({ style }) => {
-  const { t } = useTranslation();
-
   const config = [
     {
-      label: t("Merchants.goPoints"),
+      label: "Gopoints",
       name: "gpoint",
     },
     {
-      label: t("Merchants.premium"),
+      label: "Premium",
       name: "is_premium_merchant",
     },
   ];

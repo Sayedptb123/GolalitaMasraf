@@ -15,11 +15,7 @@ const getDateString = (date) => {
 const getTimeString = (date) => {
   if (!date.getFullYear) return "";
 
-  const minutes = date.getMinutes();
-
-  const transformedMinutes = minutes < 10 ? `0${minutes}` : minutes;
-
-  return `${date.getHours()}:${transformedMinutes}`;
+  return `${date.getHours()}:${date.getMinutes()}`;
 };
 
 const getOneMonthAgoDate = () => {

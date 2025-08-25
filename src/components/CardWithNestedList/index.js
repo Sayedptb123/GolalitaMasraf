@@ -4,7 +4,7 @@ import ArrowDownSvg from "../../assets/arrow_down_thin.svg";
 import NestedListView, { NestedRow } from "react-native-nested-listview";
 import { sized } from "../../Svg";
 import { TypographyText } from "../Typography";
-import { LUSAIL_REGULAR } from "../../redux/types";
+import { BALOO_SEMIBOLD } from "../../redux/types";
 import { useTheme } from "../ThemeProvider";
 
 const CardWithNestedList = (props) => {
@@ -16,7 +16,7 @@ const CardWithNestedList = (props) => {
     ArrowDownSvg,
     15,
     15,
-    isDark ? "#fff" : "#027DC1"
+    isDark ? "#fff" : "#350d05"
   );
 
   return (
@@ -35,11 +35,11 @@ const CardWithNestedList = (props) => {
         style={styles.collapseBtn}
       >
         <TypographyText
-          textColor={isDark ? "#fff" : "#027DC1"}
+          textColor={isDark ? "#fff" : "#350d05"}
           size={14}
-          font={LUSAIL_REGULAR}
+          font={BALOO_SEMIBOLD}
           title={title}
-          style={{ marginRight: 6, fontWeight: "700" }}
+          style={{ marginRight: 6 }}
         />
 
         <ArrowDownIcon style={isOpened ? styles.collapsedIcon : {}} />
@@ -53,11 +53,10 @@ const CardWithNestedList = (props) => {
               <NestedRow level={level} style={styles.row}>
                 <TouchableOpacity onPress={() => onItemPress(node)}>
                   <TypographyText
-                    textColor={isDark ? "#fff" : "#027DC1"}
+                    textColor={isDark ? "#fff" : "#350d05"}
                     size={level === 1 ? 12 : 10}
-                    font={LUSAIL_REGULAR}
+                    font={BALOO_SEMIBOLD}
                     title={node.title}
-                    style={{ fontWeight: "700" }}
                   />
                 </TouchableOpacity>
 

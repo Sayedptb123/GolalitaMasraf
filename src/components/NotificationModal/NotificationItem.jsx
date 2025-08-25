@@ -13,22 +13,23 @@ import { getMerchantDetails } from "../../redux/merchant/merchant-thunks";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
-import { navigationRef } from "../../Navigation/navigationHelpers";
+import { navigationRef } from "../../Navigation/RootNavigation";
 import { useTheme } from "../ThemeProvider";
+import { readNotification } from "../../redux/notifications/notifications-thunks";
 import HTMLRenderer from "../../components/HTMLRenderer";
-import { isRTL } from "../../../utils";
 
 const NotificationItem = ({ item }) => {
   const dispatch = useDispatch();
 
-  const { i18n, t } = useTranslation();
-  const language = i18n.language;
+  const { i18n,t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const { isDark } = useTheme();
 
+  const language = i18n.language;
   const handleItemPress = () => {
     if (item.merchant_id) {
       dispatch(getMerchantDetails(item.merchant_id, navigationRef, t, "Back"));
+      dispatch(readNotification(item.notification_id));
 
       return;
     }
@@ -46,16 +47,11 @@ const NotificationItem = ({ item }) => {
         </View>
       )}
       <TypographyText
-        title={
-          language === "ar" ? item?.merchant_name_arabic : item.merchant_name
-        }
+        title={language === "ar" ? item?.merchant_name_arabic : item?.merchant_name }
         textColor={isDark ? colors.mainDarkMode : colors.darkBlue}
         size={16}
         font={BALOO_MEDIUM}
-        style={[
-          styles.name,
-          { alignSelf: language === "ar" ? "flex-end" : "flex-start" },
-        ]}
+        style={[styles.name,{alignSelf:language === "ar" ? "flex-end" :"flex-start"}]}
       />
       <Image
         source={{ uri: item.offer_image }}
@@ -64,14 +60,8 @@ const NotificationItem = ({ item }) => {
         onLoadStart={() => setLoading(true)}
         onLoadEnd={() => setLoading(false)}
       />
-
-      <HTMLRenderer
-        value={
-          language === "ar"
-            ? item?.html_description_arabic || item?.html_description
-            : item?.html_description
-        }
-      />
+      <HTMLRenderer value={language === "ar" ? item?.html_description_arabic || item?.html_description : item?.html_description} />
+      
     </TouchableOpacity>
   );
 };
@@ -88,7 +78,7 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     marginBottom: 25,
     justifyContent: "center",
-    // alignItems: "center",
+   // alignItems: "center",
   },
   name: {
     marginBottom: 10,

@@ -4,32 +4,33 @@ import {
   SafeAreaView,
   StyleSheet,
   View,
-} from 'react-native';
-import { useTheme } from '../../../components/ThemeProvider';
-import { colors } from '../../../components/colors';
-import { TypographyText } from '../../../components/Typography';
-import { BALOO_REGULAR } from '../../../redux/types';
-import { TouchableOpacity } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
-import { TimeIconDark } from '../../../assets/delivery_assets/index';
-import { connect } from 'react-redux';
-import { useTranslation } from 'react-i18next';
-import { getVoucher } from '../../../redux/voucher/voucher-thunks';
-import VoucherTotal from '../components/VoucherTotal';
-import { getVoucherTotalValue } from './helpers';
-import InfoBlock from '../../../components/InfoBlock';
-import HTMLRenderer from '../../../components/HTMLRenderer';
-import ImageViwerModal from '../../../components/ImageViwer';
-import { Image } from 'react-native';
-import CommonButton from '../../../components/CommonButton/CommonButton';
-import VoucherInfoCard from '../components/VoucherInfoCard';
-import Header from '../../../components/Header';
+} from "react-native";
+import { useTheme } from "../../../components/ThemeProvider";
+import { colors } from "../../../components/colors";
+import CommonHeader from "../../../components/CommonHeader/CommonHeader";
+import { TypographyText } from "../../../components/Typography";
+import { BALOO_REGULAR } from "../../../redux/types";
+import { TouchableOpacity } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
+import { TimeIconDark } from "../../../assets/delivery_assets/index";
+import { connect } from "react-redux";
+import { useTranslation } from "react-i18next";
+import { getVoucher } from "../../../redux/voucher/voucher-thunks";
+import VoucherTotal from "../components/VoucherTotal";
+import { getVoucherTotalValue } from "./helpers";
+import InfoBlock from "../../../components/InfoBlock";
+import HTMLRenderer from "../../../components/HTMLRenderer";
+import ImageViwerModal from "../../../components/ImageViwer";
+import { Image } from "react-native";
+import CommonButton from "../../../components/CommonButton/CommonButton";
+import VoucherInfoCard from "../components/VoucherInfoCard";
+import Header from "../../../components/Header";
 
-const { width } = Dimensions.get('screen');
+const { width } = Dimensions.get("screen");
 
 const cardWidth = width - 32;
 
-const Voucher = props => {
+const Voucher = (props) => {
   const { isDark } = useTheme();
   const { t, i18n } = useTranslation();
   const { voucher } = props.route.params;
@@ -46,9 +47,11 @@ const Voucher = props => {
 
   const amount = voucher.voucher_amount;
   const terms =
-    language === 'ar'
-      ? voucher?.terms_condition_ar?.replace(/\n/g, '')
+    language === "ar"
+      ? voucher?.terms_condition_ar?.replace(/\n/g, "")
       : voucher?.terms_condition;
+
+  console.log(terms, "terms");
 
   return (
     <View
@@ -60,7 +63,7 @@ const Voucher = props => {
       ]}
     >
       <SafeAreaView style={styles.safeAreaWrapper}>
-        <Header label={t('Vouchers.vouchers')} />
+        <Header label={t("Vouchers.vouchers")} />
 
         <ScrollView
           showsVerticalScrollIndicator={false}
@@ -70,7 +73,7 @@ const Voucher = props => {
           <ImageViwerModal
             images={[{ url: `data:image/png;base64,${voucher.logo}` }]}
           >
-            {showImage => (
+            {(showImage) => (
               <TouchableOpacity
                 onPress={() => showImage(true)}
                 style={styles.imageWrapper}
@@ -87,7 +90,7 @@ const Voucher = props => {
           <VoucherInfoCard voucher={voucher} />
 
           {!!voucher.expiry_date && (
-            <InfoBlock title={t('Vouchers.availableTo')}>
+            <InfoBlock title={t("Vouchers.availableTo")}>
               <View style={styles.validityTime}>
                 <TimeIconDark
                   color={isDark ? colors.white : colors.mainDarkModeText}
@@ -107,7 +110,7 @@ const Voucher = props => {
           )}
 
           {!!terms && (
-            <InfoBlock title={t('Vouchers.terms')}>
+            <InfoBlock title={t("Vouchers.terms")}>
               <HTMLRenderer value={terms} />
             </InfoBlock>
           )}
@@ -124,7 +127,7 @@ const Voucher = props => {
           {voucher.x_phone && (
             <CommonButton
               onPress={handleCallPress}
-              label={t('Vouchers.call')}
+              label={t("Vouchers.call")}
               style={styles.callBtn}
             />
           )}
@@ -147,8 +150,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     paddingHorizontal: 20,
     paddingVertical: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     marginTop: 16,
   },
   scrollView: {
@@ -156,9 +159,9 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   validityTime: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-end",
   },
   total: {
     marginTop: 25,
@@ -170,20 +173,20 @@ const styles = StyleSheet.create({
     width: cardWidth,
     height: cardWidth - 130,
     borderRadius: 8,
-    overflow: 'hidden',
+    overflow: "hidden",
     backgroundColor: colors.lightGrey,
-    alignSelf: 'center',
+    alignSelf: "center",
   },
   name: {
     marginTop: 10,
-    alignSelf: 'center',
+    alignSelf: "center",
   },
   callBtn: {
     marginTop: 20,
   },
 });
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   voucher: state.voucherReducer.voucher,
   voucherLoading: state.voucherReducer.voucherLoading,
   voucherError: state.voucherReducer.voucherError,

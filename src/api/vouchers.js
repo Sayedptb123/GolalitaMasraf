@@ -1,10 +1,10 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import instance from '../redux/instance';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import instance from "../redux/instance";
 
 export const getVouchers = async () => {
-  const token = await AsyncStorage.getItem('token');
+  const token = await AsyncStorage.getItem("token");
 
-  const res = await instance.post('user/voucher/list', {
+  const res = await instance.post("user/voucher/list", {
     params: {
       token,
     },
@@ -17,10 +17,10 @@ export const getVouchers = async () => {
   return res.data.result;
 };
 
-export const getVoucherStatus = async code => {
-  const token = await AsyncStorage.getItem('token');
+export const getVoucherStatus = async (code) => {
+  const token = await AsyncStorage.getItem("token");
 
-  const res = await instance.post('user/voucher/payment_status', {
+  const res = await instance.post("user/voucher/payment_status", {
     params: {
       token,
       code,
@@ -35,9 +35,9 @@ export const getVoucherStatus = async code => {
 };
 
 export const getPurchasedVouchers = async () => {
-  const token = await AsyncStorage.getItem('token');
+  const token = await AsyncStorage.getItem("token");
 
-  const res = await instance.post('user/voucher/purchase/list', {
+  const res = await instance.post("user/voucher/purchase/list", {
     params: {
       token,
     },
@@ -51,9 +51,9 @@ export const getPurchasedVouchers = async () => {
 };
 
 export const getFavouriteVouchers = async () => {
-  const token = await AsyncStorage.getItem('token');
+  const token = await AsyncStorage.getItem("token");
 
-  const res = await instance.post('user/voucher/save/list', {
+  const res = await instance.post("user/voucher/save/list", {
     params: {
       token,
     },
@@ -66,27 +66,10 @@ export const getFavouriteVouchers = async () => {
   return res.data.result;
 };
 
-export const saveVoucher = async code => {
-  const token = await AsyncStorage.getItem('token');
+export const saveVoucher = async (code) => {
+  const token = await AsyncStorage.getItem("token");
 
-  const res = await instance.post('user/voucher/save', {
-    params: {
-      token,
-      code,
-    },
-  });
-
-  if (!res.data.result) {
-    throw new Error();
-  }
-
-  return res.data.result;
-};
-
-export const unsaveVoucher = async code => {
-  const token = await AsyncStorage.getItem('token');
-
-  const res = await instance.post('user/voucher/unsave', {
+  const res = await instance.post("user/voucher/save", {
     params: {
       token,
       code,
@@ -100,10 +83,10 @@ export const unsaveVoucher = async code => {
   return res.data.result;
 };
 
-export const getVoucher = async code => {
-  const token = await AsyncStorage.getItem('token');
+export const unsaveVoucher = async (code) => {
+  const token = await AsyncStorage.getItem("token");
 
-  const res = await instance.post('user/voucher/details', {
+  const res = await instance.post("user/voucher/unsave", {
     params: {
       token,
       code,
@@ -117,10 +100,27 @@ export const getVoucher = async code => {
   return res.data.result;
 };
 
-export const applyVoucher = async code => {
-  const token = await AsyncStorage.getItem('token');
+export const getVoucher = async (code) => {
+  const token = await AsyncStorage.getItem("token");
 
-  const res = await instance.post('user/voucher/apply', {
+  const res = await instance.post("user/voucher/details", {
+    params: {
+      token,
+      code,
+    },
+  });
+
+  if (!res.data.result) {
+    throw new Error();
+  }
+
+  return res.data.result;
+};
+
+export const applyVoucher = async (code) => {
+  const token = await AsyncStorage.getItem("token");
+
+  const res = await instance.post("user/voucher/apply", {
     params: {
       token,
       code,
@@ -135,9 +135,9 @@ export const applyVoucher = async code => {
 };
 
 export const purchaseVoucher = async (code, quantity, priceWithDiscount) => {
-  const token = await AsyncStorage.getItem('token');
+  const token = await AsyncStorage.getItem("token");
 
-  const res = await instance.post('user/voucher/purchase', {
+  const res = await instance.post("user/voucher/purchase", {
     params: {
       token,
       code,

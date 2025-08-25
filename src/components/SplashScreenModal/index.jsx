@@ -1,15 +1,7 @@
-import { useEffect } from 'react';
-import { StyleSheet, View, Modal, Image, Platform } from 'react-native';
-import BootSplash from 'react-native-bootsplash';
-import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../../styles/mainStyles';
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from "../../styles/mainStyles";
+import { StyleSheet, View, Modal, Image } from "react-native";
 
 const SplashScreenModal = ({ isVisible }) => {
-  useEffect(() => {
-    BootSplash.hide();
-  }, []);
-
-  const logo = require('../../assets/emtiaz.gif');
-
   return (
     <Modal
       animationType="none"
@@ -18,7 +10,7 @@ const SplashScreenModal = ({ isVisible }) => {
       style={styles.main}
     >
       <View style={styles.main}>
-        <Image source={logo} style={styles.image} resizeMode="stretch" />
+        <Image source={require("../../assets/sjc.gif")} style={styles.image} />
       </View>
     </Modal>
   );

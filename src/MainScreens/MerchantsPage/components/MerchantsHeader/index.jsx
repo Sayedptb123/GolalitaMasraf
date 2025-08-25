@@ -54,7 +54,7 @@ const MerchantListHeader = ({ style, isHome }) => {
       style={[
         styles.wrapper,
         {
-          backgroundColor: isDark ? "#444444" : "#FAFAFA",
+          backgroundColor: isDark ? colors.navyBlue : "#FAFAFA",
           flexDirection: isRTL() ? "row-reverse" : "row",
         },
         style,
@@ -71,7 +71,7 @@ const MerchantListHeader = ({ style, isHome }) => {
           value={search}
           onChangeText={handleTextChange}
           style={[styles.input, getTextAlign()]}
-          placeholderTextColor={"rgba(255,255,255,0.5)"}
+          placeholderTextColor={isDark ? "white" : "rgba(255,255,255,0.5)"}
           color={isDark ? colors.white : "#202226"}
           placeholder={t("Merchants.searchPlaceholder")}
         />
@@ -86,7 +86,6 @@ const MerchantListHeader = ({ style, isHome }) => {
 const styles = StyleSheet.create({
   wrapper: {
     height: 56,
-    width: "100%",
     borderRadius: 25,
     backgroundColor: "#444444",
     alignItems: "center",

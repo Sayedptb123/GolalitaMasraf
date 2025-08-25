@@ -1,5 +1,5 @@
 export const linking = {
-  prefixes: ["emtiazapp://"],
+  prefixes: ["golalita://"],
   config: {
     screens: {
       Home: {

@@ -13,7 +13,7 @@ const InfoBlock = ({ children, title }) => {
     borderColor: isDark ? "rgba(211,211,211,0.3)" : "rgba(211,211,211,0.3)",
   };
   const backgroundColor = {
-    backgroundColor: isDark ? colors.navyBlue : "#fff",
+    backgroundColor: isDark ? colors.darkBlue : "#fff",
   };
   const textColor = isDark ? colors.mainDarkMode : colors.darkBlue;
 
@@ -23,7 +23,7 @@ const InfoBlock = ({ children, title }) => {
         <View style={[styles.infoItemTitle, backgroundColor, borderColor]}>
           <TypographyText
             textColor={textColor}
-            size={15}
+            size={18}
             font={BALOO_SEMIBOLD}
             style={styles.textStyle}
             title={title}
@@ -46,22 +46,22 @@ const styles = StyleSheet.create({
   infoItem: {
     width: "100%",
     marginTop: 40,
-   // borderWidth: 1.5,
+    // borderWidth: 1.5,
     //borderRadius: 10,
     //padding: 12,
     //position: "relative",
-  //  paddingTop: 30,
+    //  paddingTop: 30,
   },
   infoItemTitleWrapper: {
-   // padding: 6,
-   // position: "absolute",
-   // top: -30,
+    // padding: 6,
+    // position: "absolute",
+    // top: -30,
     width: "100%",
-   // justifyContent: "center",
+    // justifyContent: "center",
     //alignItems: "center",
   },
   infoItemTitle: {
-   // borderWidth: 1.5,
+    // borderWidth: 1.5,
     //borderRadius: 10,
     //padding: 8,
   },

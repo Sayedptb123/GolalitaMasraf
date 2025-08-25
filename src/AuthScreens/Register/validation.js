@@ -5,7 +5,7 @@ import i18next from "i18next";
 export const getValidationSchema = () => {
   return Yup.object({
     name: Yup.string().required(i18next.t("Login.required")),
-    x_moi_last_name: Yup.string().required(i18next.t("Login.required")),
+    last_name: Yup.string().required(i18next.t("Login.required")),
     email: Yup.string()
       .email(i18next.t("Login.invalidEmail"))
       .required(i18next.t("Login.required")),

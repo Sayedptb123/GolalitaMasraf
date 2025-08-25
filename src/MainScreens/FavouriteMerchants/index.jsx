@@ -19,8 +19,7 @@ import {
   saveOffer,
   toggleFavourites,
 } from "../../redux/merchant/merchant-thunks";
-import { isRTL } from "../../../utils";
-
+import { handleOfferCardPress } from "../AllOffers/helpres";
 const FavouriteMerchants = ({
   favouriteMerchants,
   loading,
@@ -54,15 +53,6 @@ const FavouriteMerchants = ({
     setSelectedPage(e.nativeEvent.position.toString());
   };
 
-  const handleCardPress = (item) => {
-    navigation.navigate("AllOffers", {
-      screen: "offer-info",
-      params: {
-        productId: item.id,
-        title: isRTL() ? item.x_arabic_name : item.name,
-      },
-    });
-  };
 
   const handleFavouritePress = (item) => {
     saveOffer(item.id, t);
@@ -88,14 +78,15 @@ const FavouriteMerchants = ({
       <CardWithNesetedItems
         parentProps={{
           isSaved: true,
-          onPress: () => handleCardPress(item),
+          onPress: () => handleOfferCardPress(item),
           onPressFavourite: () => handleFavouritePress(item),
           uri: item.merchant_logo,
-          name: i18n.language === "ar" ? item.x_arabic_name : item?.name,
-          description:
+          name:
             i18n.language === "ar"
-              ? item.x_label_arabic || item.offer_label
-              : item.offer_label,
+              ? item.x_arabic_name || item?.name
+              : item?.name,
+          description:
+            i18n.language === "ar" ? item.x_label_arabic : item.offer_label,
           isSaved: true,
         }}
       ></CardWithNesetedItems>
@@ -106,7 +97,7 @@ const FavouriteMerchants = ({
 
   const HEADER_ITEMS = [
     {
-      name: t("Favorites.merchants"),
+      name: t("Merchants.merchants"),
       key: "0",
     },
     {

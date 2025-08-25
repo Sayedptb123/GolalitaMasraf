@@ -39,8 +39,9 @@ const LogOutBtn = () => {
 const styles = StyleSheet.create({
   wrapper: {
     alignItems: "center",
-    justifyContent: "center",
-    // marginTop: 40,
+    justifyContent: "flex-end",
+    marginTop: 20,
+    marginHorizontal: 6,
   },
   text: {
     marginRight: 8,

@@ -1,38 +1,34 @@
 import { Animated, View } from "react-native";
 import CompassSvg from "../../assets/compass.svg";
-import { useTheme } from "../ThemeProvider";
 import { useEffect } from "react";
-import { colors } from "../colors";
+import { sized } from "../../Svg";
 
 const animation = new Animated.Value(0);
-
-const Icon = () => {
-  const { isDark } = useTheme();
-
-  const backgroundColor = isDark ? colors.mainDarkMode : colors.darkBlue;
-  const iconColor = isDark ? colors.darkBlue :colors.white;
+const Icon = ({ color }) => {
+  const CompassSvgIcon = sized(CompassSvg, 24, 24);
 
   return (
     <View
       style={{
-        width: 25,
+        width: 20,
         justifyContent: "center",
         alignItems: "center",
       }}
     >
       <View
         style={{
-          backgroundColor: backgroundColor,
-          borderRadius: 22,
+          borderColor: color,
+          borderWidth: 1.5,
+          borderRadius: 24,
         }}
       >
-        <CompassSvg color={iconColor} />
+        <CompassSvgIcon color={color} />
       </View>
     </View>
   );
 };
 
-const AnimatedIcon = ({ animated = true }) => {
+const AnimatedIcon = ({ animated = true, color }) => {
   const rotation = animation.interpolate({
     inputRange: [0, 1],
     outputRange: ["-90deg", "270deg"],
@@ -52,7 +48,7 @@ const AnimatedIcon = ({ animated = true }) => {
 
   return (
     <Animated.View style={{ transform: [{ rotate: rotation }] }}>
-      <Icon />
+      <Icon color={color} />
     </Animated.View>
   );
 };

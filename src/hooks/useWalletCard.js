@@ -11,8 +11,10 @@ const useWalletCard = () => {
   const addCard = async (base64EncodedPass) => {
     const result = await WalletPasses.addPass(
       base64EncodedPass,
-      "com.emtiazapp.fileprovider"
+      "com.golalitamasraf.fileprovider"
     );
+
+    console.log(result, "result");
 
     return result;
   };
@@ -45,27 +47,19 @@ const useWalletCard = () => {
   const navigateToHuaweiAppGallery = async () => {
     const playMarketAppUrl =
       "https://appgallery.cloud.huawei.com/ag/n/app/C102754379?locale=en_GB&source=appshare&subsource=C102754379&shareTo=com.android.bluetooth&shareFrom=appmarket&shareIds=7206081f16e242c783d37bada6e588af_com.android.bluetooth&callType=SHARE";
-
     const canOpenPlayMarketApp = await Linking.canOpenURL(playMarketAppUrl);
-
     if (canOpenPlayMarketApp) {
       await Linking.openURL(playMarketAppUrl);
-
       return;
     }
-
     const playMarketUrl =
       "https://appgallery.cloud.huawei.com/ag/n/app/C102754379?locale=en_GB&source=appshare&subsource=C102754379&shareTo=com.android.bluetooth&shareFrom=appmarket&shareIds=7206081f16e242c783d37bada6e588af_com.android.bluetooth&callType=SHARE";
     // "https://play.google.com/store/apps/details?id=io.walletpasses.android";
-
     const canOpenPlayMarketURL = await Linking.canOpenURL(playMarketUrl);
-
     if (canOpenPlayMarketURL) {
       await Linking.openURL(playMarketUrl);
-
       return;
     }
-
     throw "err";
   };
 
@@ -115,8 +109,6 @@ const useWalletCard = () => {
     }
 
     const base64pkpass = await getBase64PkpassFile(data);
-
-    console.log(base64pkpass, "base");
 
     const res = await addCard(base64pkpass);
 

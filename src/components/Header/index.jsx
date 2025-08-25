@@ -9,8 +9,6 @@ import BackBtn from "./components/BackBtn";
 import FilterBtn from "./components/FilterBtn";
 import { isRTL } from "../../../utils";
 
-import { sized } from "../../Svg";
-import SettingsSvg from "../../assets/settings.svg";
 const Header = ({
   btns = ["back", "notifications"],
   label,
@@ -19,8 +17,6 @@ const Header = ({
 }) => {
   const { isDark } = useTheme();
 
-  const iconColor = isDark ? colors.white : colors.black;
-  const SettingsIcon = sized(SettingsSvg, 20, 20, iconColor);
   return (
     <View style={[styles.wrapper, style]}>
       <View style={styles.leftBtns}>
@@ -33,7 +29,6 @@ const Header = ({
           size={18}
           font={LUSAIL_REGULAR}
           title={label}
-          numberOfLines={1}
         />
       </View>
       <View style={styles.rightBtns}>
@@ -42,9 +37,6 @@ const Header = ({
         )}
         {btns.includes("notifications") && (
           <NotificationsBtn {...additionalBtnsProps?.notifications} />
-        )}
-        {btns.includes("settings") && (
-          <SettingsIcon {...additionalBtnsProps?.settings} />
         )}
       </View>
     </View>

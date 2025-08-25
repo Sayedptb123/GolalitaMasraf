@@ -4,13 +4,12 @@ import { mainStyles } from "../../styles/mainStyles";
 import BackSvg from "../../assets/back.svg";
 import { sized } from "../../Svg";
 import { colors } from "../colors";
-import { LUSAIL_REGULAR } from "../../redux/types";
+import { BALOO_SEMIBOLD } from "../../redux/types";
 import { TypographyText } from "../Typography";
 import { useNavigation } from "@react-navigation/native";
 import SearchSvg from "../../assets/search.svg";
 import SmallBackSvg from "../../assets/small-back.svg";
 import BackWhiteSvg from "../../assets/back_white.svg";
-import ScanSvg from "../../assets/scan.svg";
 import styles from "./styles";
 import { connect } from "react-redux";
 import { useTranslation } from "react-i18next";
@@ -21,17 +20,14 @@ import { useTheme } from "../ThemeProvider";
 
 const SmallBackIcon = sized(SmallBackSvg, 7, 14);
 
+const NotificationIcon = sized(NotificationSvg, 17, 20, "#fff");
 const NotificationActiveIcon = sized(NotificationActiveSvg, 17, 20);
 
 const CommonHeader = ({
   isSearch,
   label,
   isWhite,
-  isScan,
-  onScanPress,
-  companyIcon,
   messageNotifications,
-  user,
   search,
   setSearch,
   onBackPress,
@@ -43,16 +39,9 @@ const CommonHeader = ({
   const { isDark } = useTheme();
   const navigation = useNavigation();
   const [isSearched, setIsSearched] = useState(false);
-  const iconColor = isDark ? colors.white : colors.darkBlue;
+  const iconColor = isDark ? "#fff" : "#312B3E";
   const BackIcon = sized(BackSvg, 13, 24, iconColor);
   const BackWhiteIcon = sized(BackWhiteSvg, 13, 24, iconColor);
-
-  const NotificationIcon = sized(
-    NotificationSvg,
-    17,
-    20,
-    isDark ? "white" : "#202020"
-  );
 
   const SearchIcon = sized(
     SearchSvg,
@@ -60,8 +49,6 @@ const CommonHeader = ({
     14,
     isDark ? colors.white : "#999CAD"
   );
-
-  const ScanIcon = sized(ScanSvg, 30, 26, iconColor);
 
   return (
     <View
@@ -97,7 +84,12 @@ const CommonHeader = ({
       >
         {isSearch ? (
           <>
-            <View style={[styles.searchWrapper]}>
+            <View
+              style={[
+                styles.searchWrapper,
+                { borderColor: isDark ? "white" : "#999CAD" },
+              ]}
+            >
               <TouchableOpacity
                 style={styles.searchIcon}
                 onPress={() => {
@@ -117,12 +109,10 @@ const CommonHeader = ({
                   setIsSearched(true);
                   if (onSubmitEditing) onSubmitEditing();
                 }}
-                placeholderTextColor={
-                  isDark ? colors.mainDarkMode : colors.grey
-                }
+                placeholderTextColor={colors.darkBlue}
                 style={[
                   styles.input,
-                  { color: isDark ? colors.mainDarkMode : colors.grey },
+                  { color: isDark ? "white" : colors.mainDarkModeText },
                 ]}
               />
             </View>
@@ -131,11 +121,10 @@ const CommonHeader = ({
           <TypographyText
             textColor={isDark ? colors.white : colors.darkBlue}
             size={18}
-            font={LUSAIL_REGULAR}
+            font={BALOO_SEMIBOLD}
             title={label}
             numberOfLines={1}
-            style={{ flex: 1, marginRight: 15, fontWeight: "700"
-            ,textAlign:'center' }}
+            style={{ flex: 1, marginRight: 15 }}
           />
         )}
       </View>
@@ -147,12 +136,6 @@ const CommonHeader = ({
           marginRight: isRTL() ? 15 : 0,
         }}
       >
-        {isScan && (
-          <TouchableOpacity onPress={onScanPress}>
-            <ScanIcon />
-          </TouchableOpacity>
-        )}
-
         {isNotifications && (
           <TouchableOpacity
             style={styles.TabView__item}
@@ -169,12 +152,12 @@ const CommonHeader = ({
                   <TypographyText
                     textColor={colors.white}
                     size={9}
-                    font={LUSAIL_REGULAR}
+                    font={BALOO_SEMIBOLD}
                     title={
                       messageNotifications?.filter((m) => m.state === "unread")
                         ?.length
                     }
-                    style={{ width: 5, height: 14, fontWeight: "700" }}
+                    style={{ width: 5, height: 14 }}
                     numberOfLines={1}
                   />
                 </View>

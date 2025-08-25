@@ -21,7 +21,7 @@ const MyLocationBtn = ({ moveMapToPosition }) => {
     try {
       setLoading(true);
       const data = await requestLocation();
-
+console.log("MyLocationBtnMyLocationBtn data:",data)
       const lalitude = data.location.latitude;
       const longitude = data.location.longitude;
 

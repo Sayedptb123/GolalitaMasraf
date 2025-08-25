@@ -72,7 +72,6 @@ const BottomSheetComponent = (props) => {
   const handlePresentModalclose = useCallback(() => {
     bottomSheetModalRef.current?.close();
   }, []);
-
   const handleSheetChanges = useCallback((index) => {
     if (!index) {
       handlePresentModalclose();
@@ -128,7 +127,7 @@ const BottomSheetComponent = (props) => {
       return (
         <TypographyText
           textColor={isDark ? "#fff" : colors.mainDarkModeText}
-          size={15}
+          size={14}
           font={BALOO_REGULAR}
           title={options
             .filter((option) => {
@@ -151,8 +150,8 @@ const BottomSheetComponent = (props) => {
     if (active) {
       return (
         <TypographyText
-          textColor={isDark ? "#fff" : colors.mainDarkModeText}
-          size={15}
+          textColor={isDark ? "#fff" : colors.darkBlue}
+          size={14}
           font={BALOO_REGULAR}
           title={active.label}
           numberOfLines={1}
@@ -163,8 +162,8 @@ const BottomSheetComponent = (props) => {
 
     return (
       <TypographyText
-        textColor={isDark ? "#fff" : "#999CAD"}
-        size={15}
+        textColor={isDark ? "#fff" : colors.darkBlue}
+        size={14}
         font={BALOO_REGULAR}
         title={placeholder}
         numberOfLines={1}
@@ -240,7 +239,7 @@ const BottomSheetComponent = (props) => {
 
         const active = single
           ? option.value === value
-          : value.includes(option.value);
+          : value?.includes(option.value);
 
         return (
           <View
@@ -318,10 +317,8 @@ const BottomSheetComponent = (props) => {
     </View>
   );
 
-  const showArrowIcon = Boolean((!value?.length && !value) || !allowClear);
-  const showClearIcon = Boolean(
-    (allowClear && value?.length) || (allowClear && !!value)
-  );
+  const showArrowIcon = Boolean(!value?.length || !allowClear);
+  const showClearIcon = Boolean(allowClear && value?.length);
 
   return (
     <>
@@ -428,12 +425,7 @@ const BottomSheetComponent = (props) => {
                   size={20}
                   font={BALOO_MEDIUM}
                 />
-                <TouchableOpacity
-                  onPress={() => {
-                    handleClosePress();
-                    handlePresentModalclose();
-                  }}
-                >
+                <TouchableOpacity onPress={() => handlePresentModalclose()}>
                   <TypographyText
                     title={"X"}
                     textColor={isDark ? colors.white : colors.darkBlue}
@@ -464,11 +456,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "transparent",
+    marginBottom: 8,
     borderWidth: 1.5,
-    borderRadius: 12,
+    borderRadius: 4,
     borderColor: "#999CAD",
-    paddingVertical: 12.6,
-    paddingHorizontal: 14,
+    height: 36,
   },
   empty: {
     height: 200,
@@ -521,6 +513,7 @@ const styles = StyleSheet.create({
   iconWrap: {
     alignItems: "center",
     justifyContent: "center",
+    marginHorizontal: 10,
     height: 20,
     width: 20,
   },

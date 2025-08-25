@@ -1,4 +1,5 @@
 export const transformDate = (dateStr) => {
+  console.log("transformDate:",dateStr)
   if (!dateStr) {
     return "";
   }

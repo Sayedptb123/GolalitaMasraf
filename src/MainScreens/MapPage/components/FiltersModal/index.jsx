@@ -1,44 +1,42 @@
+import React, { useMemo, useRef, useCallback } from "react";
+import { TouchableOpacity, StyleSheet, View } from "react-native";
 import {
   BottomSheetModal,
   BottomSheetModalProvider,
-  BottomSheetView,
-} from '@gorhom/bottom-sheet';
-import Portal from '../../../../components/Portal';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import { useTheme } from '../../../../components/ThemeProvider';
-import { useMemo, useRef } from 'react';
-import { colors } from '../../../../components/colors';
-import FiltersBtn from '../FiltersBtn';
-import FiltersForm from '../FiltersForm';
-import CloseSvg from '../../../../assets/close.svg';
-import { sized } from '../../../../Svg';
+} from "@gorhom/bottom-sheet";
+import Portal from "../../../../components/Portal";
+import { useTheme } from "../../../../components/ThemeProvider";
+import { colors } from "../../../../components/colors";
+import FiltersBtn from "../FiltersBtn";
+import FiltersForm from "../FiltersForm";
+import { isRTL } from "../../../../../utils";
+import { TypographyText } from "../../../../components/Typography";
+import { BALOO_MEDIUM } from "../../../../redux/types";
 
 const FiltersModal = ({ onGetFilters, filters }) => {
   const { isDark } = useTheme();
   const bottomSheetModalRef = useRef(null);
-  const snapPoints = useMemo(() => ['1%', '65%'], []);
-  const name = 'map-filters';
-  const CloseIcon = sized(CloseSvg, 16, 16, isDark ? '#fff' : '#312B3E');
+  const snapPoints = useMemo(() => ["1%", "65%"], []);
+  const name = "map-filters";
 
   const handleFilterBtnPress = () => {
     bottomSheetModalRef.current?.present();
   };
 
-  const handleClosePress = () => {
-    bottomSheetModalRef.current?.close();
-  };
-
-  const handleSheetChanges = index => {
+  const handleSheetChanges = (index) => {
     if (!index) {
       bottomSheetModalRef.current?.close();
     }
   };
 
-  const handleSubmit = filters => {
+  const handleSubmit = (filters) => {
     bottomSheetModalRef.current?.close();
     onGetFilters(filters);
   };
 
+  const handlePresentModalclose = useCallback(() => {
+    bottomSheetModalRef.current?.close();
+  }, []);
   return (
     <>
       <FiltersBtn onPress={handleFilterBtnPress} />
@@ -57,16 +55,27 @@ const FiltersModal = ({ onGetFilters, filters }) => {
               }}
               topInset={250}
             >
-              <BottomSheetView>
-                <View style={{ flex: 1 }}>
-                  <View style={styles.closeIconWrapper}>
-                    <TouchableOpacity onPress={handleClosePress}>
-                      <CloseIcon />
-                    </TouchableOpacity>
-                  </View>
-                  <FiltersForm onSubmit={handleSubmit} filters={filters} />
-                </View>
-              </BottomSheetView>
+              <View
+                style={{
+                  width: "100%",
+                  alignItems: isRTL() ? "flex-start" : "flex-end",
+                }}
+              >
+                <TouchableOpacity
+                  onPress={() => handlePresentModalclose()}
+                  style={{
+                    paddingHorizontal: 25,
+                  }}
+                >
+                  <TypographyText
+                    title={"X"}
+                    textColor={isDark ? colors.white : colors.darkBlue}
+                    size={21}
+                    font={BALOO_MEDIUM}
+                  />
+                </TouchableOpacity>
+              </View>
+              <FiltersForm onSubmit={handleSubmit} filters={filters} />
             </BottomSheetModal>
           </View>
         </BottomSheetModalProvider>
@@ -77,13 +86,6 @@ const FiltersModal = ({ onGetFilters, filters }) => {
 
 const styles = StyleSheet.create({
   container: {},
-  closeIconWrapper: {
-    height: 20,
-    width: '100%',
-    alignItems: 'flex-end',
-    justifyContent: 'center',
-    paddingRight: 32,
-  },
 });
 
 export default FiltersModal;

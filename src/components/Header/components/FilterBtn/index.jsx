@@ -4,13 +4,14 @@ import { useTheme } from "../../../ThemeProvider";
 import { colors } from "../../../colors";
 import { useNavigation } from "@react-navigation/native";
 
-const FilterBtn = () => {
+const FilterBtn = (props) => {
   const { isDark } = useTheme();
   const navigation = useNavigation();
 
   const handlePress = () => {
     navigation.navigate("merchants", {
       screen: "merchants-filters",
+      params: props.params,
     });
   };
 

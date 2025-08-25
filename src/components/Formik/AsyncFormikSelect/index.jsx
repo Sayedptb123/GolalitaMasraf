@@ -10,14 +10,18 @@ const AsyncFormikSelect = (props) => {
     getOptions,
     single,
     queryName,
+    criteria,
+    onChange,
   } = props;
+
+  console.log(criteria, "criteria");
 
   const {
     isLoading,
     isError,
     data = [],
     error,
-  } = useQuery([queryName], () => getOptions());
+  } = useQuery([queryName, criteria], () => getOptions());
 
   return (
     <FormikSelect
@@ -29,6 +33,7 @@ const AsyncFormikSelect = (props) => {
       defaultValue={defaultValue}
       loading={isLoading}
       single={single}
+      onChange={onChange}
     />
   );
 };

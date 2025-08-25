@@ -1,5 +1,5 @@
 import { Image, View, StyleSheet } from "react-native";
-import { LUSAIL_REGULAR } from "../../redux/types";
+import { BALOO_BOLD } from "../../redux/types";
 import { TypographyText } from "../Typography";
 import HeartSvg from "../../assets/heart.svg";
 import { sized } from "../../Svg";
@@ -27,8 +27,8 @@ const OfferCard = (props) => {
         styles.wrapper,
         style,
         {
-          backgroundColor: isDark ? "#072536" : "transparent",
-          borderColor: isDark ? "#072536" : "#fff",
+          backgroundColor: isDark ? "#350d05" : "transparent",
+          borderColor: isDark ? "#350d05" : "#fff",
         },
       ]}
       onPress={onPress}
@@ -49,22 +49,21 @@ const OfferCard = (props) => {
           ]}
         >
           <TypographyText
-            textColor={isDark ? "#fff" : "#08003B"}
+            textColor={isDark ? "#fff" : "#b49056"}
             size={14}
-            font={LUSAIL_REGULAR}
+            font={BALOO_BOLD}
             title={name}
             numberOfLines={2}
-            style={{ fontWeight: "900" }}
           />
 
           {!!price && (
             <TypographyText
               textColor={"#E32251"}
               size={14}
-              font={LUSAIL_REGULAR}
+              font={BALOO_BOLD}
               title={price}
               numberOfLines={1}
-              style={{ marginTop: 3, fontWeight: "900" }}
+              style={{ marginTop: 3 }}
             />
           )}
         </View>
@@ -73,10 +72,10 @@ const OfferCard = (props) => {
           <TypographyText
             textColor={"#E32251"}
             size={14}
-            font={LUSAIL_REGULAR}
+            font={BALOO_BOLD}
             title={descriptionSale}
             numberOfLines={1}
-            style={{ marginTop: 3, fontWeight: "900" }}
+            style={{ marginTop: 3 }}
           />
         )}
 
@@ -84,10 +83,10 @@ const OfferCard = (props) => {
           <TypographyText
             textColor={"#E32251"}
             size={14}
-            font={LUSAIL_REGULAR}
+            font={BALOO_BOLD}
             title={workTime}
             numberOfLines={1}
-            style={{ marginTop: 3, fontWeight: "900" }}
+            style={{ marginTop: 3 }}
           />
         )}
       </View>

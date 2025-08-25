@@ -1,7 +1,7 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet,Image } from "react-native";
 import MainLayout from "../../../components/MainLayout";
 import Header from "../../../components/Header";
-import { SCREEN_HEIGHT } from "../../../styles/mainStyles";
+import { SCREEN_HEIGHT ,mainStyles} from "../../../styles/mainStyles";
 import { useRoute } from "@react-navigation/native";
 import { View } from "react-native";
 import { useEffect, useState } from "react";
@@ -26,7 +26,6 @@ const getDateString = (date) => {
     .toString()
     .padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}`;
 };
-
 const ApplyCodeConfirmation = ({ navigation }) => {
   const route = useRoute();
   const { t } = useTranslation();
@@ -37,6 +36,10 @@ const ApplyCodeConfirmation = ({ navigation }) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
 
+
+  const logo = isDark
+  ? require("../../../assets/horizontal_logo_white.png")
+  : require("../../../assets/horizontal_logo.png");
   const getData = async () => {
     try {
       setLoading(true);
@@ -86,21 +89,25 @@ const ApplyCodeConfirmation = ({ navigation }) => {
       setLoading(true);
 
       const res = await sendRedemptionEmail(data);
-
-      if (res?.status !== "success") {
-        throw "err";
+      if (res?.status == "success") {
+        showMessage({
+          type: "success",
+          message: t("General.success"),
+        });
+        setTimeout(() => {
+          navigation.navigate("Main");
+        }, 2000);
+      }
+      else{
+        showMessage({
+          message: t("General.error"),
+          type: "danger",
+        });
       }
 
-      showMessage({
-        type: "success",
-        message: t("General.success"),
-      });
-
-      setTimeout(() => {
-        navigation.navigate("Main");
-      }, 3000);
+      
     } catch (err) {
-      console.log(err, "sendRedemptionEmail error");
+      console.log(err, "err");
       showMessage({
         message: t("General.error"),
         type: "danger",
@@ -128,10 +135,18 @@ const ApplyCodeConfirmation = ({ navigation }) => {
       )}
       {!loading && (
         <View style={styles.wrapper}>
-          <LogoSvg
+          {/* <LogoSvg
             color={isDark ? colors.mainDarkMode : colors.darkBlue}
             style={styles.logo}
-          />
+          /> */}
+          <View
+                      style={[
+                        mainStyles.centeredRow,
+                        { flexDirection: "column" },
+                      ]}
+                    >
+                      <Image source={logo} style={styles.main_logo} />
+                    </View>
           <TypographyText
             title={data.merchant_name}
             textColor={isDark ? colors.mainDarkMode : colors.darkBlue}
@@ -211,6 +226,12 @@ const styles = StyleSheet.create({
   },
   confirmationText: {
     marginTop: 40,
+  },
+  main_logo: {
+    width: 250,
+    height: 150,
+    // borderRadius: 50,
+    resizeMode: "contain",
   },
 });
 

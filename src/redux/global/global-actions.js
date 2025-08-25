@@ -1,7 +1,13 @@
-import { GLOBAL_SET_USER_LOCATION } from './global-types';
+import { SET_LOCATIONS } from "../locations/locations-types";
+import { SET_COUNTRIES, SET_LOCATIONSFORFILTERS } from "./global-types";
 
-export const setUserLocation = (coordiates, status) => ({
-  type: GLOBAL_SET_USER_LOCATION,
-  coordiates,
-  status,
+export const setCountries = (countries) => ({
+  type: SET_COUNTRIES,
+  countries,
+});
+
+
+export const setLocations = (locations) => ({
+  type: SET_LOCATIONSFORFILTERS,
+  locations,
 });

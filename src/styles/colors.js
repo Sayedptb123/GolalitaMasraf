@@ -18,7 +18,7 @@ export const getActiveTextColor = () => (isDarkMode1 ? "white" : "black");
 export const getUnActiveTextColor = () => "grey";
 
 export const getDeliveryInformationColor = () =>
-  isDarkMode1 ? "white" : "#072536";
+  isDarkMode1 ? "white" : "#312B3E";
 
 export const getDeliveryInformationTextColor = () =>
   isDarkMode1 ? "white" : "#08003B";

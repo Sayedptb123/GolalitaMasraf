@@ -1,4 +1,10 @@
-import { ActivityIndicator, FlatList, StyleSheet, View } from "react-native";
+import {
+  ActivityIndicator,
+  Dimensions,
+  FlatList,
+  StyleSheet,
+  View,
+} from "react-native";
 import { TypographyText } from "../Typography";
 import PremiumSvg from "../../assets/premium.svg";
 import { SCREEN_HEIGHT, mainStyles } from "../../styles/mainStyles";
@@ -8,17 +14,25 @@ import { sized } from "../../Svg";
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { isRTL } from "../../../utils";
-import { getLocalClients } from "../../api/merchants";
+import {
+  getLocalClients,
+  getMerchantDisscountForOffers,
+} from "../../api/merchants";
 import CardWithNesetedItems from "../../components/CardWithNestedItems";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleFavourites } from "../../redux/merchant/merchant-thunks";
-import { getMerchantDisscountForOffers } from "../../api/merchants";
+import { getToggleBtns } from "../../MainScreens/MerchantsPage/components/MerchantList/helpers";
+import OfferItem from "../../MainScreens/MerchantsPage/components/OfferItem";
+import BranchItem from "../../MainScreens/MerchantsPage/components/BranchItem";
+import ListNoData from "../ListNoData";
+import FullScreenLoader from "../Loaders/FullScreenLoader";
+import { HEADER_HEIGHT } from "../../constants";
 
 const IMAGE_SIZE = 120;
 const PremiumIcon = sized(PremiumSvg, 24, 24, "white");
 
 const NewMerchants = (props) => {
-  const { title, onPress, isDark, style } = props;
+  const { title, onPress, isDark } = props;
   const { i18n } = useTranslation();
   const dispatch = useDispatch();
   const { favouriteMerchants } = useSelector(
@@ -32,18 +46,20 @@ const NewMerchants = (props) => {
 
   useEffect(() => {
     getLocalClients()
-    .then(async (i) => {
-      const updatedClients = await Promise.all(
-        i.map(async (client) => {
-          const discountData = await getMerchantDisscountForOffers(client.merchant_id);
-          return { ...client, ...discountData };
-        })
-      );
-      setData(updatedClients);
-    })
-    .catch((error) => {
-      console.error("Error fetching or updating client data:", error);
-    })
+      .then(async (i) => {
+        const updatedClients = await Promise.all(
+          i.map(async (client) => {
+            const discountData = await getMerchantDisscountForOffers(
+              client.merchant_id
+            );
+            return { ...client, ...discountData };
+          })
+        );
+        setData(updatedClients);
+      })
+      .catch((error) => {
+        console.error("Error fetching or updating client data:", error);
+      })
       .finally(() => setLoading(false));
   }, []);
 
@@ -52,28 +68,43 @@ const NewMerchants = (props) => {
       const isSaved = favouriteMerchants.some(
         (o) => o.merchant_id === item.merchant_id
       );
+      delete item.banners;
+
+      const isOrganization = item.org_name;
+      const isBusinessHotel = item.is_business_hotel;
+
+      const toggleBtns = getToggleBtns(item);
+      const isOffersVisible = !isOrganization;
+      const isBranchesVisible = !isOrganization && !isBusinessHotel;
 
       return (
         <CardWithNesetedItems
+          toggleBtns={toggleBtns}
           onPress={() => onPress(item.merchant_id)}
           parentProps={{
             onPress: () => onPress(item.merchant_id),
             uri: item.merchant_logo,
             name: language === "ar" ? item?.x_arabic_name : item.merchant_name,
+            description:
+              language === "ar" ? item.x_ribbon_text_arabic : item.ribbon_text,
             new: true,
-            description: language === "ar" ? item.x_ribbon_text_arabic : item.ribbon_text,
             onPressFavourite: () =>
               dispatch(toggleFavourites(item.merchant_id)),
             isSaved,
           }}
-        ></CardWithNesetedItems>
+        >
+          {isOffersVisible && <OfferItem merchant={item} type={"offers"} />}
+          {isBranchesVisible && (
+            <BranchItem merchantId={item.merchant_id} type={"branches"} />
+          )}
+        </CardWithNesetedItems>
       );
     },
     [title, isDark, i18n.language, favouriteMerchants?.length]
   );
 
   return (
-    <View style={style}>
+    <View>
       {!!title && (
         <View
           style={[
@@ -95,30 +126,14 @@ const NewMerchants = (props) => {
 
       <FlatList
         data={data}
-        windowSize={SCREEN_HEIGHT * 2}
         showsVerticalScrollIndicator={false}
         renderItem={renderLocalClient}
-        keyExtractor={(item) => `${item.id}`}
+        keyExtractor={(item) => `${item.merchant_id}`}
         contentContainerStyle={styles.contentContainerStyle}
-        ListEmptyComponent={
-          <View style={styles.listEmptyLoader}>
-            <ActivityIndicator
-              size={"large"}
-              color={isDark ? colors.mainDarkMode : colors.darkBlue}
-            />
-          </View>
+        ListFooterComponent={() =>
+          loading && <FullScreenLoader style={styles.loader} />
         }
-        ListFooterComponent={
-          loading &&
-          data?.length && (
-            <View style={styles.loader}>
-              <ActivityIndicator
-                size={"large"}
-                color={isDark ? colors.mainDarkMode : colors.darkBlue}
-              />
-            </View>
-          )
-        }
+        ListEmptyComponent={!loading && <ListNoData style={styles.loader} />}
       />
     </View>
   );
@@ -163,8 +178,8 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
   contentContainerStyle: {
-    paddingLeft: 5,
     flexGrow: 1,
+    paddingBottom: 160,
   },
   listEmptyLoader: {
     paddingVertical: 50,
@@ -172,7 +187,9 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   loader: {
-    paddingVertical: 50,
+    width: "100%",
+    height: Dimensions.get("window").height,
+    top: -HEADER_HEIGHT,
   },
 });
 

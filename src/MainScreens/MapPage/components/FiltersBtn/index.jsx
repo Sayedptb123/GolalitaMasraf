@@ -20,7 +20,7 @@ const FiltersBtn = ({ onPress }) => {
         <TypographyText
           textColor={"#686868"}
           size={10}
-          title={t("MapPage.filters")}
+          title={t("MapPage.filters2")} 
           style={styles.text}
         />
       </View>
