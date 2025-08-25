@@ -11,7 +11,7 @@ import {
 import { useTranslation } from "react-i18next";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { APP_DISABLED } from "./src/redux/auth/auth-types";
-import { Root } from "./src/Navigation/Root";
+import { Root } from "./src/Navigation";
 import UpdateModal from "./src/components/UpdateModal";
 import FlashMessage from "react-native-flash-message";
 import { colors } from "./src/components/colors";
