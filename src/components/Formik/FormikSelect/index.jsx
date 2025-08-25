@@ -4,18 +4,12 @@ import Select from "../../Form/Select";
 import { View } from "react-native";
 
 const FormikSelect = (props) => {
-  const {
-    name,
-    wrapperStyle,
-    onChange: onSelectChange,
-    single,
-    ...restProps
-  } = props;
+  const { name, wrapperStyle, onChange, single, ...restProps } = props;
 
   return (
     <View style={wrapperStyle}>
       <Field name={name}>
-        {({ field: { value }, form: { setFieldValue, errors } }) => {
+        {({ field: { value }, form: { setFieldValue } }) => {
           return (
             //@ts-ignore
             <Select
@@ -23,16 +17,13 @@ const FormikSelect = (props) => {
               // defaultValue={value}
               active={value}
               value={value}
-              onChange={(val, item) => {
+              onChange={(val) => {
                 setFieldValue(name, val);
-                onSelectChange?.(item);
               }}
               onClearPress={() => {
                 setFieldValue(name, single ? undefined : []);
               }}
               single={single}
-              name={name}
-              error={errors?.[name]}
             />
           );
         }}

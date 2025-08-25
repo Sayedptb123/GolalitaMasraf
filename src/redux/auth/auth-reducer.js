@@ -1,3 +1,4 @@
+import { Platform } from "react-native";
 import {
   SET_IS_LOGIN_ERROR,
   SET_PUBLIC_ORGANIZATIONS,
@@ -12,14 +13,9 @@ import {
   SET_IS_MAIN_USER,
   SET_LOGIN_LOADING,
   SET_PROFILE_LOADING,
-  SET_CONFIRMATIONCODE_LOADING,
-  SET_REGISTERATIONCODE_LOADING
 } from "./auth-types";
 
 const initialState = {
-  profileLoading: false,
-  confirmationcodeLoading: false,
-  registrationcodeLoading: false,
   user: null,
   userBanners: [],
   userBannersLoading: false,
@@ -32,7 +28,7 @@ const initialState = {
   version: null,
   isUserJustLogOut: false,
   isAuthorized: null,
-  isSplashScreenVisible: true,
+  isSplashScreenVisible: Platform.OS === "ios" ? true : false,
   isMainUser: false,
 };
 
@@ -40,10 +36,6 @@ export const authReducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_PROFILE_LOADING:
       return { ...state, profileLoading: action.profileLoading };
-      case SET_CONFIRMATIONCODE_LOADING:
-        return { ...state, confirmationcodeLoading: action.confirmationcodeLoading };
-        case SET_REGISTERATIONCODE_LOADING:
-          return { ...state, registrationcodeLoading: action.registrationcodeLoading };
     case SET_USER:
       return { ...state, user: action.user };
     case SET_IS_LOGIN_ERROR:
@@ -68,6 +60,16 @@ export const authReducer = (state = initialState, action) => {
       return { ...state, isAuthorized: action.payload };
     case SET_SPLASH_SCREEN_VISIBLE:
       return { ...state, isSplashScreenVisible: action.payload };
+    case "LOGIN_FAILURE":
+      return {
+        ...state,
+        isLoginError: true,
+      };
+    case "RESET_LOGIN_ERROR":
+      return {
+        ...state,
+        isLoginError: false,
+      };
     default:
       return state;
   }

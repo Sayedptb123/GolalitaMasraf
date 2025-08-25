@@ -35,7 +35,7 @@ const ContinueAsGuestBtn = () => {
   const handleContinueLikeGuestPress = () => {
     dispatch(
       login({
-        login: "test@masrif.com",
+        login: "dev@moi.com",
         password: "abc123123",
         device_type: Platform.OS,
       })

@@ -4,13 +4,13 @@ import {
   StyleSheet,
   TouchableOpacity,
   View,
-  Image
 } from "react-native";
 import { TypographyText } from "../Typography";
 import PremiumSvg from "../../assets/premium.svg";
 import { SCREEN_HEIGHT, mainStyles } from "../../styles/mainStyles";
 import { colors } from "../colors";
-import { BALOO_SEMIBOLD } from "../../redux/types";
+import { LUSAIL_REGULAR } from "../../redux/types";
+import FastImage from "react-native-fast-image";
 import { sized } from "../../Svg";
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -39,7 +39,7 @@ const Clients = (props) => {
     ({ item }) => (
       <TouchableOpacity onPress={() => onPress(item.id)} style={styles.item}>
         <View style={styles.logoWrapper}>
-          <Image
+          <FastImage
             source={{
               uri: item.image_url,
             }}
@@ -51,7 +51,7 @@ const Clients = (props) => {
             <TypographyText
               textColor={isDark ? colors.white : "#000"}
               size={14}
-              font={BALOO_SEMIBOLD}
+              font={LUSAIL_REGULAR}
               title={t("MainScreen.new")}
               style={styles.newText}
             />
@@ -61,7 +61,7 @@ const Clients = (props) => {
           <TypographyText
             textColor={isDark ? colors.white : "#000"}
             size={14}
-            font={BALOO_SEMIBOLD}
+            font={LUSAIL_REGULAR}
             title={
               language === "ar" ? item.x_name_arabic || item.name : item.name
             }
@@ -88,7 +88,7 @@ const Clients = (props) => {
           <TypographyText
             textColor={isDark ? colors.white : "#000"}
             size={20}
-            font={BALOO_SEMIBOLD}
+            font={LUSAIL_REGULAR}
             title={title}
             style={{ marginHorizontal: 12 }}
           />
@@ -158,6 +158,7 @@ const styles = StyleSheet.create({
   },
   name: {
     paddingRight: 16,
+    fontWeight: "700",
   },
   contentContainerStyle: {
     paddingLeft: 5,

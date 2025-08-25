@@ -21,9 +21,6 @@ const TermsAndConditions = ({ merchantId, title }) => {
 
       const terms = await getTemsAndConditions(merchantId);
 
-      console.log(terms?.length, "length");
-      console.log(terms);
-
       if (terms?.[0]) {
         setData(terms?.[0]);
       }
@@ -70,9 +67,6 @@ const TermsAndConditions = ({ merchantId, title }) => {
 };
 
 const styles = StyleSheet.create({
-  wrapper: {
-    width: "100%",
-  },
   controllBtns: {
     flexDirection: "row",
     marginTop: 20,

@@ -6,6 +6,7 @@ import { colors } from "../../../components/colors";
 import { LUSAIL_REGULAR } from "../../../redux/types";
 import CustomCheckbox from "../../../components/CustomCheckbox/CustomCheckbox";
 import { useTheme } from "../../../components/ThemeProvider";
+import FastImage from "react-native-fast-image";
 import { getFlexDirection } from "../../../../utils";
 
 const SettingsItem = ({ icon, label, isActive, setIsActive, categoryIcon }) => {
@@ -22,7 +23,7 @@ const SettingsItem = ({ icon, label, isActive, setIsActive, categoryIcon }) => {
     >
       <View style={[mainStyles.row, getFlexDirection()]}>
         <View style={[mainStyles.logoWrapper, styles.logoWrapper]}>
-          <Image
+          <FastImage
             source={{
               uri: icon,
             }}

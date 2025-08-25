@@ -2,8 +2,8 @@ import {
   SET_CLICKED_NOTIFICATION_DATA,
   SET_IS_NOTIFICATION_MODAL,
   SET_MESSAGE_NOTIFICATIONS,
-  SET_NOTIFICATIONS,
   SET_MESSAGE_NOTIFICATIONS_LOADING,
+  SET_NOTIFICATIONS,
 } from "./notifications-types";
 
 export const setNotifications = (notifications) => ({

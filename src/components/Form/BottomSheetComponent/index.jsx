@@ -4,33 +4,32 @@ import React, {
   useCallback,
   useMemo,
   useRef,
-} from "react";
+} from 'react';
 import {
   View,
   StyleSheet,
   ActivityIndicator,
   TouchableOpacity,
-  TextInput,
-} from "react-native";
-import Checkbox from "../Checkbox";
-import CloseSvg from "../../../assets/close.svg";
-import ArrowDownSvg from "../../../assets/arrow_down_thin.svg";
-import SearchSvg from "../../../assets/search.svg";
-import { sized } from "../../../Svg";
-import { TypographyText } from "../../Typography";
-import { BALOO_REGULAR, BALOO_MEDIUM } from "../../../redux/types";
-import { useTheme } from "../../ThemeProvider";
-import { useTranslation } from "react-i18next";
-import { getTextAlign, isRTL } from "../../../../utils";
+} from 'react-native';
+import Checkbox from '../Checkbox';
+import CloseSvg from '../../../assets/close.svg';
+import ArrowDownSvg from '../../../assets/arrow_down_thin.svg';
+import { sized } from '../../../Svg';
+import { TypographyText } from '../../Typography';
+import { BALOO_REGULAR, BALOO_MEDIUM } from '../../../redux/types';
+import { useTheme } from '../../ThemeProvider';
+import { useTranslation } from 'react-i18next';
+import { isRTL } from '../../../../utils';
 import {
   BottomSheetModal,
   BottomSheetFlatList,
   BottomSheetModalProvider,
-} from "@gorhom/bottom-sheet";
-import { colors } from "../../colors";
-import Portal from "../../Portal";
+  BottomSheetView,
+} from '@gorhom/bottom-sheet';
+import { colors } from '../../colors';
+import Portal from '../../Portal';
 
-const BottomSheetComponent = (props) => {
+const BottomSheetComponent = props => {
   const {
     options,
     label,
@@ -46,24 +45,23 @@ const BottomSheetComponent = (props) => {
     renderSelect,
     value: propsValue,
     single,
-    name,
     modalTitle,
+    name,
   } = props;
   const [visible, setVisible] = useState(false);
   const [value, setValue] = useState([]);
   const { t, i18n } = useTranslation();
-  const [search, setSearch] = useState("");
 
-  const isArabic = i18n.language === "ar";
+  const isArabic = i18n.language === 'ar';
   const { isDark } = useTheme();
-  const CloseIcon = sized(CloseSvg, 14, 14, isDark ? "#fff" : "#312B3E");
-  const ArrowIcon = sized(ArrowDownSvg, 24, 24, isDark ? "#fff" : "#312B3E");
+  const CloseIcon = sized(CloseSvg, 14, 14, isDark ? '#fff' : '#312B3E');
+  const ArrowIcon = sized(ArrowDownSvg, 24, 24, isDark ? '#fff' : '#312B3E');
 
   // ref
   const bottomSheetModalRef = useRef(null);
 
   // variables
-  const snapPoints = useMemo(() => ["1%", "90%"], []);
+  const snapPoints = useMemo(() => ['90%'], []);
 
   // callbacks
   const handlePresentModalPress = useCallback(() => {
@@ -72,22 +70,12 @@ const BottomSheetComponent = (props) => {
   const handlePresentModalclose = useCallback(() => {
     bottomSheetModalRef.current?.close();
   }, []);
-  const handleSheetChanges = useCallback((index) => {
+  const handleSheetChanges = useCallback(index => {
     if (!index) {
       handlePresentModalclose();
       setVisible(false);
     }
   }, []);
-
-  const handleSearchChange = (text) => {
-    setSearch(text);
-  };
-
-  const updatedOptions = useMemo(() => {
-    return options?.filter((item) => {
-      return toString(item?.label)?.includes(search);
-    });
-  });
 
   useEffect(() => {
     setValue(propsValue);
@@ -107,35 +95,55 @@ const BottomSheetComponent = (props) => {
     }
   };
 
+  const toFlatList = items => {
+    let result = [];
+
+    items.forEach(option => {
+      result.push({
+        value: option.value,
+        label: option.label,
+        data: option.data,
+        indent: 0,
+        x_arabic_name: option.x_arabic_name,
+        x_flag_image: option.x_flag_image,
+        emoji: option.emoji,
+      });
+    });
+
+    return result;
+  };
+
+  const data = toFlatList(options);
+
   const renderValue = () => {
     if (value && Array.isArray(value) && value.length > 0) {
       return (
         <TypographyText
-          textColor={isDark ? "#fff" : colors.mainDarkModeText}
+          textColor={isDark ? '#fff' : '#312B3E'}
           size={14}
           font={BALOO_REGULAR}
-          title={options
-            .filter((option) => {
+          title={data
+            .filter(option => {
               return value.includes(option.value);
             })
-            .map((option) => {
+            .map(option => {
               return option.label;
             })
-            .join(", ")}
+            .join(', ')}
           numberOfLines={1}
           style={[disabled ? styles.valueDisabled : {}]}
         />
       );
     }
 
-    const active = options.find((option) => {
+    const active = data.find(option => {
       return option.value === value;
     });
 
     if (active) {
       return (
         <TypographyText
-          textColor={isDark ? "#fff" : colors.darkBlue}
+          textColor={isDark ? '#fff' : '#312B3E'}
           size={14}
           font={BALOO_REGULAR}
           title={active.label}
@@ -147,7 +155,7 @@ const BottomSheetComponent = (props) => {
 
     return (
       <TypographyText
-        textColor={isDark ? "#fff" : colors.darkBlue}
+        textColor={isDark ? '#fff' : '#312B3E'}
         size={14}
         font={BALOO_REGULAR}
         title={placeholder}
@@ -160,32 +168,31 @@ const BottomSheetComponent = (props) => {
   const renderFooter = () => (
     <View
       style={{
-        backgroundColor: isDark ? colors.darkBlue : colors.white,
+        backgroundColor: isDark ? '#2E2E2E' : colors.white,
         paddingVertical: 20,
-        marginBottom: 50,
       }}
     >
-     {updatedOptions.length !== 0 && <TouchableOpacity
+      <TouchableOpacity
         onPress={onOk}
         style={[
           styles.footerContainer,
-          { backgroundColor: isDark ? colors.navyBlue : colors.darkBlue },
+          { backgroundColor: isDark ? colors.mainDarkMode : colors.darkBlue },
         ]}
       >
         <TypographyText
-          title={t("General.confirm")}
-          textColor={isDark ? colors.white : colors.white}
+          title={t('General.confirm')}
+          textColor={isDark ? colors.black : colors.white}
           size={16}
           font={BALOO_MEDIUM}
         />
-      </TouchableOpacity>}
+      </TouchableOpacity>
     </View>
   );
   const renderBody = () => (
     <BottomSheetFlatList
       style={[
         styles.contentContainer,
-        { backgroundColor: isDark ? colors.darkBlue : colors.white },
+        { backgroundColor: isDark ? '#2E2E2E' : colors.white },
       ]}
       ListEmptyComponent={() => (
         <View
@@ -195,10 +202,10 @@ const BottomSheetComponent = (props) => {
           }}
         >
           <TypographyText
-            textColor={"#312B3E"}
+            textColor={isDark ? colors.white : '#312B3E'}
             size={14}
             font={BALOO_REGULAR}
-            title={t("General.noData")}
+            title={t('General.noData')}
             numberOfLines={1}
           />
         </View>
@@ -212,7 +219,7 @@ const BottomSheetComponent = (props) => {
 
         const active = single
           ? option.value === value
-          : value?.includes(option.value);
+          : value.includes(option.value);
 
         return (
           <View
@@ -222,16 +229,16 @@ const BottomSheetComponent = (props) => {
             }}
           >
             <Checkbox
-              style={{ paddingHorizontal: 16,flex:1 }}
+              style={{ paddingHorizontal: 16, flex: 1 }}
               label={
                 isArabic ? option.x_arabic_name || option.label : option.label
               }
               flag={option.x_flag_image}
               emoji={option.emoji}
               active={active}
-              onChange={(checked) => {
+              onChange={checked => {
                 if (checked) {
-                  setValue((state) => {
+                  setValue(state => {
                     if (single) {
                       return option.value;
                     }
@@ -243,13 +250,13 @@ const BottomSheetComponent = (props) => {
                     return state;
                   });
                 } else {
-                  setValue((state) => {
+                  setValue(state => {
                     if (single) {
                       return undefined;
                     }
 
                     if (Array.isArray(state)) {
-                      return state.filter((item) => {
+                      return state.filter(item => {
                         return item !== option.value;
                       });
                     }
@@ -262,33 +269,12 @@ const BottomSheetComponent = (props) => {
           </View>
         );
       }}
-      data={updatedOptions}
-      keyExtractor={(item) => {
+      data={data}
+      keyExtractor={item => {
         return String(item.value);
       }}
       showsVerticalScrollIndicator={false}
     />
-  );
-
-  const renderHeader = () => (
-    <View
-      style={[
-        styles.searchWrapper,
-        { backgroundColor: isDark ? colors.navyBlue : "#FAFAFA" },
-      ]}
-    >
-      <View>
-        <SearchSvg color={isDark ? colors.mainDarkMode : "#202226"} />
-      </View>
-
-      <TextInput
-        onChangeText={handleSearchChange}
-        style={[styles.searchInput, getTextAlign()]}
-        placeholderTextColor={isDark ? colors.mainDarkMode : "#202226"}
-        color={isDark ? colors.mainDarkMode : "#202226"}
-        placeholder={t("Merchants.searchPlaceholder")}
-      />
-    </View>
   );
 
   const showArrowIcon = Boolean(!value?.length || !allowClear);
@@ -306,7 +292,7 @@ const BottomSheetComponent = (props) => {
             disabled={disabled}
           >
             <TypographyText
-              textColor={isDark ? "#fff" : "#312B3E"}
+              textColor={isDark ? colors.mainDarkMode : '#312B3E'}
               size={14}
               font={BALOO_REGULAR}
               title={label}
@@ -318,7 +304,6 @@ const BottomSheetComponent = (props) => {
       )}
       {renderSelect ? (
         <TouchableOpacity
-        style={{ zIndex: 1 }}
           disabled={disabled}
           onPress={() => {
             //switchVisible
@@ -381,17 +366,17 @@ const BottomSheetComponent = (props) => {
               enablePanDownToClose={true}
               onChange={handleSheetChanges}
               backgroundStyle={{
-                backgroundColor: isDark ? colors.darkBlue : colors.white,
+                backgroundColor: isDark ? '#2E2E2E' : colors.white,
               }}
               topInset={250}
             >
               <View
                 style={{
-                  flexDirection: isRTL() ? "row-reverse" : "row",
-                  justifyContent: "space-between",
+                  flexDirection: isRTL() ? 'row-reverse' : 'row',
+                  justifyContent: 'space-between',
                   marginVertical: 16,
                   paddingHorizontal: 25,
-                  width: "100%",
+                  width: '100%',
                 }}
               >
                 <TypographyText
@@ -402,7 +387,7 @@ const BottomSheetComponent = (props) => {
                 />
                 <TouchableOpacity onPress={() => handlePresentModalclose()}>
                   <TypographyText
-                    title={"X"}
+                    title={'X'}
                     textColor={isDark ? colors.white : colors.darkBlue}
                     size={21}
                     font={BALOO_MEDIUM}
@@ -410,11 +395,9 @@ const BottomSheetComponent = (props) => {
                 </TouchableOpacity>
               </View>
 
-              {renderHeader()}
-
               {renderBody()}
 
-              {renderFooter()}
+              {!!options.length && renderFooter()}
             </BottomSheetModal>
           </View>
         </BottomSheetModalProvider>
@@ -424,32 +407,29 @@ const BottomSheetComponent = (props) => {
 };
 
 const styles = StyleSheet.create({
-  modal: {
-    backgroundColor: "green",
-  },
+  modal: {},
   main: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "transparent",
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'transparent',
     marginBottom: 8,
     borderWidth: 1.5,
     borderRadius: 4,
-    borderColor: "#999CAD",
+    borderColor: '#999CAD',
     height: 36,
   },
   empty: {
-    height: 200,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   info: {
     marginTop: 5,
   },
   search: {
-    borderBottomColor: "#12234D",
+    borderBottomColor: '#12234D',
     borderBottomWidth: 1,
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 10,
   },
   searchIcon: { marginBottom: 10 },
@@ -457,19 +437,19 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     marginLeft: 18,
     marginBottom: 10,
-    color: "#000",
+    color: '#000',
   },
   body: {
     flex: 1,
   },
   required: {
-    color: "red",
+    color: 'red',
   },
   label: {
     marginBottom: 11,
     marginTop: 8,
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   help: {
     marginLeft: 5,
@@ -479,15 +459,15 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   valueDisabled: {
-    color: "#ccc",
+    color: '#ccc',
   },
   list: {
-    alignItems: "center",
+    alignItems: 'center',
   },
   option: {},
   iconWrap: {
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     marginHorizontal: 10,
     height: 20,
     width: 20,
@@ -495,55 +475,42 @@ const styles = StyleSheet.create({
 
   customOptionMain: {
     paddingVertical: 10,
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   customOptionInput: {
     flexGrow: 1,
     width: 120,
     borderWidth: 1,
-    borderColor: "#000",
+    borderColor: '#000',
     padding: 5,
     marginRight: 10,
-    color: "#000",
+    color: '#000',
   },
   container: {
-    justifyContent: "center",
+    justifyContent: 'center',
     // backgroundColor: 'grey',
-    alignItems: "center",
+    alignItems: 'center',
   },
   contentContainer: {
     flex: 1,
     //alignItems: 'center',
     paddingHorizontal: 25,
-    paddingBottom: 100,
+    paddingBottom: 20,
     //alignSelf:'center'
   },
   footerContainer: {
     padding: 12,
     // margin: 12,
     borderRadius: 12,
-    alignItems: "center",
-    width: "40%",
-    alignSelf: "center",
+    alignItems: 'center',
+    width: '40%',
+    alignSelf: 'center',
   },
   footerText: {
-    textAlign: "center",
-    color: "white",
-    fontWeight: "800",
-  },
-  searchWrapper: {
-    flexDirection: "row",
-    height: 50,
-    alignItems: "center",
-    marginHorizontal: 35,
-    marginBottom: 20,
-    borderRadius: 12,
-    paddingHorizontal: 10,
-  },
-  searchInput: {
-    flex: 1,
-    paddingHorizontal: 10,
+    textAlign: 'center',
+    color: 'white',
+    fontWeight: '800',
   },
 });
 

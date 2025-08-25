@@ -1,12 +1,19 @@
 # Resolve react_native_pods.rb with node to allow for hoisting
-require Pod::Executable.execute_command('node', ['-p',
-  'require.resolve(
-    "react-native/scripts/react_native_pods.rb",
-    {paths: [process.argv[1]]},
-  )', __dir__]).strip
+ def node_require(script)
+   # Resolve script with node to allow for hoisting
+   require Pod::Executable.execute_command('node', ['-p',
+     "require.resolve(
+       '#{script}',
+       {paths: [process.argv[1]]},
+     )", __dir__]).strip
+ end
+
+node_require('react-native/scripts/react_native_pods.rb')
+node_require('react-native-permissions/scripts/setup.rb')
 
 platform :ios, min_ios_version_supported
 prepare_react_native_project!
+
 
 linkage = ENV['USE_FRAMEWORKS']
 if linkage != nil
@@ -14,15 +21,22 @@ if linkage != nil
   use_frameworks! :linkage => linkage.to_sym
 end
 
-target 'GolalitaMasraf' do
-  # Google Maps configuration
+setup_permissions([
+
+  'Camera',
+   'FaceID',
+   'LocationAccuracy',
+   'LocationAlways',
+   'LocationWhenInUse',
+   'MediaLibrary',
+   'PhotoLibrary'
+])
+
+target 'Emtiyaz' do
+
   rn_maps_path = '../node_modules/react-native-maps'
   pod 'react-native-google-maps', :path => rn_maps_path
   
-  # Notifee configuration
-  pod 'RNNotifee', :path => '../node_modules/@notifee/react-native'
-  
-  # Firebase modular headers (required for Firebase to work properly)
   pod 'FirebaseCore', :modular_headers => true
   pod 'Firebase', :modular_headers => true
   pod 'FirebaseCoreInternal', :modular_headers => true
@@ -30,12 +44,11 @@ target 'GolalitaMasraf' do
 
   config = use_native_modules!
 
+
   use_react_native!(
     :path => config[:reactNativePath],
     # An absolute path to your application root.
-    :app_path => "#{Pod::Config.instance.installation_root}/..",
-    # Enable Hermes JavaScript engine
-    :hermes_enabled => true
+    :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
   post_install do |installer|
@@ -46,37 +59,7 @@ target 'GolalitaMasraf' do
       :mac_catalyst_enabled => false,
       # :ccache_enabled => true
     )
-    
-    # Bitcode stripping for App Store submission
-    bitcode_strip_path = `xcrun --find bitcode_strip`.chop!
-    def strip_bitcode_from_framework(bitcode_strip_path, framework_relative_path)
-      framework_path = File.join(Dir.pwd, framework_relative_path)
-      command = "#{bitcode_strip_path} #{framework_path} -r -o #{framework_path}"
-      puts "Stripping bitcode: #{command}"
-      system(command)
-    end
- 
-    framework_paths = [
-      "Pods/LogRocket/LogRocket.xcframework/ios-arm64/LogRocket.framework/LogRocket",
-      "Pods/hermes-engine/destroot/Library/Frameworks/macosx/hermes.framework/hermes",
-      "Pods/hermes-engine/destroot/Library/Frameworks/macosx/hermes.framework/Versions/Current/hermes",
-      "Pods/hermes-engine/destroot/Library/Frameworks/universal/hermes.xcframework/ios-arm64/hermes.framework/hermes",
-      "Pods/hermes-engine/destroot/Library/Frameworks/universal/hermes.xcframework/ios-arm64_x86_64-maccatalyst/hermes.framework/hermes"
-    ]
- 
-    framework_paths.each do |framework_relative_path|
-      strip_bitcode_from_framework(bitcode_strip_path, framework_relative_path)
-    end
-
-    # This is necessary for Xcode 14+, because it signs resource bundles by default
-    # when building for devices.
-    installer.target_installation_results.pod_target_installation_results
-      .each do |pod_name, target_installation_result|
-      target_installation_result.resource_bundle_targets.each do |resource_bundle_target|
-        resource_bundle_target.build_configurations.each do |config|
-          config.build_settings['CODE_SIGNING_ALLOWED'] = 'NO'
-        end
-      end
-    end
   end
 end
+
+

@@ -1,21 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
-  Image,
   Keyboard,
-  Platform,
   SafeAreaView,
   Text,
   TouchableOpacity,
   View,
   StyleSheet,
-  ActivityIndicator,
 } from "react-native";
 import { colors } from "../../components/colors";
-import { getPixel, mainStyles, SCREEN_HEIGHT } from "../../styles/mainStyles";
+import { mainStyles } from "../../styles/mainStyles";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import BackgroundSvg from "../../assets/login_bg.svg";
 import { TypographyText } from "../../components/Typography";
-import { BALOO_MEDIUM } from "../../redux/types";
+import { LUSAIL_REGULAR } from "../../redux/types";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import CommonButton from "../../components/CommonButton/CommonButton";
@@ -24,182 +20,190 @@ import { useTranslation } from "react-i18next";
 import { CodeField, Cursor } from "react-native-confirmation-code-field";
 import { connect } from "react-redux";
 import { verify } from "../../redux/auth/auth-thunks";
+import ShieldSvg from "../../assets/shield.svg";
+import AuthLayout from "../component/AuthLayout";
+import { sized } from "../../Svg";
+import TopCircleShadow from "../../components/TopCircleShadow";
 
-const Verification = ({ route, navigation, verify, profileLoading }) => {
-  let params = route.params;
-
+import { isRTL } from "../../../utils";
+import BackSvg from "../../assets/back_white.svg";
+const Verification = ({ route, navigation, verify }) => {
   const { isDark } = useTheme();
+  const BackIcon = sized(BackSvg, 22, 22, isDark ? colors.mainDarkMode : colors.darkBlue);
+  const ShieldIcon = sized(ShieldSvg, 22, 22, isDark ? colors.mainDarkMode : colors.darkBlue);
+  let params = route.params;
   const { t } = useTranslation();
-  const [loading, setLoading] = useState(false);
 
   const titleText = params.phone
     ? t("Login.enter4DigitsPhone")
     : t("Login.enter4DigitsEmail");
 
-  useEffect(() => {
-    if (!params.isForgotPassword) {
-      setLoading(true);
-      verify(
-        {
-          params: {
-            otp: "0000",
-            phone: params?.phone,
-            email: params?.email,
-            mode: "noOTP",
-          },
-        },
-        navigation,
-        t,
-        params?.registerBody,
-        params?.isForgotPassword
-      );
-    }
-  }, []);
+  const verificationEntity = params.email || params.phone;
 
-  if (loading) {
-    return (
-      <View
-        style={{
-          flex: 1,
-          backgroundColor: isDark ? colors.darkBlue : colors.white,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <ActivityIndicator />
-      </View>
-    );
-  }
   return (
-    <View
-      scrollEnabled={Platform.OS === "android"}
-      style={{
-        backgroundColor: isDark ? colors.darkBlue : colors.bg,
-        height: SCREEN_HEIGHT,
-      }}
-    >
+    <AuthLayout>
       <SafeAreaView style={{ flex: 1 }}>
-        <KeyboardAwareScrollView>
+      <TouchableOpacity
+            style={{ transform: [{ rotate: isRTL() ? "180deg" : "0deg" }],padding:11 }}
+            onPress={navigation.goBack}
+          >
+            <BackIcon />
+          </TouchableOpacity>
+        <KeyboardAwareScrollView
+          style={{ flex: 1 }}
+          contentContainerStyle={{ flexGrow: 1 }}
+        >
           <TouchableOpacity
             activeOpacity={1}
             onPress={Keyboard.dismiss}
             style={{ flex: 1 }}
           >
-            <BackgroundSvg style={styles.bg} />
-            <View
-              style={[
-                mainStyles.centeredRow,
-                { marginTop: getPixel(10), flexDirection: "column" },
-              ]}
-            >
-              <Image
-                source={require("../../assets/shield.png")}
-                style={mainStyles.registerIcon}
-              />
-              <TypographyText
-                title={titleText}
-                textColor={isDark ? colors.white : colors.darkBlue}
-                size={18}
-                font={BALOO_MEDIUM}
-                style={[
-                  mainStyles.centeredText,
-                  { marginTop: 20, paddingHorizontal: 50 },
-                ]}
-              />
-            </View>
-            <View style={[mainStyles.p20, { marginTop: getPixel(7) }]}>
-              <Formik
-                initialValues={{
-                  code: "",
-                }}
-                onSubmit={(values, { setFieldError }) => {
-                  verify(
-                    {
-                      params: {
-                        otp: values.code,
-                        phone: params?.phone,
-                        email: params?.email,
-                      },
+            <Formik
+              initialValues={{
+                code: "",
+              }}
+              onSubmit={(values, { setFieldError }) => {
+                verify(
+                  {
+                    params: {
+                      otp: values.code,
+                      phone: params?.phone,
+                      email: params?.email,
                     },
-                    navigation,
-                    setFieldError,
-                    t,
-                    params?.registerBody,
-                    params?.isForgotPassword
-                  );
-                }}
-                validationSchema={Yup.object({
-                  code: Yup.string().required(t("Login.required")),
-                })}
-              >
-                {({
-                  values,
-                  handleChange,
-                  handleSubmit,
-                  errors,
-                  submitCount,
+                  },
+                  navigation,
                   setFieldError,
-                }) => {
-                  errors = submitCount > 0 ? errors : {};
-                  return (
-                    <>
-                      <CodeField
-                        // Use `caretHidden={false}` when users can't paste a text value, because context menu doesn't appear
-                        value={values.code}
-                        onChangeText={handleChange("code")}
-                        cellCount={4}
-                        rootStyle={[
-                          styles.codeWrapper,
-                          errors.code && { marginBottom: 20 },
-                        ]}
-                        keyboardType="number-pad"
-                        textContentType="oneTimeCode"
-                        renderCell={({ index, symbol, isFocused }) => (
-                          <View style={styles.cellWrapper}>
-                            <Text
-                              key={index}
-                              style={[
-                                styles.cell,
-                                isFocused && styles.focusCell,
-                                {
-                                  backgroundColor: isDark
-                                    ? colors.transparent
-                                    : colors.white,
-                                },
-                              ]}
-                            >
-                              {symbol || (isFocused ? <Cursor /> : null)}
-                            </Text>
-                          </View>
-                        )}
-                      />
-                      {errors.code && (
+                  t,
+                  params?.registerBody,
+                  params?.isForgotPassword
+                );
+              }}
+              validationSchema={Yup.object({
+                code: Yup.string().required(t("Login.required")),
+              })}
+            >
+              {({
+                values,
+                handleChange,
+                handleSubmit,
+                errors,
+                submitCount,
+                setFieldError,
+              }) => {
+                errors = submitCount > 0 ? errors : {};
+                return (
+                  <>
+                    <View style={styles.wrapper}>
+                      <View style={styles.mainInfoWrapper}>
+                        <ShieldIcon style={mainStyles.registerIcon} />
                         <TypographyText
-                          title={errors.code}
-                          textColor={"#FF406E"}
-                          size={14}
-                          font={BALOO_MEDIUM}
-                          style={{ marginBottom: 60 }}
+                          title={t("Login.otpVerification")}
+                          textColor={isDark ? colors.white : colors.darkBlue}
+                          size={22}
+                          style={styles.title}
                         />
-                      )}
-                      <CommonButton
-                        onPress={handleSubmit}
-                        label={t("Login.verify")}
-                        loading={profileLoading}
-                      />
-                    </>
-                  );
-                }}
-              </Formik>
-            </View>
+                        <TypographyText
+                          title={titleText}
+                          textColor={isDark ? colors.white : colors.darkBlue}
+                          size={18}
+                          style={styles.description}
+                        />
+
+                        <TypographyText
+                          title={verificationEntity}
+                          textColor={isDark ? colors.white : colors.darkBlue}
+                          size={18}
+                          style={styles.description}
+                        />
+
+                        <View style={styles.codeWrapper}>
+                          <CodeField
+                            // Use `caretHidden={false}` when users can't paste a text value, because context menu doesn't appear
+                            value={values.code}
+                            onChangeText={handleChange("code")}
+                            cellCount={4}
+                            rootStyle={[
+                              styles.codeWrapper,
+                              errors.code && { marginBottom: 20 },
+                            ]}
+                            keyboardType="number-pad"
+                            textContentType="oneTimeCode"
+                            renderCell={({ index, symbol, isFocused }) => (
+                              <View style={styles.cellWrapper}>
+                                <Text
+                                  key={index}
+                                  style={[
+                                    styles.cell,
+                                    isFocused && styles.focusCell,
+                                    {
+                                      backgroundColor: isDark
+                                        ? colors.transparent
+                                        : colors.white,
+                                    },
+                                  ]}
+                                >
+                                  {symbol || (isFocused ? <Cursor /> : null)}
+                                </Text>
+                              </View>
+                            )}
+                          />
+                        </View>
+                      </View>
+
+                      <View style={{width:"90%"}}>
+                        {errors.code && (
+                          <TypographyText
+                            title={errors.code}
+                            textColor={"#FF406E"}
+                            size={14}
+                            font={LUSAIL_REGULAR}
+                            style={{ marginBottom: 60, fontWeight: "700" }}
+                          />
+                        )}
+
+                        <CommonButton
+                          onPress={handleSubmit}
+                          label={t("Login.submit")}
+                          textColor={
+                            isDark ? colors.mainDarkModeText : colors.white
+                          }
+                        />
+                      </View>
+                    </View>
+                  </>
+                );
+              }}
+            </Formik>
           </TouchableOpacity>
         </KeyboardAwareScrollView>
       </SafeAreaView>
-    </View>
+      <TopCircleShadow />
+    </AuthLayout>
   );
 };
 
 const styles = StyleSheet.create({
+  wrapper: {
+    marginTop: 80,
+    paddingBottom: 60,
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "space-between",
+    alignItems: "center",
+    flex: 1,
+  },
+  mainInfoWrapper: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  title: {
+    marginTop: 50,
+  },
+  description: {
+    marginTop: 20,
+    width: 250,
+    textAlign: "center",
+  },
   codeWrapper: {
     marginBottom: 80,
     paddingHorizontal: 30,
@@ -208,24 +212,24 @@ const styles = StyleSheet.create({
     ...mainStyles.cell,
     ...mainStyles.lightShadow,
     borderWidth: 0,
-    width: 60,
-    height: 60,
-    borderRadius: 8,
+    width: 42,
+    height: 42,
+    borderRadius: 21,
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: colors.white,
   },
   cell: {
-    color: "#312B3E",
+    color: "#072536",
     fontSize: 24,
-    fontFamily: BALOO_MEDIUM,
+    fontFamily: LUSAIL_REGULAR,
     textAlign: "center",
+    fontWeight: "700",
+  },
+  codeWrapper: {
+    width: 250,
+    marginTop: 20,
   },
 });
 
-export default connect(
-  (state) => ({
-    profileLoading: state.authReducer.profileLoading,
-  }),
-  { verify }
-)(Verification);
+export default connect(null, { verify })(Verification);

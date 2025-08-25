@@ -17,7 +17,7 @@ import PremiumSvg from "../../assets/premium.svg";
 import PresentSvg from "../../assets/present.svg";
 import IconButton from "../../components/IconButton/IconButton";
 import PresentActiveSvg from "../../assets/presend_active.svg";
-import { BALOO_REGULAR, BALOO_SEMIBOLD } from "../../redux/types";
+import { LUSAIL_REGULAR } from "../../redux/types";
 import { TypographyText } from "../../components/Typography";
 import { CodeField, Cursor } from "react-native-confirmation-code-field";
 import CommonButton from "../../components/CommonButton/CommonButton";
@@ -25,6 +25,7 @@ import { getFlexDirection } from "../../../utils";
 import { useTheme } from "../../components/ThemeProvider";
 import { connect } from "react-redux";
 import { redeem } from "../../redux/merchant/merchant-thunks";
+import Header from "../../components/Header";
 import Select from "../../components/Form/Select";
 
 const PresentIcon = sized(PresentSvg, 13);
@@ -55,7 +56,6 @@ const getBranchesOptions = (branches, isB1G1, language) => {
   }));
 };
 
-
 const Promocode = ({ route, navigation, redeem }) => {
   let params = route?.params;
   const [code, setCode] = useState("");
@@ -79,11 +79,11 @@ const Promocode = ({ route, navigation, redeem }) => {
     code
   );
 
-function getBranchName(value) {
-  const branch = branchesOptions.find(branch => branch.value === value);
-  return branch && branch.label;
-}
-console.log("branchesOptions:1",branchesOptions)
+  function getBranchName(value) {
+    const branch = branchesOptions.find((branch) => branch.value === value);
+    return branch && branch.label;
+  }
+
   return (
     <View
       style={{
@@ -92,7 +92,11 @@ console.log("branchesOptions:1",branchesOptions)
       }}
     >
       <SafeAreaView>
-        <CommonHeader isWhite={isDark} label={getBranchName(selectedBranch) || params?.merchant_name} />
+        <Header
+          label={getBranchName(selectedBranch) || params?.merchant_name}
+          btns={["back"]}
+        />
+
         <ScrollView>
           <View style={mainStyles.p20}>
             <View
@@ -123,29 +127,25 @@ console.log("branchesOptions:1",branchesOptions)
               <TypographyText
                 textColor={!isDark ? colors.darkBlue : colors.white}
                 size={24}
-                font={BALOO_SEMIBOLD}
+                font={LUSAIL_REGULAR}
                 title={params?.name}
-                style={mainStyles.centeredText}
+                style={[mainStyles.centeredText, { fontWeight: "700" }]}
               />
               <TypographyText
                 textColor={!isDark ? colors.darkBlue : colors.white}
                 size={18}
-                font={BALOO_REGULAR}
+                font={LUSAIL_REGULAR}
                 title={t("PremiumPartner.promoCodeDescription", {
                   name: params?.name,
                 })}
-                style={[mainStyles.centeredText, { marginBottom: 20 }]}
+                style={mainStyles.centeredText}
               />
-
               {!!branchesOptions?.length && (
                 <Select
                   name="branches-select"
                   placeholder={t("PremiumPartner.branchPlaceholder")}
                   value={selectedBranch}
-                  onChange={(i) => {
-                    console.log("iiiiii:",i)
-                    selectBranch(i);
-                  }}
+                  onChange={selectBranch}
                   onClearPress={() => {
                     selectBranch(null);
                   }}
@@ -154,16 +154,15 @@ console.log("branchesOptions:1",branchesOptions)
                   allowClear
                 />
               )}
-
               <TypographyText
                 textColor={!isDark ? colors.darkBlue : colors.white}
                 size={12}
-                font={BALOO_REGULAR}
+                font={LUSAIL_REGULAR}
                 title={t("PremiumPartner.askEnterPin", {
                   name: getBranchName(selectedBranch) || params?.merchant_name,
                 })}
+                style={[mainStyles.centeredText, styles.codeWrapper]}
               />
-
               <CodeField
                 // Use `caretHidden={false}` when users can't paste a text value, because context menu doesn't appear
                 value={code}
@@ -191,9 +190,9 @@ console.log("branchesOptions:1",branchesOptions)
               <TypographyText
                 textColor={!isDark ? colors.darkBlue : colors.white}
                 size={12}
-                font={BALOO_REGULAR}
+                font={LUSAIL_REGULAR}
                 title={t("PremiumPartner.applyThePromo", {
-                  name:getBranchName(selectedBranch) || params?.merchant_name,
+                  name: getBranchName(selectedBranch) || params?.merchant_name,
                 })}
                 style={[mainStyles.centeredText, styles.codeWrapper]}
               />
@@ -229,17 +228,22 @@ console.log("branchesOptions:1",branchesOptions)
                 <TypographyText
                   textColor={!isDark ? colors.grey : colors.white}
                   size={12}
-                  font={BALOO_REGULAR}
+                  font={LUSAIL_REGULAR}
                   title={`${t("PremiumPartner.validTill")} ${
                     params?.expiryDate
                   }`}
                   style={[mainStyles.centeredText, { marginTop: 20 }]}
                 />
               )}
-              <TouchableOpacity style={styles.rulesWrapper}>
+              <TouchableOpacity>
                 <Text style={styles.label}>
+                  {`${t("PremiumPartner.offersAre")} `}
+                  <Text
+                    style={{ color: isDark ? colors.white : colors.darkBlue }}
+                  >
                     {t("PremiumPartner.rulesOfUse")}
                   </Text>
+                </Text>
               </TouchableOpacity>
             </View>
           </View>

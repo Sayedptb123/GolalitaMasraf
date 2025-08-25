@@ -19,6 +19,7 @@ import { connect } from "react-redux";
 import { deleteNotification } from "../../redux/notifications/notifications-thunks";
 import { getMerchantDetails } from "../../redux/merchant/merchant-thunks";
 import { transformDate } from "./helpers";
+import HTMLRenderer from "../../components/HTMLRenderer";
 
 const DeleteIcon = sized(DeleteSvg, 70, 24);
 const DeleteWhiteIcon = sized(DeleteWhiteSvg, 70, 24);
@@ -28,7 +29,7 @@ const Notification = ({
   deleteNotification,
   setPressedNotification,
 }) => {
-  const { i18n,t } = useTranslation();
+  const {i18n, t } = useTranslation();
   const { isDark } = useTheme();
 
   const language = i18n.language;
@@ -139,6 +140,7 @@ const Notification = ({
               style={{ fontWeight: "700" }}
             />
 
+<HTMLRenderer value={language === "ar" ? notification.html_description_arabic||notification.html_description : notification.html_description} />
             <TypographyText
               textColor={"#ACAEBE"}
               size={12}

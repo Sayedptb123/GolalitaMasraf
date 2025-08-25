@@ -1,39 +1,33 @@
-import authApi from "./auth-api";
+import authApi from './auth-api';
 import {
   setIsAuthorized,
   setIsLoginError,
   setIsMainUser,
   setIsUserJustLogOut,
   setLoginLoading,
-  setProfileLoading,
   setPublicOrganizations,
   setToken,
   setUser,
   setUserId,
   setVersion,
   setWorkStatus,
-} from "./auth-actions";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { APP_DISABLED, APP_ENABLED, CONTENT_DISABLED } from "./auth-types";
-import { showMessage } from "react-native-flash-message";
-import { setPremiumMerchants } from "../merchant/merchant-actions";
-import i18next from "i18next";
-import { navigationRef } from "../../Navigation/RootNavigation";
-import { Platform } from "react-native";
-import { setIfEverLoggedIn } from "../../api/asyncStorage";
-import { getAdvert, getParentCategories } from "../merchant/merchant-thunks";
-import { getMessageNotifications } from "../notifications/notifications-thunks";
-import { getCountries } from "../global/global-thunks";
-import {
-  setConfirmationcodeLoading,
-  setRegisterationcodeLoading,
-} from "../../redux/auth/auth-actions";
+} from './auth-actions';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { APP_DISABLED, APP_ENABLED, CONTENT_DISABLED } from './auth-types';
+import { showMessage } from 'react-native-flash-message';
+import { setPremiumMerchants } from '../merchant/merchant-actions';
+import { navigationRef } from '../../Navigation/navigationHelpers';
+import i18next from 'i18next';
+import { Platform } from 'react-native';
+import { getMessageNotifications } from '../notifications/notifications-thunks';
+import { getAdvert, getParentCategories } from '../merchant/merchant-thunks';
+import { LOGIN_INPUT_TYPES } from '../../AuthScreens/Login';
 
 export const getInitialData = () => async (dispatch, getState) => {
   try {
+    const token = await AsyncStorage.getItem('token');
+    const userId = await AsyncStorage.getItem('userId');
     const { categoriesType } = getState().merchantReducer;
-    const token = await AsyncStorage.getItem("token");
-    const userId = await AsyncStorage.getItem("userId");
 
     if (userId) dispatch(setUserId(userId));
     if (token) {
@@ -41,188 +35,165 @@ export const getInitialData = () => async (dispatch, getState) => {
       dispatch(setToken(token));
       dispatch(getAdvert());
       dispatch(getParentCategories(categoriesType));
-      dispatch(getCountries());
       dispatch(getMessageNotifications());
     }
   } catch (err) {
-    console.log(err, "user error");
+    console.log(err, 'user error');
   }
 };
 
-export const login = (body, i) => async (dispatch, getState) => {
-  dispatch(setLoginLoading(true));
-  dispatch(setIsLoginError(false));
+export const login =
+  (body, inputType, setFieldError) => async (dispatch, getState) => {
+    dispatch(setLoginLoading(true));
 
-  const pushToken = await AsyncStorage.getItem("deviceToken");
-  const { categoriesType } = getState().merchantReducer;
+    dispatch(setIsLoginError(false));
 
-  console.log(pushToken, "device token");
+    const pushToken = await AsyncStorage.getItem('deviceToken');
+    const { categoriesType } = getState().merchantReducer;
 
-  const newBody = {
-    params: {
-      ...body,
-      device_id: pushToken,
-      expo_token: pushToken,
-      device_token: pushToken,
-    },
+    const newBody = {
+      params: {
+        ...body,
+        device_id: pushToken,
+        expo_token: pushToken,
+        device_token: pushToken,
+      },
+    };
+
+    console.log(newBody, 'new body');
+
+    try {
+      const res = await authApi.login(newBody);
+
+      console.log(res.data, 'login res');
+
+      if (typeof res.data.result.error === 'string') {
+        setFieldError(
+          inputType === LOGIN_INPUT_TYPES.phone ? 'phone' : 'email',
+          res.data.result.error,
+        );
+        dispatch(setIsLoginError(true));
+
+        return;
+      }
+
+      await AsyncStorage.setItem('userId', res.data.result.id.toString());
+      await AsyncStorage.setItem(
+        'family_head_id',
+        `${res.data.result.family_head_id}`,
+      );
+      await AsyncStorage.setItem(
+        'tracking_partner_id',
+        `${res.data.result.tracking_partner_id}`,
+      );
+      await AsyncStorage.setItem(
+        'paused_notification',
+        `${res.data.result.paused_notification}`,
+      );
+      await AsyncStorage.setItem('token', res.data.result.token);
+      await AsyncStorage.setItem('isUserLoggedOut', 'false');
+
+      dispatch(setToken(res.data.result.token));
+      dispatch(setUserId(res.data.result.id));
+
+      dispatch(getUserData(res.data.result.token));
+      dispatch(getAdvert());
+      dispatch(getParentCategories(categoriesType));
+      dispatch(getMessageNotifications());
+      dispatch(setIsAuthorized(true));
+    } catch (err) {
+      dispatch(setIsLoginError(true));
+      console.log(err, 'login error');
+    } finally {
+      dispatch(setLoginLoading(false));
+    }
   };
 
-  try {
-    const res = await authApi.login(newBody);
-
-    if (res.data.result.error) {
-      dispatch(setIsLoginError(true));
-
-      return;
-    }
-
-    await AsyncStorage.setItem("userId", res.data.result.id.toString());
-    await AsyncStorage.setItem(
-      "family_head_id",
-      `${res.data.result.family_head_id}`
-    );
-    await AsyncStorage.setItem(
-      "tracking_partner_id",
-      `${res.data.result.tracking_partner_id}`
-    );
-    await AsyncStorage.setItem(
-      "paused_notification",
-      `${res.data.result.paused_notification}`
-    );
-    await AsyncStorage.setItem("token", res.data.result.token);
-    if (i == "isRegister") {
-      await dispatch(verifyEmail());
-      // await dispatch(verifyPhone());
-    }
-    await AsyncStorage.setItem("isUserLoggedOut", "false");
-    await setIfEverLoggedIn(true.toString());
-
-    dispatch(setToken(res.data.result.token));
-    dispatch(setUserId(res.data.result.id));
-
-    dispatch(getUserData(res.data.result.token));
-    dispatch(getAdvert());
-    dispatch(getParentCategories(categoriesType));
-    dispatch(getMessageNotifications());
-    dispatch(setIsAuthorized(true));
-  } catch (err) {
-    dispatch(setIsLoginError(true));
-    console.log(err, "errr");
-  } finally {
-    dispatch(setLoginLoading(false));
-  }
-};
-
-export const logout = () => async (dispatch, getState) => {
-  await AsyncStorage.setItem("token", "");
-
+export const logout = () => async dispatch => {
+  // let { token } = getState().authReducer;
+  // await authApi.logout({ params: { token } });
   dispatch(setIsUserJustLogOut(true));
   dispatch(setToken(null));
   dispatch(setUserId(null));
   dispatch(setUser(null));
   dispatch(setIsAuthorized(false));
 
-  await AsyncStorage.setItem("isUserLoggedOut", "true");
+  await AsyncStorage.setItem('isUserLoggedOut', 'true');
+  // await AsyncStorage.removeItem("token");
+  // await AsyncStorage.removeItem("userId");
+  // await AsyncStorage.removeItem("family_head_id");
 };
 
-export const verifyEmail = () => async (dispatch) => {
-  const token = await AsyncStorage.getItem("token");
-  console.log("verifyEmail starts body:", token);
-  const param = {
-    params: {
-      token,
-    },
-  };
-  try {
-    dispatch(setConfirmationcodeLoading(true));
-    const res = await authApi.verifyEmail(param);
-    console.log("verifyEmail response:", res.data);
-    if (res?.data?.result?.success) {
-      dispatch(getInitialData());
-    } else {
-    }
-  } catch (e) {
-    console.error("Error in verifyEmail:", e);
-  } finally {
-    dispatch(setConfirmationcodeLoading(false));
-  }
-};
+export const updateProfile =
+  (body, navigation, t) => async (dispatch, getState) => {
+    const { token, user, userId } = getState().authReducer;
+    console.log('update profiel');
 
-export const verifyPhone = () => async (dispatch) => {
-  const token = await AsyncStorage.getItem("token");
-  console.log("verifyPhone starts token:", token);
-  const param = {
-    params: {
-      token,
-    },
-  };
-  try {
-    dispatch(setConfirmationcodeLoading(true));
-    const res = await authApi.verifyPhone(param);
-    console.log("verifyPhone response:", res.data);
-    if (res?.data?.result?.success) {
-      dispatch(getInitialData());
-    } else {
-    }
-  } catch (e) {
-    console.error("Error in verifyPhone:", e);
-  } finally {
-    dispatch(setConfirmationcodeLoading(false));
-  }
-};
+    if (body.email && user.email !== body.email) {
+      const res = await authApi.checkEmail({
+        params: {
+          token,
+          email: body.email,
+        },
+      });
 
-export const updateProfile = (body, i) => async (dispatch, getState) => {
-  const { token, userId, profileLoading } = getState().authReducer;
-  console.log("updateProfileupdateProfile body:", body);
-  try {
-    if (!profileLoading) {
-      dispatch(setProfileLoading(true));
-    }
-    const res = await authApi.updateProfile(userId, {
-      params: {
-        token,
-        update_vals: JSON.stringify(body),
-      },
-    });
-    console.log("res.data:", res.data);
-    if (res.data.result?.success) {
-      if (i == "isProfile") {
-        navigationRef.goBack();
+      if (res.data?.result?.error) {
+        showMessage({
+          message: t('Profile.emailExists'),
+          type: 'danger',
+        });
+
+        return;
       }
-      if (body.email) {
-        console.log("Emaaaaaaaaaaaa");
-        await dispatch(verifyEmail());
-      }
-      // if (body.phone) {
-      //   console.log("Phoneeeeee");
-      //   await dispatch(verifyPhone());
-      // }
-      showMessage({
-        message: i18next.t("Profile.profileUpdated"),
-        type: "success",
-      });
-      dispatch(getUserData(token));
-      showMessage({
-        message: i18next.t("Profile.profileUpdated"),
-        type: "success",
-      });
-    } else {
-      showMessage({
-        message: i18next.t("Profile.profileUpdateError"),
-        type: "danger",
-      });
     }
-  } catch (err) {
-    showMessage({
-      message: i18next.t("Profile.profileUpdateError"),
-      type: "danger",
-    });
-  } finally {
-    dispatch(setProfileLoading(false));
-  }
-};
+    if (body.phone && user.phone !== body.phone) {
+      const res = await authApi.checkPhone({
+        params: {
+          token,
+          phone: body.phone,
+        },
+      });
+      if (res.data?.result?.error) {
+        showMessage({
+          message: t('Profile.phoneExists'),
+          type: 'danger',
+        });
 
-export const getUserBanners = (token) => async (dispatch) => {
+        return;
+      }
+    }
+
+    try {
+      const response = await authApi.updateProfile(userId, {
+        params: {
+          token,
+          update_vals: JSON.stringify(body),
+        },
+      });
+
+      if (response.data?.result?.success) {
+        dispatch(getUserData(token));
+        showMessage({
+          message: t('Profile.profileUpdated'),
+          type: 'success',
+        });
+        return { success: true, result: response.data.result };
+      } else
+        showMessage({
+          message: response.data?.result?.error,
+          type: 'success',
+        });
+    } catch (error) {
+      showMessage({
+        message: t('Profile.updateFailed'), // Provide a fallback message
+        type: 'error',
+      });
+      return { success: false, error: error.message };
+    }
+    if (navigation) navigation.navigate('Profile');
+  };
+
+export const getUserBanners = token => async dispatch => {
   const userRes = await authApi.getUserBanners({
     params: {
       token,
@@ -231,15 +202,15 @@ export const getUserBanners = (token) => async (dispatch) => {
 
   const banners = userRes.data.result.banners;
   const sortedBanners = banners.sort((a, b) =>
-    a.x_sequence > b.x_sequence ? 1 : -1
+    a.x_sequence > b.x_sequence ? 1 : -1,
   );
 
   dispatch(setPremiumBanners(sortedBanners));
 };
 
-export const getUserData = (token) => async (dispatch) => {
-  const paused_notification = await AsyncStorage.getItem("paused_notification");
-
+export const getUserData = token => async dispatch => {
+  const paused_notification = await AsyncStorage.getItem('paused_notification');
+  console.log('data:token:', token);
   const res = await authApi.getUserData({
     params: { token },
   });
@@ -249,11 +220,14 @@ export const getUserData = (token) => async (dispatch) => {
       setUser({
         ...res.data.result.profile,
         x_moi_last_name: res.data.result.x_moi_last_name,
+        x_first_name_arbic: res.data.result.x_first_name_arbic,
+        x_last_name_arbic: res.data.result.x_last_name_arbic,
+        x_user_expiry: res.data.result.x_user_expiry,
         photo: `${res.data.result.profile.photo}?time=${new Date()}`,
         paused_notification: JSON.parse(paused_notification),
-        x_user_expiry: res.data.result.x_user_expiry,
-      })
+      }),
     );
+
     dispatch(setPremiumMerchants(res.data.result.premium_merchants));
     dispatch(setToken(token));
     dispatch(setIsMainUser(res.data.result.main_member));
@@ -262,8 +236,8 @@ export const getUserData = (token) => async (dispatch) => {
     dispatch(setUserId(null));
 
     // await AsyncStorage.removeItem("token");
-    await AsyncStorage.removeItem("userId");
-    await AsyncStorage.removeItem("family_head_id");
+    await AsyncStorage.removeItem('userId');
+    await AsyncStorage.removeItem('family_head_id');
   }
 };
 
@@ -282,8 +256,8 @@ export const contactUs =
 export const getAppStatus = () => async (dispatch, getState) => {
   try {
     const res = await authApi.getAppStatus();
-    if (res.data["enable-app"] === "0") dispatch(setWorkStatus(APP_DISABLED));
-    if (res.data["content-display"] === "Disable")
+    if (res.data['enable-app'] === '0') dispatch(setWorkStatus(APP_DISABLED));
+    if (res.data['content-display'] === 'Disable')
       dispatch(setWorkStatus(CONTENT_DISABLED));
   } catch (e) {
     dispatch(setWorkStatus(APP_ENABLED));
@@ -291,12 +265,12 @@ export const getAppStatus = () => async (dispatch, getState) => {
 };
 
 export const resetPassword =
-  (body, setFieldError, t, setIsSuccessSend) => async (dispatch) => {
+  (body, setFieldError, t, setIsSuccessSend) => async dispatch => {
     try {
       const res = await authApi.resetPassword(body);
 
       if (res.data.result.error) {
-        setFieldError("login", t("Login.emailNotFound"));
+        setFieldError('login', t('Login.emailNotFound'));
       } else {
         setIsSuccessSend(true);
       }
@@ -305,45 +279,12 @@ export const resetPassword =
     }
   };
 
-export const getPublicOrganizations = () => async (dispatch) => {
-  try {
-    const res = await authApi.getPublicOrganizations();
-    dispatch(setPublicOrganizations(res.data.result));
-  } catch (e) {
-    console.log(e);
-  }
-};
-
-export const checkCode =
-  (body, setFieldError, t, navigation, registerBody, isNeedCode) =>
-  async (dispatch) => {
-    try {
-      let res;
-      if (isNeedCode) {
-        res = await authApi.checkCode(body);
-      }
-
-      if (
-        !isNeedCode ||
-        (res &&
-          res.data.result.length > 0 &&
-          res.data.result[res.data.result.length - 1].org_name ===
-            body.params.org_name)
-      ) {
-        navigation.navigate("CreatePassword", { registerBody });
-      } else {
-        setFieldError("organizationCode", t("Login.wrongCode"));
-      }
-    } catch (e) {
-      console.log(e);
-      setFieldError("organizationCode", t("Login.wrongCode"));
-    }
-  };
-
-export const register = (body) => async (dispatch) => {
+export const register = body => async dispatch => {
   try {
     dispatch(setLoginLoading(true));
     const res = await authApi.register({ params: body });
+
+    console.log(res, 'register res');
 
     if (!res.data?.result?.error) {
       const loginData = {
@@ -352,15 +293,23 @@ export const register = (body) => async (dispatch) => {
         password: body.password,
       };
 
-      dispatch(login(loginData, "isRegister"));
+      dispatch(login(loginData));
     } else {
       dispatch(setLoginLoading(false));
-      console.log("before error");
-      alert(i18next.t("Login.somethingWrong"));
+
+      res.data.result.error
+        ? showMessage({
+            message: res.data.result.error, // Provide a fallback message
+            type: 'error',
+          })
+        : showMessage({
+            message: i18next.t('Login.somethingWrong'), // Provide a fallback message
+            type: 'error',
+          });
     }
   } catch (e) {
     dispatch(setLoginLoading(false));
-    console.log(e, "register error");
+    console.log(e, 'register error');
   }
 };
 
@@ -370,27 +319,27 @@ export const sendOTPEmail = (email, setFieldError) => async () => {
       params: { email },
     });
 
-    if (typeof res.data.result?.error === "string") {
-      setFieldError("email", res.data.result?.error);
+    if (typeof res.data.result?.error === 'string') {
+      setFieldError('email', res.data.result?.error);
       return;
     }
 
     if (!res.data.result) {
-      setFieldError("email", i18next.t("Login.emailDoesntExist"));
+      setFieldError('email', i18next.t('Login.emailDoesntExist'));
       return;
     } else {
       showMessage({
         message: res.data.result.success,
-        type: "success",
+        type: 'success',
       });
     }
 
-    navigationRef.navigate("Verification", {
+    navigationRef.navigate('Verification', {
       email,
       isForgotPassword: true,
     });
   } catch (err) {
-    setFieldError("email", i18next.t("Login.somethingWrong"));
+    setFieldError('email', i18next.t('Login.somethingWrong'));
   }
 };
 
@@ -402,7 +351,7 @@ export const sendOTP =
     navigation,
     setFieldError,
     t,
-    isForgotPassword
+    isForgotPassword,
   ) =>
   async () => {
     try {
@@ -417,15 +366,15 @@ export const sendOTP =
         });
       }
 
-      if (typeof res.data?.result?.error === "string") {
-        setFieldError("phone", res.data?.result?.error);
+      if (typeof res.data?.result?.error === 'string') {
+        setFieldError('phone', res.data?.result?.error);
         return;
       }
 
       if (!res?.data?.result) {
         showMessage({
-          message: t("Login.somethingWrong"),
-          type: "error",
+          message: t('Login.somethingWrong'),
+          type: 'error',
         });
 
         return;
@@ -433,24 +382,23 @@ export const sendOTP =
 
       showMessage({
         message: res.data.result.success,
-        type: "success",
+        type: 'success',
       });
 
-      navigation.navigate("Verification", {
+      navigation.navigate('Verification', {
         registerBody,
         phone: body.phone,
         isForgotPassword,
       });
     } catch (e) {
-      setFieldError("phone", t("Login.somethingWrong"));
+      setFieldError('phone', t('Login.somethingWrong'));
     }
   };
 
 export const verify =
   (body, navigation, setFieldError, t, registerBody, isForgotPassword) =>
-  async (dispatch) => {
+  async dispatch => {
     try {
-      dispatch(setProfileLoading(true));
       let res;
       if (isForgotPassword) {
         res = await authApi.verify(body);
@@ -460,86 +408,124 @@ export const verify =
 
       if (res.data?.result?.success) {
         if (isForgotPassword)
-          navigation.navigate("CreatePassword", {
+          navigation.navigate('CreatePassword', {
             isForgotPassword: true,
             token: res.data.result?.token,
           });
         else {
           dispatch(register(registerBody, navigation, t));
-          navigation.navigate("Login");
+          navigation.navigate('Login');
         }
       } else {
-        setFieldError("code", t("Login.wrongCode"));
+        setFieldError('code', t('Login.wrongCode'));
       }
     } catch (e) {
       console.log(e);
-    } finally {
-      dispatch(setProfileLoading(false));
     }
   };
-
-export const validate_code = (body, setFieldError, t) => async (dispatch) => {
-  console.log("validate_code starts body 1:");
-  try {
-    console.log("validate_code starts body:", body);
-    dispatch(setConfirmationcodeLoading(true));
-    let res;
-    res = await authApi.validate_code(body);
-  } catch (e) {
-    console.log(e);
-  } finally {
-    dispatch(setConfirmationcodeLoading(false));
-  }
-};
 
 export const verifyMoiCode =
   (body, navigation, setFieldError, t, registerBody, isForgotPassword) =>
-  async (dispatch) => {
-    console.log("verifyMoiCode verifyMoiCode:", body);
+  async dispatch => {
+    console.log('verifyMoiCode verifyMoiCode:', body);
+    let code = body.params.activationCode;
     try {
       let res;
       res = await authApi.verifyMoiCode(body);
-      console.log("ressssss verifyMoiCode:", res.data);
-      if (res.data?.result && res.data.result.length != 0) {
-        console.log("done verifyMoiCode:", res.data.result);
-        navigation.navigate("Register", {
-          data: res.data.result,
+      // Convert response to string if it's not already a string
+      let soapResponse = res.data;
+
+      if (typeof soapResponse !== 'string') {
+        soapResponse = JSON.stringify(soapResponse); // Convert to string if it's an object or other type
+      }
+
+      console.log('Converted soapResponse to string:', soapResponse);
+
+      // Extract data using regular expressions
+      const firstNameEn = soapResponse.match(
+        /<firstNameEn>(.*?)<\/firstNameEn>/,
+      )?.[1];
+      const lastNameEn = soapResponse.match(
+        /<lastNameEn>(.*?)<\/lastNameEn>/,
+      )?.[1];
+      const firstNameAr = soapResponse.match(
+        /<firstNameAr>(.*?)<\/firstNameAr>/,
+      )?.[1];
+      const lastNameAr = soapResponse.match(
+        /<lastNameAr>(.*?)<\/lastNameAr>/,
+      )?.[1];
+      const cardNumber = soapResponse.match(
+        /<cardNumber>(.*?)<\/cardNumber>/,
+      )?.[1];
+      const cardType = soapResponse.match(/<cardType>(.*?)<\/cardType>/)?.[1];
+
+      const errorMessageEn = soapResponse.match(
+        /<errorMessageEn>(.*?)<\/errorMessageEn>/,
+      )?.[1];
+      const errorMessageENG = soapResponse.match(
+        /<errorMessageENG>(.*?)<\/errorMessageENG>/,
+      )?.[1];
+
+      // Check if data was successfully extracted
+      if (
+        !firstNameEn ||
+        !lastNameEn ||
+        !cardNumber ||
+        !cardType ||
+        !firstNameAr ||
+        !lastNameAr
+      ) {
+        console.log(
+          'Error: Failed to extract necessary fields from the response.',
+        );
+        errorMessageENG
+          ? setFieldError('qidExpiry', t('Login.wrongExpiry'))
+          : setFieldError('registration_code', t('Login.wrongCode'));
+        return;
+      }
+
+      console.log('First Name (En):', firstNameEn);
+      console.log('Last Name (En):', lastNameEn);
+      console.log('First Name (Ar):', firstNameAr);
+      console.log('Last Name (Ar):', lastNameAr);
+      console.log('Card Number:', cardNumber);
+      console.log('Card Type:', cardType);
+      if (firstNameEn) {
+        navigation.navigate('Register', {
+          firstNameEn,
+          firstNameAr,
+          lastNameEn,
+          lastNameAr,
+          cardNumber,
+          cardType,
+          code,
         });
       } else {
-        setFieldError("registration_code", t("Login.wrongCode"));
+        errorMessageENG
+          ? setFieldError('qidExpiry', t('Login.wrongExpiry'))
+          : setFieldError('registration_code', t('Login.wrongCode'));
       }
     } catch (e) {
-      console.log(e);
+      console.log('is it error?????', e);
     }
   };
 
-export const verifyRegisterCode =
-  (body, navigation, setFieldError, t) => async (dispatch) => {
-    const DEFAULT_ORGANIZATION_CODE = "6603";
-    console.log("verifyRegisterCode :", body);
+export const verifyMoiCode1 =
+  (body, navigation, setFieldError, t, registerBody, isForgotPassword) =>
+  async dispatch => {
+    console.log('verifyMoiCode verifyMoiCode:', body);
     try {
       let res;
-      res = body.params.code == DEFAULT_ORGANIZATION_CODE;
-      console.log("ressssss verifyRegisterCode:", res);
-      if (res) {
-        console.log("done verifyRegisterCode:", res);
-        const randomCode = Math.floor(1000 + Math.random() * 9000);
-        await AsyncStorage.setItem("randomCode", JSON.stringify(randomCode));
-        const payload = {
-          params: {
-            email: body.params.email,
-            validate_code: randomCode,
-            method: "email",
-          },
-        };
-        res = await authApi.validate_code(payload);
-        if (res.data.result.status === "success") {
-          dispatch(setRegisterationcodeLoading(false));
-          navigation.navigate("CodeConfirmation", body);
-        }
+      res = await authApi.verifyMoiCode(body);
+      console.log('ressssss verifyMoiCode:', res.data);
+      if (res.data?.result?.first_name) {
+        navigation.navigate('Register', {
+          data: res.data.result,
+        });
       } else {
-        dispatch(setRegisterationcodeLoading(false));
-        setFieldError("registration_code", t("Login.wrongCode"));
+        errorMessageENG
+          ? setFieldError('qidExpiry', t('Login.wrongExpiry'))
+          : setFieldError('registration_code', t('Login.wrongCode'));
       }
     } catch (e) {
       console.log(e);
@@ -547,23 +533,19 @@ export const verifyRegisterCode =
   };
 
 export const changePassword =
-  (body, navigation, setFieldError, t) => async (dispatch) => {
+  (body, navigation, setFieldError, t) => async () => {
     try {
-      dispatch(setProfileLoading(true));
       const res = await authApi.changePassword({ params: body });
 
       if (!res.data.result?.error) {
-        navigation.navigate("Login");
+        navigation.navigate('Login');
       } else {
-        setFieldError("repeatPassword", t("Login.somethingWrong"));
+        setFieldError('repeatPassword', t('Login.somethingWrong'));
       }
-    } catch (e) {
-    } finally {
-      dispatch(setProfileLoading(false));
-    }
+    } catch (e) {}
   };
 
-export const getVersion = () => async (dispatch) => {
+export const getVersion = () => async dispatch => {
   try {
     const res = await authApi.getVersion();
 

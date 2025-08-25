@@ -1,8 +1,14 @@
-import React, { useCallback, useEffect, useRef, useState, useMemo } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  useMemo,
+} from "react";
 import MainLayout from "../../../components/MainLayout";
 import { SCREEN_HEIGHT } from "../../../styles/mainStyles";
 import { ActivityIndicator, FlatList, View } from "react-native";
-import { connect,useSelector,useDispatch } from "react-redux";
+import { connect, useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "../../../components/ThemeProvider";
 import { colors } from "../../../components/colors";
@@ -16,7 +22,7 @@ import {
   getCardmolaGiftCards,
   getGiftCards,
 } from "../../../redux/giftCards/giftcards-thunks";
-import {checkCardmolaPaymentById } from "../../../api/giftCard";
+import { checkCardmolaPaymentById } from "../../../api/giftCard";
 import PagerView from "react-native-pager-view";
 import { StyleSheet } from "react-native";
 import { BALOO_MEDIUM } from "../../../redux/types";
@@ -54,10 +60,14 @@ const MyVouchers = ({
   const [selectedPage, setSelectedPage] = useState("0");
   const pagerViewRef = useRef(null);
   const [selectedCountry, setSelectedCountry] = useState(DEFAULT_COUNTRY);
-  const [selectedCardmolaCountry, setSelectedCardmolaCountry] = useState(undefined);
-  const [selectedCardmolaCountryFullData, setSelectedCardmolaCountryFullData] = useState(undefined);
-  const [selectedUGotGiftCategory,  setSelectedUGotGiftCategory] = useState(undefined);
-  const [selectedCardmolaCategory, setSelectedCardmolaCategory] = useState(undefined);
+  const [selectedCardmolaCountry, setSelectedCardmolaCountry] =
+    useState(undefined);
+  const [selectedCardmolaCountryFullData, setSelectedCardmolaCountryFullData] =
+    useState(undefined);
+  const [selectedUGotGiftCategory, setSelectedUGotGiftCategory] =
+    useState(undefined);
+  const [selectedCardmolaCategory, setSelectedCardmolaCategory] =
+    useState(undefined);
 
   const title = t("Drawer.vouchersAndGiftCards");
 
@@ -77,9 +87,11 @@ const MyVouchers = ({
   useFocusEffect(
     useCallback(() => {
       const { paymentDataGlobal } = store.getState().giftcardsReducer;
-     
-    
-      console.log("useFocusEffectuseFocusEffect Voucher check &&&&&&&&&&&&&&:",paymentDataGlobal)
+
+      console.log(
+        "useFocusEffectuseFocusEffect Voucher check &&&&&&&&&&&&&&:",
+        paymentDataGlobal
+      );
       async function checkPaymentStatus() {
         if (paymentDataGlobal) {
           try {
@@ -92,15 +104,14 @@ const MyVouchers = ({
                 message: t("Vouchers.giftCardPaymentSuccess"),
                 type: "success",
               });
-            }
-            else {
+            } else {
               showMessage({
                 message: t("Vouchers.giftCardPaymentFailure"),
                 type: "danger",
               });
             }
 
-      dispatch(setPaymentDataGlobal(null));
+            dispatch(setPaymentDataGlobal(null));
           } catch (err) {
             console.log(err.message, "dsadaerr");
           }
@@ -121,13 +132,17 @@ const MyVouchers = ({
     if (selectedPage === "1") {
       getGiftCards(selectedUGotGiftCategory, selectedCountry);
     }
-  }, [selectedPage,selectedUGotGiftCategory, selectedCountry]);
+  }, [selectedPage, selectedUGotGiftCategory, selectedCountry]);
 
   useEffect(() => {
     if (selectedPage === "2") {
       getCardmolaGiftCards(selectedCardmolaCountry);
     }
-  }, [selectedPage, selectedCardmolaCountry,setSelectedCardmolaCountryFullData]);
+  }, [
+    selectedPage,
+    selectedCardmolaCountry,
+    setSelectedCardmolaCountryFullData,
+  ]);
 
   const handleVoucherPress = (voucher) => {
     navigation.navigate("myVouchers-voucher", {
@@ -151,18 +166,17 @@ const MyVouchers = ({
     if (!selectedCardmolaCategory) {
       return cardmolaGiftCards;
     }
-  
+
     // Otherwise, filter based on selectedCardmolaCategory
     return cardmolaGiftCards?.filter((item) => {
       return selectedCardmolaCategory.includes(String(item?.id));
     });
-  }, [cardmolaGiftCards, selectedCardmolaCategory,selectedCardmolaCountry]);
-  
-  
+  }, [cardmolaGiftCards, selectedCardmolaCategory, selectedCardmolaCountry]);
 
-  const handleCardmolaGiftCardPress = (id,encodedId) => {
+  const handleCardmolaGiftCardPress = (id, encodedId) => {
     navigation.setParams({ selectedPage: undefined });
-    navigation.navigate("myVouchers-cardmolaGiftCard", {id,
+    navigation.navigate("myVouchers-cardmolaGiftCard", {
+      id,
       encodedId,
     });
   };
@@ -171,8 +185,12 @@ const MyVouchers = ({
     ({ item }) => {
       return (
         <GiftCard
-        name={i18n.language === "ar" && item.name_arabic != false ? item.name_arabic : item.name}
-        imageUrl={
+          name={
+            i18n.language === "ar" && item.name_arabic != false
+              ? item.name_arabic
+              : item.name
+          }
+          imageUrl={
             item.logo ? `data:image/png;base64,${item.logo}` : undefined
           }
           isDark={isDark}
@@ -186,6 +204,8 @@ const MyVouchers = ({
 
   const renderGifts = useCallback(
     ({ item }) => {
+      console.log(item, "item");
+      console.log(Object.keys(item));
       return (
         <GiftCard
           name={item.name}
@@ -201,13 +221,14 @@ const MyVouchers = ({
 
   const renderCardmolaGifts = useCallback(
     ({ item }) => {
+      console.log(Object.keys(item));
       return (
         <GiftCard
           name={item.name}
           imageUrl={item?.media?.photo}
           isDark={isDark}
           key={item.id}
-          onPress={() => handleCardmolaGiftCardPress(item.id,item.encodedId)}
+          onPress={() => handleCardmolaGiftCardPress(item.id, item.encodedId)}
         />
       );
     },
@@ -237,11 +258,11 @@ const MyVouchers = ({
     setSelectedUGotGiftCategory(i || undefined);
   };
 
-  const handleCardmolaCountryPress = (country,fullData) => {
+  const handleCardmolaCountryPress = (country, fullData) => {
     setSelectedCardmolaCountry(country);
-    setSelectedCardmolaCategory(undefined)
-    setSelectedCardmolaCountryFullData(fullData)
-    getCardmoolaCategories(fullData?.shortName)
+    setSelectedCardmolaCategory(undefined);
+    setSelectedCardmolaCountryFullData(fullData);
+    getCardmoolaCategories(fullData?.shortName);
   };
   const handleCardmolaCategoryPress = (i) => {
     setSelectedCardmolaCategory(i);
@@ -311,9 +332,9 @@ const MyVouchers = ({
           />
         </View>
         <View key="1" style={styles.listWrapper}>
-        <View
+          <View
             style={{
-              flexDirection:i18n.language === "ar" ? "row-reverse" : "row",
+              flexDirection: i18n.language === "ar" ? "row-reverse" : "row",
               width: "90%",
               alignItems: "center",
               justifyContent: "space-between",
@@ -331,12 +352,12 @@ const MyVouchers = ({
               style={{
                 flexDirection: "row",
                 alignItems: "center",
-                alignSelf:'flex-end',
-               // backgroundColor: "red",
+                alignSelf: "flex-end",
+                // backgroundColor: "red",
               }}
             >
-            <CountrySelect onChange={handleCounntryPress} />
-            <UGotGiftCategorySelect onChange={handleUGotGiftCategoryPress} />
+              <CountrySelect onChange={handleCounntryPress} />
+              <UGotGiftCategorySelect onChange={handleUGotGiftCategoryPress} />
             </View>
           </View>
 
@@ -370,33 +391,33 @@ const MyVouchers = ({
           />
         </View>
         <View key="2" style={styles.listWrapper}>
-        <View
+          <View
             style={{
-              flexDirection:i18n.language === "ar" ? "row-reverse" : "row",
+              flexDirection: i18n.language === "ar" ? "row-reverse" : "row",
               width: "90%",
               alignItems: "center",
               justifyContent: "space-between",
-              alignSelf: "center"
+              alignSelf: "center",
             }}
           >
-          <TypographyText
-            title={t("Vouchers.filterby")}
-            textColor={isDark ? colors.mainDarkMode : colors.darkBlue}
-            size={16}
-            font={BALOO_MEDIUM}
-          />
+            <TypographyText
+              title={t("Vouchers.filterby")}
+              textColor={isDark ? colors.mainDarkMode : colors.darkBlue}
+              size={16}
+              font={BALOO_MEDIUM}
+            />
             <View
               style={{
                 flexDirection: "row",
                 alignItems: "center",
-                alignSelf:'flex-end',
-               // backgroundColor: "red",
+                alignSelf: "flex-end",
+                // backgroundColor: "red",
               }}
             >
-        <CardmolaCountryPicker onChange={handleCardmolaCountryPress} />
-        <CardmolaCategoryPicker  onChange={handleCardmolaCategoryPress} />    
-        </View>
-        </View>
+              <CardmolaCountryPicker onChange={handleCardmolaCountryPress} />
+              <CardmolaCategoryPicker onChange={handleCardmolaCategoryPress} />
+            </View>
+          </View>
           <FlatList
             contentContainerStyle={[
               styles.listContainer,

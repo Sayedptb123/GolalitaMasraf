@@ -1,54 +1,15 @@
 import { getStringDate, isRTL } from "../../../utils";
-import { navigate ,navigationRef} from "../../Navigation/RootNavigation";
+import { navigate } from "../../Navigation/navigationHelpers";
 import { getMerchantDetails, getOffers } from "../../api/merchants";
-import { getMerchantDetails as getMerchantDetailsRedux  } from "../../redux/merchant/merchant-thunks";
 import i18n from "../../languages";
 import store from "../../redux/store";
 import { B1G1 } from "../../redux/types";
-import { getCategoryNameByIdAndLang } from "../../components/Categories/helpers";
-import i18next from "i18next";
 
-export const handleOfferCardPress = (item, isOfferList) => {
-  if (isOfferList) {
-    navigate("offer-info", {
-      productId: item.id,
-      title: isRTL() ? item.x_arabic_name : item.name,
-    });
-
-    return;
-  }
-  navigate("AllOffers", {
-    screen: "offer-info",
-    params: {
-      productId: item.id,
-      title: isRTL() ? item.x_arabic_name : item.name,
-    },
+export const handleOfferCardPress = (item) => {
+  navigate("offer-info", {
+    productId: item.id,
+    title: isRTL() ? item.x_arabic_name : item.name,
   });
-};
-
-export const navigateToBookNow = (offer, merchant) => {
-  navigate("BookHotel", {
-    productId: offer.id,
-    title: isRTL() ? offer.x_arabic_name : offer.name,
-    merchant_id: merchant.merchant_id,
-    name: offer.merchant_name,
-    email: merchant.email,
-    product_id: offer.product_id,
-    product_name: offer.name,
-    product_price: offer.price,
-  });
-};
-
-export const handleOfferCardPress1 = (merchant) => {
-  store.dispatch(
-    getMerchantDetailsRedux(
-      merchant.merchant_id,
-      navigationRef,
-      i18n.t,
-      getCategoryNameByIdAndLang(merchant.category_id),
-      merchant.isOrganization
-    )
-  );
 };
 
 export const navigateTopProductPage = (offer, merchant) => {
@@ -92,26 +53,8 @@ export const getInfoText = (offer, merchant) => {
   return "";
 };
 
-export const getDescription = (offer) => {
-  if (offer.x_offer_type === B1G1) {
-    return i18n.t("Drawer.B1G1");
-  }
-
-  return i18next.language === "ar" ? offer.x_label_arabic : offer.offer_label;
-};
-
 export const handleInfoTextPress = (offer, merchant) => {
   if (merchant.is_business_hotel || offer.is_business_hotel) {
-    // navigate("BookHotel", {
-    //   merchant_id: merchant.merchant_id,
-    //   name: merchant.merchant_name,
-    //   email: merchant.email,
-    //   product_id: offer.id,
-    //   product_name: offer.name,
-    //   product_price: offer.list_price,
-    // });
-
-    // return;
     if (merchant.is_business_hotel) {
       navigate("AllOffers", {
         screen: "offer-info",
@@ -160,7 +103,9 @@ export const handleInfoTextPress = (offer, merchant) => {
 
 export const getOffersForNestedItemsCard = async (merchant, type) => {
   const user = store.getState().authReducer.user;
+
   if (merchant.is_business_hotel || type === "all") {
+    console.log("here");
     const merchantDetails = await getMerchantDetails({
       merchant_id: merchant.merchant_id,
       x_for_employee_type: user?.employee_type,
@@ -197,4 +142,17 @@ export const getOffersForNestedItemsCard = async (merchant, type) => {
   }));
 
   return transformedOffers;
+};
+
+export const navigateToBookNow = (offer, merchant) => {
+  navigate("BookHotel", {
+    productId: offer.id,
+    title: isRTL() ? offer.x_arabic_name : offer.name,
+    merchant_id: merchant.merchant_id,
+    name: offer.merchant_name,
+    email: merchant.email,
+    product_id: offer.product_id,
+    product_name: offer.name,
+    product_price: offer.price,
+  });
 };

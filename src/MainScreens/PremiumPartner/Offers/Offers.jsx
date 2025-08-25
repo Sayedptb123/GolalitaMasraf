@@ -13,7 +13,7 @@ import {
   getProducts,
 } from "../../../redux/merchant/merchant-thunks";
 import { colors } from "../../../components/colors";
-import { BALOO_REGULAR } from "../../../redux/types";
+import { LUSAIL_REGULAR } from "../../../redux/types";
 import { TypographyText } from "../../../components/Typography";
 import { useTranslation } from "react-i18next";
 
@@ -65,7 +65,7 @@ const Offers = ({
           <TypographyText
             textColor={isDark ? colors.white : colors.darkBlue}
             size={16}
-            font={BALOO_REGULAR}
+            font={LUSAIL_REGULAR}
             title={t("MainScreen.offersNotFound")}
           />
         </View>

@@ -1,6 +1,5 @@
 import React from "react";
-import { SafeAreaView, ScrollView, View, StyleSheet, Text } from "react-native";
-import LinearGradient from "react-native-linear-gradient";
+import { SafeAreaView, View, StyleSheet } from "react-native";
 import { colors } from "./colors";
 import { mainStyles, SCREEN_HEIGHT } from "../styles/mainStyles";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -19,7 +18,13 @@ const MainLayout = ({
 
   return (
     <View
-      style={[{ flex: 1, backgroundColor: isDark ? "#0076a5" : "#fff" }, style]}
+      style={[
+        {
+          flex: 1,
+          backgroundColor: isDark ? colors.darkModeBackground : "#fff",
+        },
+        style,
+      ]}
       colors={
         customColors
           ? customColors
@@ -52,7 +57,7 @@ const MainLayout = ({
               <View
                 style={[
                   styles.content,
-                  isDark && { backgroundColor: "#0076a5" },
+                  isDark && { backgroundColor: colors.darkBlue },
                   contentStyle,
                 ]}
               >

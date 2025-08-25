@@ -4,11 +4,11 @@ import {
   View,
   Dimensions,
   ActivityIndicator,
-  Image
 } from "react-native";
 import { TypographyText } from "../Typography";
 import { colors } from "../colors";
-import { BALOO_SEMIBOLD } from "../../redux/types";
+import { LUSAIL_REGULAR } from "../../redux/types";
+import FastImage from "react-native-fast-image";
 import { StyleSheet } from "react-native";
 import { sized } from "../../Svg";
 import ArrowDownSvg from "../../assets/arrow_down_thin.svg";
@@ -18,7 +18,7 @@ import { isRTL } from "../../../utils";
 
 const { width } = Dimensions.get("screen");
 const itemWidth = (width - 66) / 3;
-const ArrowDownIcon = sized(ArrowDownSvg, 15, 15, "#350d05");
+const ArrowDownIcon = sized(ArrowDownSvg, 15, 15, "#027DC1");
 
 function ExpandedCategoryBlocks(props) {
   const {
@@ -62,8 +62,9 @@ function ExpandedCategoryBlocks(props) {
         <TypographyText
           textColor={isDark ? colors.white : colors.darkBlue}
           size={20}
-          font={BALOO_SEMIBOLD}
+          font={LUSAIL_REGULAR}
           title={title}
+          style={{ fontWeight: "700" }}
         />
         <View
           style={[
@@ -78,7 +79,7 @@ function ExpandedCategoryBlocks(props) {
               key={item.id}
             >
               {item.image_icon && (
-                <Image
+                <FastImage
                   source={{
                     uri: item.image_icon,
                   }}
@@ -96,7 +97,7 @@ function ExpandedCategoryBlocks(props) {
                 <TypographyText
                   textColor={colors.white}
                   size={12}
-                  font={BALOO_SEMIBOLD}
+                  font={LUSAIL_REGULAR}
                   title={language === "ar" ? item.x_name_arabic : item.name}
                   style={styles.name}
                   numberOfLines={2}
@@ -111,13 +112,13 @@ function ExpandedCategoryBlocks(props) {
               style={styles.collapseBtn}
             >
               <TypographyText
-                textColor="#350d05"
+                textColor="#027DC1"
                 size={14}
-                font={BALOO_SEMIBOLD}
+                font={LUSAIL_REGULAR}
                 title={t(
                   !isShownAllItems ? "General.viewAll" : "General.viewLess"
                 )}
-                style={{ marginRight: 4 }}
+                style={{ marginRight: 4, fontWeight: "700" }}
               />
 
               <View
@@ -143,11 +144,11 @@ function ExpandedCategoryBlocks(props) {
                 style={styles.paginationBtn}
               >
                 <TypographyText
-                  textColor="#350d05"
+                  textColor="#027DC1"
                   size={14}
-                  font={BALOO_SEMIBOLD}
+                  font={LUSAIL_REGULAR}
                   title={t("General.showLess")}
-                  style={{ marginRight: 4 }}
+                  style={{ marginRight: 4, fontWeight: "700" }}
                 />
                 <View style={{ transform: [{ rotate: "180deg" }] }}>
                   <ArrowDownIcon />
@@ -160,11 +161,11 @@ function ExpandedCategoryBlocks(props) {
                 style={styles.paginationBtn}
               >
                 <TypographyText
-                  textColor="#350d05"
+                  textColor="#027DC1"
                   size={14}
-                  font={BALOO_SEMIBOLD}
+                  font={LUSAIL_REGULAR}
                   title={t("General.showMore")}
-                  style={{ marginRight: 4 }}
+                  style={{ marginRight: 4, fontWeight: "700" }}
                 />
                 <ArrowDownIcon />
               </TouchableOpacity>
@@ -206,7 +207,9 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 8,
     borderBottomRightRadius: 8,
   },
-  name: {},
+  name: {
+    fontWeight: "700",
+  },
   collapseBtn: {
     width: "100%",
     flexDirection: "row",

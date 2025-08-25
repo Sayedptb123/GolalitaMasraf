@@ -1,0 +1,93 @@
+diff --git a/node_modules/react-native-pdf/android/build.gradle b/node_modules/react-native-pdf/android/build.gradle
+index 6aacccb..e227628 100644
+--- a/node_modules/react-native-pdf/android/build.gradle
++++ b/node_modules/react-native-pdf/android/build.gradle
+@@ -21,7 +21,7 @@ repositories {
+         url "$projectDir/../node_modules/react-native/android"
+         content {
+             // Use Jitpack only for AndroidPdfViewer; the rest is hosted at mavenCentral.
+-            includeGroup "com.github.zacharee"
++            includeGroup "com.github.r0b0t3d"
+         }
+     }
+     maven { url 'https://jitpack.io' }
+@@ -124,8 +124,8 @@ dependencies {
+     }
+     // NOTE: The original repo at com.github.barteksc is abandoned by the maintainer; there will be no more updates coming from that repo.
+     // The repo from zacharee is based on PdfiumAndroidKt, a much newer fork of PdfiumAndroid, with better maintenance and updated native libraries.
+-    implementation 'com.github.zacharee:AndroidPdfViewer:4.0.1'
++    implementation 'com.github.r0b0t3d:AndroidPdfViewer:1.0.0'
+     // Depend on PdfiumAndroidKt directly so this can be updated independently of AndroidPdfViewer as updates are provided.
+-    implementation 'io.legere:pdfiumandroid:1.0.19'
+-    implementation 'com.google.code.gson:gson:2.8.5'
++    implementation 'io.legere:pdfiumandroid:1.0.31'
++    implementation 'com.google.code.gson:gson:2.10.1'
+ }
+diff --git a/node_modules/react-native-pdf/android/src/main/java/org/wonday/pdf/PdfView.java b/node_modules/react-native-pdf/android/src/main/java/org/wonday/pdf/PdfView.java
+index 7b7a125..e10d074 100644
+--- a/node_modules/react-native-pdf/android/src/main/java/org/wonday/pdf/PdfView.java
++++ b/node_modules/react-native-pdf/android/src/main/java/org/wonday/pdf/PdfView.java
+@@ -36,14 +36,9 @@ import com.github.barteksc.pdfviewer.util.Constants;
+ import com.github.barteksc.pdfviewer.link.LinkHandler;
+ import com.github.barteksc.pdfviewer.model.LinkTapEvent;
+ 
+-import com.facebook.react.bridge.ReactContext;
+ import com.facebook.react.bridge.Arguments;
+ import com.facebook.react.bridge.WritableMap;
+-import com.facebook.react.bridge.ReactContext;
+-import com.facebook.react.uimanager.UIManagerModule;
+ import com.facebook.react.uimanager.events.EventDispatcher;
+-import com.facebook.react.uimanager.events.Event;
+-import com.facebook.react.uimanager.events.RCTEventEmitter;
+ 
+ 
+ import static java.lang.String.format;
+@@ -55,6 +50,11 @@ import com.google.gson.Gson;
+ 
+ import org.wonday.pdf.events.TopChangeEvent;
+ 
++import io.legere.pdfiumandroid.DefaultLogger;
++import io.legere.pdfiumandroid.Logger;
++import io.legere.pdfiumandroid.util.AlreadyClosedBehavior;
++import io.legere.pdfiumandroid.util.Config;
++
+ public class PdfView extends PDFView implements OnPageChangeListener,OnLoadCompleteListener,OnErrorListener,OnTapListener,OnDrawListener,OnPageScrollListener, LinkHandler {
+     private int page = 1;               // start from 1
+     private boolean horizontal = false;
+@@ -88,6 +88,11 @@ public class PdfView extends PDFView implements OnPageChangeListener,OnLoadCompl
+         super(context, set);
+     }
+ 
++    @Override
++    public Config getPdfiumCoreConfig() {
++        return new Config(new DefaultLogger(), AlreadyClosedBehavior.IGNORE);
++    }
++
+     @Override
+     public void onPageChanged(int page, int numberOfPages) {
+         // pdf lib page start from 0, convert it to our page (start from 1)
+diff --git a/node_modules/react-native-pdf/index.js b/node_modules/react-native-pdf/index.js
+index 56df005..6836ace 100644
+--- a/node_modules/react-native-pdf/index.js
++++ b/node_modules/react-native-pdf/index.js
+@@ -278,9 +278,6 @@ export default class Pdf extends Component {
+                 if (this._mounted) {
+                     this.setState({progress: received / total});
+                 }
+-            })
+-            .catch(async (error) => {
+-                this._onError(error);
+             });
+ 
+         this.lastRNBFTask
+@@ -325,7 +322,9 @@ export default class Pdf extends Component {
+             .catch(async (error) => {
+                 this._unlinkFile(tempCacheFile);
+                 this._unlinkFile(cacheFile);
+-                this._onError(error);
++                if (error.name !== 'ReactNativeBlobUtilCanceledFetch') {
++                    this._onError(error);
++                }
+             });
+ 
+     };

@@ -17,12 +17,13 @@ export const refreshToken = async (token) => {
   const res = await instance.post("/user/refresh_token", {
     params: { token },
   });
+
   if (!res.data.result) {
     throw new Error();
   }
+
   return res.data.result;
 };
-
 
 export const checkIfTokenIsValid = async () => {
   try {
@@ -55,17 +56,4 @@ export const checkIfTokenIsValid = async () => {
     console.log(err, "check is token valid error");
     return false;
   }
-};
-
-export const verifyEmail = async () => {
-  const token = await AsyncStorage.getItem("token");
-console.log("verifyEmail verifyEmail starts")
-  const res = await instance.post("/user/verify/email", {
-    params: {
-      token,
-    },
-  });
-
-  console.log("verifyEmail verifyEmail res:",res.data)
-  return res.data.result;
 };

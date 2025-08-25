@@ -1,13 +1,14 @@
-import { SafeAreaView, StyleSheet, View, FlatList,Image } from "react-native";
-import CommonHeader from "../../../components/CommonHeader/CommonHeader";
-import { useTheme } from "../../../components/ThemeProvider";
-import { colors } from "../../../components/colors";
-import { mainStyles } from "../../../styles/mainStyles";
-import { useTranslation } from "react-i18next";
-import { TouchableOpacity } from "react-native";
-import { TypographyText } from "../../../components/Typography";
-import { LUSAIL_REGULAR } from "../../../redux/types";
-import { useSelector } from "react-redux";
+import { SafeAreaView, StyleSheet, View, FlatList } from 'react-native';
+import CommonHeader from '../../../components/CommonHeader/CommonHeader';
+import { useTheme } from '../../../components/ThemeProvider';
+import { colors } from '../../../components/colors';
+import { mainStyles } from '../../../styles/mainStyles';
+import { useTranslation } from 'react-i18next';
+import { TouchableOpacity } from 'react-native';
+import FastImage from 'react-native-fast-image';
+import { TypographyText } from '../../../components/Typography';
+import { LUSAIL_REGULAR } from '../../../redux/types';
+import { useSelector } from 'react-redux';
 
 const IMAGE_SIZE = 80;
 
@@ -15,31 +16,31 @@ const Categories = ({ navigation }) => {
   const { isDark } = useTheme();
   const { t, i18n } = useTranslation();
   const parentCategories = useSelector(
-    (state) => state.merchantReducer.parentCategories
+    state => state.merchantReducer.parentCategories,
   );
   const language = i18n.language;
 
-  const navigateToMerchant = (category) => {
+  const navigateToMerchant = category => {
     if (!category.children?.length) {
-      navigation.navigate("merchants", {
-        screen: "merchants-list",
+      navigation.navigate('merchants', {
+        screen: 'merchants-list',
         params: {
-          filters: { category_id: [category.id] },
+          selectedCategoryId: category.id,
           parentCategoryId: category?.parent_id?.[0],
           parentCategoryName:
-            language === "ar" ? category?.x_name_arabic : category.name,
+            language === 'ar' ? category?.x_name_arabic : category.name,
         },
       });
 
       return;
     }
 
-    navigation.navigate("categories", {
-      screen: "categories-child",
+    navigation.navigate('categories', {
+      screen: 'categories-child',
       params: {
         childCategories: category.children,
         parentCategoryName:
-          language === "ar" ? category?.x_name_arabic : category.name,
+          language === 'ar' ? category?.x_name_arabic : category.name,
       },
     });
   };
@@ -54,7 +55,7 @@ const Categories = ({ navigation }) => {
       <SafeAreaView style={{ flex: 1 }}>
         <CommonHeader
           isWhite={isDark}
-          label={t("Categories.title")}
+          label={t('Categories.title')}
           style={{ backgroundColor: isDark ? colors.darkBlue : undefined }}
         />
 
@@ -67,13 +68,13 @@ const Categories = ({ navigation }) => {
               onPress={() => navigateToMerchant(item)}
               style={{
                 flex: 1,
-                justifyContent: "space-between",
-                alignItems: "center",
+                justifyContent: 'space-between',
+                alignItems: 'center',
                 marginTop: 16,
               }}
             >
               <View style={[styles.imageWrapper]}>
-                <Image
+                <FastImage
                   style={styles.categoryImage}
                   source={{
                     uri:
@@ -83,10 +84,10 @@ const Categories = ({ navigation }) => {
                 />
               </View>
               <TypographyText
-                textColor={isDark ? colors.white : "#000"}
+                textColor={isDark ? colors.white : '#000'}
                 size={14}
                 font={LUSAIL_REGULAR}
-                title={language === "ar" ? item.x_name_arabic : item.name}
+                title={language === 'ar' ? item.x_name_arabic : item.name}
                 style={styles.categoryName}
                 numberOfLines={3}
               />
@@ -104,15 +105,15 @@ const styles = StyleSheet.create({
     marginTop: 4,
     flex: 1,
     width: IMAGE_SIZE,
-    fontWeight: "700",
-    textAlign: "center",
+    fontWeight: '700',
+    textAlign: 'center',
   },
   categoryItem: {
     marginRight: 16,
     flex: 1,
     margin: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   list: {
     marginTop: 16,
@@ -120,8 +121,8 @@ const styles = StyleSheet.create({
   },
   imageWrapper: {
     borderRadius: 8,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     ...mainStyles.generalShadow,
     width: IMAGE_SIZE + 5,
     height: IMAGE_SIZE + 5,
@@ -133,8 +134,8 @@ const styles = StyleSheet.create({
   },
   noData: {
     height: IMAGE_SIZE + 26,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   contentContainerStyle: {
     paddingLeft: 5,

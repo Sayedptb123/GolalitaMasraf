@@ -1,12 +1,12 @@
-import { useNavigation } from "@react-navigation/native";
-import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { getContracts } from "../../../../../../../api/merchants";
-import { useTheme } from "../../../../../../../components/ThemeProvider";
-import { sized } from "../../../../../../../Svg";
-import MenuBookSvg from "../../../../../../../assets/menu-book.svg";
-import { colors } from "../../../../../../../components/colors";
-import CommonButton from "../../../../../common/CommonButton";
+import { useNavigation } from '@react-navigation/native';
+import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { getContracts } from '../../../../../../../api/merchants';
+import { useTheme } from '../../../../../../../components/ThemeProvider';
+import { sized } from '../../../../../../../Svg';
+import MenuBookSvg from '../../../../../../../assets/menu-book.svg';
+import { colors } from '../../../../../../../components/colors';
+import CommonButton from '../../../../../common/CommonButton';
 
 const ContractBtn = ({ merchantId }) => {
   const [contractUrl, setContractUrl] = useState(null);
@@ -21,13 +21,15 @@ const ContractBtn = ({ merchantId }) => {
 
       const url = data?.[0]?.contract_file_url;
 
+      console.log(url, 'url');
+
       if (url) {
         setContractUrl(url);
       }
 
       console.log(data);
     } catch (err) {
-      console.log(err, "get contract error");
+      console.log(err, 'get contract error');
     } finally {
     }
   };
@@ -35,8 +37,6 @@ const ContractBtn = ({ merchantId }) => {
   useEffect(() => {
     getContractUrl();
   }, [merchantId]);
-
-  console.log(contractUrl, "contractUrl");
 
   if (!contractUrl) {
     return null;
@@ -47,10 +47,10 @@ const ContractBtn = ({ merchantId }) => {
 
   return (
     <CommonButton
-      text={t("Merchants.contract")}
+      text={t('Merchants.contract')}
       icon={<MenuBookIcon fill={btnColor} />}
       onPress={() =>
-        navigation.navigate("premiumPartner-menu", {
+        navigation.navigate('premiumPartner-menu', {
           company_contract_url: contractUrl,
         })
       }

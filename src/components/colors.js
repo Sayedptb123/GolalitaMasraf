@@ -1,8 +1,8 @@
 export const colors = {
-  darkBlue: "#0076a5",
+  darkBlue: "#940037",
   navyBlue: "#072536",
   darkModeBackground: "#000",
-  mainDarkMode: "white",
+  mainDarkMode: "#DDBD6B",
   mainDarkModeText: "#000",
   white: "#ffffff",
   bg: "#F0F0F0",
@@ -20,4 +20,5 @@ export const colors = {
   highlatedGrey: "#EDEDED",
   borderGrey: "#2F2F2F",
   categoryGrey: "#313131",
+  link: "#0000EE",
 };

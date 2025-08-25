@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { TouchableOpacity, StyleSheet, View,Image } from "react-native";
+import React from "react";
+import { TouchableOpacity, StyleSheet, View } from "react-native";
 import { mainStyles, SCREEN_WIDTH } from "../../styles/mainStyles";
 import { colors } from "../colors";
-import { BALOO_SEMIBOLD } from "../../redux/types";
+import { LUSAIL_REGULAR } from "../../redux/types";
 import { TypographyText } from "../Typography";
 import FullStarSvg from "../../assets/full_star.svg";
 import HalfStarSvg from "../../assets/half_star.svg";
@@ -11,8 +11,9 @@ import { useTheme } from "../ThemeProvider";
 import { connect } from "react-redux";
 import { getMerchantDetails } from "../../redux/merchant/merchant-thunks";
 import { useNavigation } from "@react-navigation/native";
-import { subscribeNotification } from "../../redux/notifications/notifications-thunks";
-import { dateForWeeks, getFlexDirection, isRTL } from "../../../utils";
+
+import FastImage from "react-native-fast-image";
+import { getFlexDirection } from "../../../utils";
 import { useTranslation } from "react-i18next";
 import { getCategoryNameByIdAndLang } from "../Categories/helpres";
 
@@ -53,9 +54,9 @@ const CompanyItem = ({ width, merchant, getMerchantDetails, isPadding }) => {
           <TypographyText
             textColor={colors.white}
             size={14}
-            font={BALOO_SEMIBOLD}
+            font={LUSAIL_REGULAR}
             title={merchant.ribbon_text}
-            style={{ width: "75%", textAlign: "center" }}
+            style={{ width: "75%", textAlign: "center", fontWeight: "700" }}
             numberOfLines={1}
             textElipsis={"tail"}
           />
@@ -73,14 +74,14 @@ const CompanyItem = ({ width, merchant, getMerchantDetails, isPadding }) => {
         }}
       >
         {merchant.banner_image || merchant.banners?.length > 0 ? (
-          <Image
+          <FastImage
             style={styles.company__preview}
             source={{
               uri:
                 merchant.banner_image ??
                 merchant.map_banner ??
                 merchant.banners[0].banner_image,
-             // priority: FastImage.priority.fast,
+              priority: FastImage.priority.fast,
             }}
           />
         ) : (
@@ -110,10 +111,10 @@ const CompanyItem = ({ width, merchant, getMerchantDetails, isPadding }) => {
             { position: "absolute", top: -60, left: 20 },
           ]}
         >
-          <Image
+          <FastImage
             source={{
               uri: merchant.merchant_logo ?? merchant.image_512,
-             // priority: FastImage.priority.fast,
+              priority: FastImage.priority.fast,
             }}
             style={{ width: 47, height: 47, borderRadius: 50 }}
           />
@@ -122,9 +123,9 @@ const CompanyItem = ({ width, merchant, getMerchantDetails, isPadding }) => {
         <TypographyText
           textColor={isDark ? colors.white : colors.darkBlue}
           size={18}
-          font={BALOO_SEMIBOLD}
+          font={LUSAIL_REGULAR}
           numberOfLines={1}
-          style={{ width: "70%" }}
+          style={{ width: "70%", fontWeight: "700" }}
           title={
             merchant.name ??
             merchant.merchant_name ??
@@ -135,8 +136,9 @@ const CompanyItem = ({ width, merchant, getMerchantDetails, isPadding }) => {
           <TypographyText
             textColor={colors.orange}
             size={18}
-            font={BALOO_SEMIBOLD}
+            font={LUSAIL_REGULAR}
             title={(+(merchant.merchant_rating ?? merchant.rating)).toFixed(1)}
+            style={{ fontWeight: "700" }}
           />
           <View style={[mainStyles.row, { marginBottom: 4 }]}>
             {[1, 2, 3, 4, 5].map((i) => {

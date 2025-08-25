@@ -1,37 +1,38 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState } from 'react';
 import {
   Image,
   StyleSheet,
   TouchableOpacity,
   View,
   Dimensions,
-} from "react-native";
-import { Icons } from "./assets";
-import { moderateScale } from "./metrics";
-import { colors } from "../../../../components/colors";
-import { useTheme } from "../../../../components/ThemeProvider";
-import Portal from "../../../../components/Portal";
+} from 'react-native';
+import { Icons } from './assets';
+import { moderateScale } from './metrics';
+import { colors } from '../../../../components/colors';
+import { useTheme } from '../../../../components/ThemeProvider';
+import Portal from '../../../../components/Portal';
 import {
   BottomSheetModal,
   BottomSheetModalProvider,
-} from "@gorhom/bottom-sheet";
-import { TypographyText } from "../../../../components/Typography";
-import { Field } from "formik";
-import { BALOO_MEDIUM, BALOO_REGULAR } from "../../../../redux/types";
-import ScanSvg from "../../../../assets/scan.svg";
-import { sized } from "../../../../Svg";
-import { launchCamera, launchImageLibrary } from "react-native-image-picker";
-import { useTranslation } from "react-i18next";
-import { isRTL } from "../../../../../utils";
-import { mainStyles } from "../../../../styles/mainStyles";
+  BottomSheetView,
+} from '@gorhom/bottom-sheet';
+import { TypographyText } from '../../../../components/Typography';
+import { Field } from 'formik';
+import { BALOO_MEDIUM, BALOO_REGULAR } from '../../../../redux/types';
+import ScanSvg from '../../../../assets/scan.svg';
+import { sized } from '../../../../Svg';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import { useTranslation } from 'react-i18next';
+import { isRTL } from '../../../../../utils';
+import { mainStyles } from '../../../../styles/mainStyles';
 
-const { height } = Dimensions.get("window");
+const { height } = Dimensions.get('window');
 const snapPoint = ((180 / height) * 100).toFixed(0);
 
 const FormikCameraPicker = () => {
   const { isDark } = useTheme();
   const bottomSheetModalRef = useRef(null);
-  const [selectedImage, setSelectedImage] = useState("");
+  const [selectedImage, setSelectedImage] = useState('');
   const { t } = useTranslation();
 
   const snapPoints = [snapPoint];
@@ -46,7 +47,7 @@ const FormikCameraPicker = () => {
     bottomSheetModalRef.current?.close();
   };
 
-  const name = "bill_image";
+  const name = 'bill_image';
 
   return (
     <View style={styles.wrapper}>
@@ -60,15 +61,15 @@ const FormikCameraPicker = () => {
                   textColor={isDark ? colors.darkGrey : colors.darkBlue}
                   size={16}
                   font={BALOO_MEDIUM}
-                  title={t("BillScanner.scanBill")}
+                  title={t('BillScanner.scanBill')}
                   numberOfLines={1}
-                  style={{ fontWeight: "700" }}
+                  style={{ fontWeight: '700' }}
                 />
 
                 <ScanIcon
                   style={{
                     left: isRTL() ? 5 : -5,
-                    alignSelf: isRTL() ? "flex-end" : "flex-start",
+                    alignSelf: isRTL() ? 'flex-end' : 'flex-start',
                   }}
                 />
                 {selectedImage && (
@@ -76,12 +77,12 @@ const FormikCameraPicker = () => {
                     style={[
                       styles.slectedImageWrapper,
                       {
-                        alignSelf: isRTL() ? "flex-end" : "flex-start",
+                        alignSelf: isRTL() ? 'flex-end' : 'flex-start',
                       },
                     ]}
                   >
                     <Image
-                      source={{ uri: `data:image/png;base64,${selectedImage}` }}
+                      source={{ url: `data:image/png;base64,${selectedImage}` }}
                       style={[
                         styles.selectedImage,
                         {
@@ -95,14 +96,14 @@ const FormikCameraPicker = () => {
 
                     <TouchableOpacity
                       onPress={() => {
-                        setSelectedImage("");
-                        setFieldValue(name, "");
+                        setSelectedImage('');
+                        setFieldValue(name, '');
                       }}
                     >
                       <TypographyText
-                        textColor={"#FF406E"}
+                        textColor={'#FF406E'}
                         size={14}
-                        title={t("BillScanner.remove")}
+                        title={t('BillScanner.remove')}
                         numberOfLines={1}
                         style={styles.removeImageText}
                       />
@@ -125,7 +126,7 @@ const FormikCameraPicker = () => {
                       enableHandlePanningGesture={true}
                       enableContentPanningGesture={true}
                     >
-                      <View style={styles.buttonWrapper}>
+                      <BottomSheetView style={styles.buttonWrapper}>
                         <View
                           style={[
                             styles.cameraButtonWrapper,
@@ -155,7 +156,7 @@ const FormikCameraPicker = () => {
                               onPress={async () => {
                                 const result = await launchCamera({
                                   saveToPhotos: true,
-                                  mediaType: "photo",
+                                  mediaType: 'photo',
                                   includeBase64: true,
                                 });
 
@@ -164,7 +165,6 @@ const FormikCameraPicker = () => {
                                 if (!base64Image) {
                                   return;
                                 }
-                                setSelectedImage(base64Image);
 
                                 setFieldValue(name, base64Image);
                                 hideModal();
@@ -179,7 +179,7 @@ const FormikCameraPicker = () => {
                               </View>
 
                               <TypographyText
-                                title={t("BillScanner.camera")}
+                                title={t('BillScanner.camera')}
                                 style={styles.btnText}
                               />
                             </TouchableOpacity>
@@ -187,7 +187,7 @@ const FormikCameraPicker = () => {
                               onPress={async () => {
                                 const result = await launchImageLibrary({
                                   selectionLimit: 1,
-                                  mediaType: "photo",
+                                  mediaType: 'photo',
                                   includeBase64: true,
                                 });
 
@@ -211,23 +211,23 @@ const FormikCameraPicker = () => {
                               </View>
 
                               <TypographyText
-                                title={t("BillScanner.gallery")}
+                                title={t('BillScanner.gallery')}
                                 style={styles.btnText}
                               />
                             </TouchableOpacity>
                           </View>
                         </View>
-                      </View>
+                      </BottomSheetView>
                     </BottomSheetModal>
                   </View>
                 </BottomSheetModalProvider>
               </Portal>
-              {errors?.["bill_image"] && (
+              {errors?.['bill_image'] && (
                 <TypographyText
-                  title={errors?.["bill_image"]}
-                  textColor={"#FF406E"}
+                  title={errors?.['bill_image']}
+                  textColor={'#FF406E'}
                   size={14}
-                  style={{ fontWeight: "700", marginTop: 3 }}
+                  style={{ fontWeight: '700', marginTop: 3 }}
                 />
               )}
             </>
@@ -247,32 +247,32 @@ const styles = StyleSheet.create({
     borderColor: colors.white,
     borderRadius: moderateScale(30),
     padding: moderateScale(10),
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     width: moderateScale(50),
     height: moderateScale(50),
   },
   icon: {
-    width: "100%",
-    height: "100%",
+    width: '100%',
+    height: '100%',
     tintColor: colors.white,
   },
   cameraButtonWrapper: {
     padding: moderateScale(50),
     flex: 1,
-    justifyContent: "space-around",
-    alignItems: "center",
+    justifyContent: 'space-around',
+    alignItems: 'center',
     borderTopRightRadius: moderateScale(25),
     borderTopLeftRadius: moderateScale(25),
   },
   buttonWrapper: {
     flex: 1,
-    flexDirection: "row",
-    alignItems: "flex-start",
-    justifyContent: "center",
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    justifyContent: 'center',
   },
   backContainer: {
-    position: "absolute",
+    position: 'absolute',
     right: 15,
     top: 15,
     borderWidth: 1,
@@ -286,20 +286,20 @@ const styles = StyleSheet.create({
   },
   rowContainer: {
     width: 200,
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   btnWrapper: {
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   btnText: {
     marginTop: 10,
     color: colors.white,
   },
   slectedImageWrapper: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
 
     marginTop: 16,
   },
@@ -313,7 +313,7 @@ const styles = StyleSheet.create({
   },
   removeImageText: {
     marginLeft: 10,
-    fontWeight: "700",
+    fontWeight: '700',
   },
 });
 

@@ -1,15 +1,19 @@
-import { SafeAreaView, StyleSheet, View, FlatList, Image } from "react-native";
-import CommonHeader from "../../../components/CommonHeader/CommonHeader";
-import { useTheme } from "../../../components/ThemeProvider";
-import { colors } from "../../../components/colors";
-import { mainStyles } from "../../../styles/mainStyles";
-import { useTranslation } from "react-i18next";
-import { TouchableOpacity } from "react-native";
-import { TypographyText } from "../../../components/Typography";
-import { LUSAIL_REGULAR } from "../../../redux/types";
-import { useRoute } from "@react-navigation/native";
+import { SafeAreaView, StyleSheet, View, FlatList, Image } from 'react-native';
+import CommonHeader from '../../../components/CommonHeader/CommonHeader';
+import { useTheme } from '../../../components/ThemeProvider';
+import { colors } from '../../../components/colors';
+import { mainStyles } from '../../../styles/mainStyles';
+import { useTranslation } from 'react-i18next';
+import { TouchableOpacity } from 'react-native';
+import { TypographyText } from '../../../components/Typography';
+import { LUSAIL_REGULAR } from '../../../redux/types';
+import { useRoute } from '@react-navigation/native';
 
-import { isRTL } from "../../../../utils";
+import { isRTL } from '../../../../utils';
+import { useEffect, useState } from 'react';
+import { getChildCategoriesById } from '../../../api/categories';
+import FullScreenLoader from '../../../components/Loaders/FullScreenLoader';
+import { useSelector } from 'react-redux';
 const IMAGE_SIZE = 80;
 
 const ChildCategories = ({ navigation }) => {
@@ -17,12 +21,44 @@ const ChildCategories = ({ navigation }) => {
   const { i18n } = useTranslation();
   const language = i18n.language;
   const {
-    params: { childCategories, parentCategoryName },
+    params: { parentCategoryId, parentCategoryName },
   } = useRoute();
+  const { categoriesType } = useSelector(state => state.merchantReducer);
 
-  const navigateToMerchant = (category) => {
-    navigation.navigate("merchants", {
-      screen: "merchants-list",
+  const [childCategories, setChildCategories] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const getChildCategories = async () => {
+    try {
+      setLoading(true);
+      const data = await getChildCategoriesById(
+        parentCategoryId,
+        categoriesType,
+      );
+
+      const filteredChildCategories = data.filter(item => {
+        if (item.parent_id[0] === 47 && (item.id === 156 || item.id === 160)) {
+          return false;
+        }
+
+        return true;
+      });
+
+      setChildCategories(filteredChildCategories);
+    } catch (err) {
+      console.log(err, 'err');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getChildCategories();
+  }, [parentCategoryId, categoriesType]);
+
+  const navigateToMerchant = category => {
+    navigation.navigate('merchants', {
+      screen: 'merchants-list',
       params: {
         selectedCategoryId: category.id,
         parentCategoryId: category?.parent_id?.[0],
@@ -30,14 +66,6 @@ const ChildCategories = ({ navigation }) => {
       },
     });
   };
-
-  const filteredChildCategories = childCategories.filter((item) => {
-    if (item.parent_id[0] === 47 && (item.id === 156 || item.id === 160)) {
-      return false;
-    }
-
-    return true;
-  });
 
   return (
     <View
@@ -55,7 +83,7 @@ const ChildCategories = ({ navigation }) => {
         />
 
         <FlatList
-          data={filteredChildCategories}
+          data={childCategories}
           contentContainerStyle={{
             flexGrow: 1,
             paddingHorizontal: 20,
@@ -67,7 +95,7 @@ const ChildCategories = ({ navigation }) => {
               onPress={() => navigateToMerchant(item)}
               style={[
                 styles.listItem,
-                { flexDirection: isRTL() ? "row-reverse" : "row" },
+                { flexDirection: isRTL() ? 'row-reverse' : 'row' },
               ]}
             >
               <View
@@ -97,12 +125,13 @@ const ChildCategories = ({ navigation }) => {
                 textColor={isDark ? colors.white : colors.darkBlue}
                 size={16}
                 font={LUSAIL_REGULAR}
-                title={language === "ar" ? item.x_name_arabic : item.name}
+                title={language === 'ar' ? item.x_name_arabic : item.name}
                 style={styles.categoryName}
                 numberOfLines={1}
               />
             </TouchableOpacity>
           )}
+          ListEmptyComponent={() => <FullScreenLoader />}
         />
       </SafeAreaView>
     </View>
@@ -112,8 +141,8 @@ const ChildCategories = ({ navigation }) => {
 const styles = StyleSheet.create({
   wrapper: {},
   listItem: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     marginTop: 16,
   },
   image: {
@@ -124,7 +153,7 @@ const styles = StyleSheet.create({
     marginTop: 4,
     flex: 1,
     width: IMAGE_SIZE,
-    fontWeight: "700",
+    fontWeight: '700',
     marginHorizontal: 30,
   },
   list: {
@@ -133,12 +162,12 @@ const styles = StyleSheet.create({
   },
   imageWrapper: {
     ...mainStyles.generalShadow,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     borderRadius: 8,
     height: 80,
     width: 80,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   image: {
     width: IMAGE_SIZE,
@@ -147,8 +176,8 @@ const styles = StyleSheet.create({
   },
   noData: {
     height: IMAGE_SIZE + 26,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   contentContainerStyle: {
     paddingLeft: 5,

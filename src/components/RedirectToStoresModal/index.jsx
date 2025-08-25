@@ -1,59 +1,48 @@
-import React, { useEffect } from "react";
-import { Linking, Platform, StyleSheet, View } from "react-native";
+import React, { useEffect } from 'react';
+import { Linking, Platform, StyleSheet, View } from 'react-native';
 import {
   mainStyles,
   SCREEN_HEIGHT,
   SCREEN_WIDTH,
-} from "../../styles/mainStyles";
-import PhoneSvg from "../../assets/app_update.svg";
-import { sized } from "../../Svg";
-import { colors } from "../colors";
-import { BALOO_REGULAR, BALOO_SEMIBOLD } from "../../redux/types";
-import { TypographyText } from "../Typography";
-import { useTranslation } from "react-i18next";
-import CommonButton from "../CommonButton/CommonButton";
-import { useDispatch } from "react-redux";
-import RNBootSplash from "react-native-bootsplash";
-import { setIsSplashScreenVisible } from "../../redux/auth/auth-actions";
+} from '../../styles/mainStyles';
+import PhoneSvg from '../../assets/app_update.svg';
+import { sized } from '../../Svg';
+import { colors } from '../colors';
+import { LUSAIL_REGULAR } from '../../redux/types';
+import { TypographyText } from '../Typography';
+import { useTranslation } from 'react-i18next';
+import CommonButton from '../CommonButton/CommonButton';
+import { useDispatch } from 'react-redux';
+import BootSplash from 'react-native-bootsplash';
+import { setIsSplashScreenVisible } from '../../redux/auth/auth-actions';
 
 const PhoneIcon = sized(PhoneSvg, 120, 160);
 
 export const STORES_CONFIG = [
   {
-    name: "Gulf Exchange",
+    name: 'Gulf Exchange',
     android:
-      "https://play.google.com/store/apps/details?id=com.golalitagulfexchange",
-    ios: "https://apps.apple.com/qa/app/golalita-gulf-exchange/id6449490331?platform=ipad",
+      'https://play.google.com/store/apps/details?id=com.golalitagulfexchange',
+    ios: 'https://apps.apple.com/qa/app/golalita-gulf-exchange/id6449490331?platform=ipad',
   },
   {
-    name: "Qatar Insurance Brokers",
-    android: "https://play.google.com/store/apps/details?id=com.golalitaqib",
-    ios: "https://apps.apple.com/qa/app/golalita-qinsurance/id6449935206",
+    name: 'Qatar Insurance Brokers',
+    android: 'https://play.google.com/store/apps/details?id=com.golalitaqib',
+    ios: 'https://apps.apple.com/qa/app/golalita-qinsurance/id6449935206',
   },
-  {
-    name: "Maasraf Al Rayan",
-  ios: "https://apps.apple.com/us/app/masraf-al-rayan/id6466660993",
-  android: "https://play.google.com/store/apps/details?id=com.golalitamasraf",
-  }
 ];
 
 const RedirectToStoresModal = ({ organization }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
-  const url = STORES_CONFIG.find((item) =>{
-    console.log("STORES_CONFIG:::",item,"organization:",organization)
-    item.name === organization})[
+  const url = STORES_CONFIG.find(item => item.name === organization)[
     Platform.OS
   ];
 
   useEffect(() => {
     setTimeout(() => {
-      if (Platform.OS === "android") {
-        RNBootSplash.hide({ fade: true });
-      } else {
-        dispatch(setIsSplashScreenVisible(false));
-      }
+      dispatch(setIsSplashScreenVisible(false));
     }, 3000);
   }, []);
 
@@ -66,15 +55,19 @@ const RedirectToStoresModal = ({ organization }) => {
         <TypographyText
           textColor={colors.black}
           size={26}
-          font={BALOO_SEMIBOLD}
-          title={t("MainScreen.redirectModalTitle")}
-          style={[mainStyles.centeredText, styles.topSpace]}
+          font={LUSAIL_REGULAR}
+          title={t('MainScreen.redirectModalTitle')}
+          style={[
+            mainStyles.centeredText,
+            styles.topSpace,
+            { fontWeight: '700' },
+          ]}
         />
         <TypographyText
           textColor={colors.black}
           size={20}
-          font={BALOO_REGULAR}
-          title={t("MainScreen.redirectModalDescription")}
+          font={LUSAIL_REGULAR}
+          title={t('MainScreen.redirectModalDescription')}
           style={[mainStyles.centeredText, styles.topSpace]}
         />
 
@@ -82,7 +75,7 @@ const RedirectToStoresModal = ({ organization }) => {
           onPress={() => {
             Linking.openURL(url);
           }}
-          label={t("MainScreen.downloadApp")}
+          label={t('MainScreen.downloadApp')}
           style={styles.topSpace}
         />
       </View>
@@ -93,17 +86,17 @@ const RedirectToStoresModal = ({ organization }) => {
 const styles = StyleSheet.create({
   contentWrapper: {
     padding: 20,
-    justifyContent: "space-between",
+    justifyContent: 'space-between',
     minHeight: SCREEN_HEIGHT / 1.9,
     width: (SCREEN_WIDTH / 100) * 90,
     backgroundColor: colors.white,
     borderRadius: 8,
-    position: "relative",
+    position: 'relative',
     zIndex: 1000,
   },
   flexCenter: {
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   topSpace: {
     marginTop: 30,

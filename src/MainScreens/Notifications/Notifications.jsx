@@ -31,6 +31,7 @@ const Notifications = ({
 
   useEffect(() => {
     readAllNotifications();
+
     return () => {
       getMessageNotifications();
     };

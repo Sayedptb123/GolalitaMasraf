@@ -24,8 +24,6 @@ import useIsGuest from "../../../../hooks/useIsGuest";
 
 const IMAGE_SIZE = 66;
 
-const ArrowIconBig = sized(ArrowSvg, 22, 22, colors.darkBlue);
-
 const OfferItem = ({ merchant, isB1G1 }) => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
@@ -33,8 +31,14 @@ const OfferItem = ({ merchant, isB1G1 }) => {
   const { t, i18n } = useTranslation();
   const dispatch = useDispatch();
   const isGuest = useIsGuest();
-
   const language = i18n.language;
+
+  const ArrowIconBig = sized(
+    ArrowSvg,
+    22,
+    22,
+    isDark ? colors.black : colors.orange
+  );
   const favoriteOffers = useSelector(
     (state) => state.merchantReducer.favoriteOffers
   );
@@ -92,6 +96,8 @@ const OfferItem = ({ merchant, isB1G1 }) => {
       const textColor = isDark ? colors.mainDarkModeText : colors.darkBlue;
       const backgroundColor = isDark ? colors.mainDarkMode : "transparent";
 
+      console.log(item, "item");
+
       return (
         <TouchableOpacity
           onPress={() => navigateTopProductPage(item, merchant)}
@@ -136,11 +142,11 @@ const OfferItem = ({ merchant, isB1G1 }) => {
 
               {infoText && !isGuest && (
                 <TouchableOpacity
-                  style={styles.infoLink}
+                  style={[styles.infoLink, { paddingLeft: !!price ? 10 : 0 }]}
                   onPress={() => handleInfoTextPress(item, merchant)}
                 >
                   <TypographyText
-                    textColor={colors.darkBlue}
+                    textColor={isDark ? colors.black : colors.orange}
                     size={14}
                     font={BALOO_SEMIBOLD}
                     title={infoText}

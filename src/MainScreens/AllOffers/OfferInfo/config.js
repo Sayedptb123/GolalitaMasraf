@@ -3,10 +3,10 @@ import MenuBookSvg from "../../../assets/menu-book.svg";
 import { sized } from "../../../Svg";
 import i18next from "i18next";
 import { Linking } from "react-native";
+import { navigate } from "../../../Navigation/navigationHelpers";
 import { getStringDate, isRTL } from "../../../../utils";
 import { B1G1, PROMOCODE } from "../../../redux/types";
 import { colors } from "../../../components/colors";
-import { navigate } from "../../../Navigation/RootNavigation";
 
 export const getInfoBtnsConfig = (offer, isDark) => {
   const btnColor = isDark ? colors.mainDarkMode : colors.darkBlue;
@@ -33,7 +33,7 @@ export const getInfoBtnsConfig = (offer, isDark) => {
       icon: MenuBookIcon,
       onPress: () => {
         navigate("offer-menu", {
-          company_contract_url: offer.offer_detail_url,
+          company_contract_url: offer?.offer_detail_url,
         });
       },
     },
@@ -99,15 +99,14 @@ export const getInfoBlocksConfig = (offer, bookNow) => {
 };
 
 export const getOfferTypeInfoBtnsConfig = (offer) => {
-  console.log("offeroffer:",offer)
   return [
     {
       visible: offer.offer_type === B1G1,
       label: i18next.t("ProductPage.b1g1Free"),
       onPress: () => {
-        navigate("Promocode", {
-          merchant_name: isRTL() ? offer.merchant_name_arabic : offer.merchant_name,
-          name: isRTL() ? offer.arabic_name :offer.name,
+        navigate("offer-promocode", {
+          merchant_name: offer.merchant_name,
+          name: offer.name,
           expiryDate: offer.end_date
             ? getStringDate(offer.end_date.split(" ")[0])
             : null,
@@ -124,7 +123,7 @@ export const getOfferTypeInfoBtnsConfig = (offer) => {
       visible: offer.offer_type === PROMOCODE && offer.offer_type_promo_code,
       label: i18next.t("ProductPage.getPromocode"),
       onPress: () => {
-        navigate("Voucher", {
+        navigate("offer-voucher", {
           name: offer.name,
           id: offer.product_id,
           merchant_name: offer.merchant_name,

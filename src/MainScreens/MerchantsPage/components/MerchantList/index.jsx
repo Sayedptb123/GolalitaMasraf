@@ -13,7 +13,6 @@ const MerchantsList = ({
   onPressFavourite,
   isFavorite,
   isSaved,
-  ...props
 }) => {
   const { i18n } = useTranslation();
   const language = i18n.language;
@@ -48,6 +47,8 @@ const MerchantsList = ({
     getOffersDiscountValue();
   }, []);
 
+  console.log(merchant?.x_arabic_name, "merchant?.x_arabic_name");
+
   return (
     <CardWithNesetedItems
       toggleBtns={toggleBtns}
@@ -63,7 +64,6 @@ const MerchantsList = ({
             : description?.ribbon_text || "",
         loadingDescription,
         acceptGoLoyaltyPoint: merchant.accept_go_loyalty_point,
-        goPoints: merchant.gpoint,
         isSaved: isSaved ? isSaved : isFavorite,
       }}
     >

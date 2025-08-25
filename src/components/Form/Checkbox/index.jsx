@@ -7,12 +7,12 @@ import { useTheme } from "../../../../src/components/ThemeProvider";
 import { colors } from "../../colors";
 
 const Checkbox = (props) => {
-  const { label,isLocationfilter, flag, emoji, onChange, active = false, style = {} } = props;
+  const { label, flag, emoji, onChange, active = false, style = {} } = props;
   const { isDark } = useTheme();
 
   const isBase64 = flag?.length > 100;
   const base64Image = `data:image/png;base64,${flag}`;
-  const tintColor = !isDark ? colors.darkBlue : colors.white;
+  const tintColor = !isDark ? colors.darkBlue : colors.mainDarkMode;
 
   return (
     <TouchableOpacity
@@ -30,7 +30,6 @@ const Checkbox = (props) => {
         style={{
           flexDirection: isRTL() ? "row-reverse" : "row",
           alignItems: "center",
-          flex: style?.flex,
         }}
       >
         {!!flag && (
@@ -60,12 +59,12 @@ const Checkbox = (props) => {
         )}
         {!!label && (
           <TypographyText
-            textColor={isDark ? colors.mainDarkMode : colors.mainDarkModeText}
+            textColor={isDark ? colors.mainDarkMode : colors.darkBlue}
             size={14}
             font={LUSAIL_REGULAR}
             title={label}
-            numberOfLines={isLocationfilter ? null : 1}
-            style={{ fontWeight: "700", marginRight: 11 , flex: style?.flex}}
+            numberOfLines={1}
+            style={{ fontWeight: "700", marginRight: 11, flex: style?.flex }}
           />
         )}
       </View>

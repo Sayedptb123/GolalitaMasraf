@@ -9,12 +9,14 @@ import { getTransformedBranches, handleBranchPress } from "../../helpers";
 import { colors } from "../../../../components/colors";
 import { BALOO_SEMIBOLD } from "../../../../redux/types";
 import FullScreenLoader from "../../../../components/Loaders/FullScreenLoader";
+import { isRTL } from "../../../../../utils";
 
 const BranchItem = ({ merchantId }) => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const { isDark } = useTheme();
   const { t } = useTranslation();
+  const isArabic = isRTL();
 
   const getBranches = async () => {
     try {
@@ -84,7 +86,7 @@ const BranchItem = ({ merchantId }) => {
                   textColor={textColor}
                   size={14}
                   font={BALOO_SEMIBOLD}
-                  title={branch.name}
+                  title={isArabic ? branch.name_arabic : branch.name}
                   style={styles.name}
                   numberOfLines={2}
                 />

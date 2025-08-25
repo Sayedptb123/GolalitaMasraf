@@ -9,31 +9,26 @@ import CommonButton from "../../components/CommonButton/CommonButton";
 import { mainStyles } from "../../styles/mainStyles";
 import { useTheme } from "../../components/ThemeProvider";
 import { connect, useDispatch } from "react-redux";
-import { logout } from "../../redux/auth/auth-thunks";
+import { logout, updateProfile } from "../../redux/auth/auth-thunks";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { useTranslation } from "react-i18next";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { merchantApi } from "../../redux/merchant/merchant-api";
 import { showMessage } from "react-native-flash-message";
-import i18next from "i18next";
-import { setProfileLoading } from "../../redux/auth/auth-actions";
-import Header from "../../components/Header";
+import { setProfileLoading, setToken } from "../../redux/auth/auth-actions";
+import { login } from "../../redux/auth/auth-thunks";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const MacDonaldsIcon = sized(MacDonaldsSvg, 38, 30);
 
-const ChangePassword = ({ user, profileLoading }) => {
+const ChangePassword = ({ user }) => {
   const { t } = useTranslation();
   const { isDark } = useTheme();
   const ref_to_input2 = useRef();
   const ref_to_input3 = useRef();
+
   const dispatch = useDispatch();
-
-  if (!user?.name) {
-    return null;
-  }
-
   return (
     <TouchableOpacity
       activeOpacity={1}
@@ -44,51 +39,49 @@ const ChangePassword = ({ user, profileLoading }) => {
       }}
     >
       <SafeAreaView style={{ flex: 1 }}>
-        <Header
+        <CommonHeader
+          isWhite={isDark}
+          isNotifications
           label={t("Profile.changePassword")}
-          btns={["back", "notifications"]}
+          companyIcon={<MacDonaldsIcon />}
         />
-
         <Formik
           initialValues={{
-           // oldPassword: "",
             newPassword: "",
             confirmNewPassword: "",
           }}
           validationSchema={Yup.object({
-           // oldPassword: Yup.string().required(t("Login.required")),
             newPassword: Yup.string().required(t("Login.required")),
-            confirmNewPassword:  Yup.string().oneOf(
+            confirmNewPassword: Yup.string().oneOf(
               [Yup.ref("newPassword"), null],
-              t("Login.passwordsMustMatch"))
-
+              t("Login.passwordsMustMatch")
+            ),
           })}
           onSubmit={async (values, { setFieldError }) => {
-            console.log("changePassword starts:")
-            // if (values.newPassword !== values.confirmNewPassword) {
-            //   setFieldError(
-            //     "confirmNewPassword",
-            //     t("Profile.passwordNotEqual")
-            //   );
+            if (values.newPassword !== values.confirmNewPassword) {
+              setFieldError(
+                "confirmNewPassword",
+                t("Profile.passwordNotEqual")
+              );
 
-            //   return;
-            // }
+              return;
+            }
 
             try {
               dispatch(setProfileLoading(true));
 
               const token = await AsyncStorage.getItem("token");
+
               const res = await merchantApi.changePassword({
                 params: {
                   login: user.email,
-                  token: token,
-                 // password: values.oldPassword,
                   new_password: values.newPassword,
+                  token,
                 },
               });
-      console.log("changePassword res.data:",res.data)
+
               if (res.data.result.error) {
-                throw "err";
+                throw res.data.result.error;
               }
 
               showMessage({
@@ -98,7 +91,10 @@ const ChangePassword = ({ user, profileLoading }) => {
 
               dispatch(logout());
             } catch (err) {
-              setFieldError("oldPassword", t("Profile.wrongPassword"));
+              const errorMessage =
+                typeof err === "string" ? err : t("General.error");
+              console.log(err, "err");
+              setFieldError("newPassword", errorMessage);
             } finally {
               dispatch(setProfileLoading(false));
             }
@@ -121,20 +117,8 @@ const ChangePassword = ({ user, profileLoading }) => {
                     activeOpacity={1}
                     style={[mainStyles.p20, { marginTop: 20 }]}
                   >
-                    {/* <Input
-                      label={t("Profile.oldPassword")}
-                      value={values.oldPassword}
-                      onChangeText={handleChange("oldPassword")}
-                      placeholder={t("Profile.enterOldPassword")}
-                      returnKeyType={"next"}
-                      error={errors.oldPassword}
-                      onSubmitEditing={() => ref_to_input2.current.focus()}
-                      wrapperStyle={mainStyles.mb20}
-                      autoCorrect={false}
-                      secureTextEntry={true}
-                    /> */}
                     <Input
-                      error={errors.confirmNewPassword}
+                      error={errors.newPassword}
                       value={values.newPassword}
                       onChangeText={handleChange("newPassword")}
                       innerRef={ref_to_input2}
@@ -151,7 +135,7 @@ const ChangePassword = ({ user, profileLoading }) => {
                       innerRef={ref_to_input3}
                       value={values.confirmNewPassword}
                       onChangeText={handleChange("confirmNewPassword")}
-                      label={t("Profile.confirmPassword")}
+                      label={t("Profile.confirmNewPassword")}
                       placeholder={t("Profile.confirmPassword")}
                       autoCorrect={false}
                       secureTextEntry={true}
@@ -162,8 +146,7 @@ const ChangePassword = ({ user, profileLoading }) => {
                   <CommonButton
                     onPress={handleSubmit}
                     label={t("Product.save")}
-                    textColor={colors.white}
-                    loading={profileLoading}
+                    textColor={isDark ? colors.mainDarkModeText : colors.white}
                   />
                 </View>
               </View>
@@ -177,7 +160,8 @@ const ChangePassword = ({ user, profileLoading }) => {
 
 const mapStateToProps = (state) => ({
   user: state.authReducer.user,
-  profileLoading: state.authReducer.profileLoading,
 });
 
-export default connect(mapStateToProps, {})(ChangePassword);
+export default connect(mapStateToProps, { updateProfile, login, setToken })(
+  ChangePassword
+);

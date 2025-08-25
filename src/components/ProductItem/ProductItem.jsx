@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { TouchableOpacity, View, ActivityIndicator, Modal,Image } from "react-native";
+import { TouchableOpacity, View, ActivityIndicator, Modal } from "react-native";
 import PremiumSvg from "../../assets/premium.svg";
 import { sized } from "../../Svg";
 import {
@@ -31,6 +31,7 @@ import ImageViewer from "react-native-image-zoom-viewer";
 import CloseSvg from "../../assets/close_white.svg";
 import Share from "react-native-share";
 import i18n from "i18next";
+import FastImage from "react-native-fast-image";
 import useIsGuest from "../../hooks/useIsGuest";
 
 const PremiumIcon = sized(PremiumSvg, 24);
@@ -93,7 +94,7 @@ const ProductItem = ({
               <View
                 style={{ alignItems: "center", justifyContent: "flex-end" }}
               >
-                <Image
+                <FastImage
                   source={{ uri: product.image_url }}
                   style={[
                     {
@@ -163,7 +164,7 @@ const ProductItem = ({
                 {/*  style={{width: 46, height: 46, borderRadius: 50}}*/}
                 {/*  // cacheKey={`logo_${product.merchant_id ?? merchantDetails.merchant_id ?? merchantDetails.id ?? merchantDetails.partner_id?.[0]}`}*/}
                 {/*/>*/}
-                <Image
+                <FastImage
                   source={{
                     uri:
                       product.merchant_logo ?? merchantDetails?.merchant_logo,
@@ -198,7 +199,7 @@ const ProductItem = ({
             ]}
           >
             <TouchableOpacity onPress={() => setIsFullImage(true)}>
-              <Image
+              <FastImage
                 source={{ uri: product.image_url }}
                 style={{
                   width: SCREEN_WIDTH - 72,

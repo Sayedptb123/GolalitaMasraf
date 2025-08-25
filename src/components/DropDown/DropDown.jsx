@@ -2,7 +2,7 @@ import React from "react";
 import { ScrollView, TouchableOpacity, View } from "react-native";
 import { styles } from "./styles";
 import { colors } from "../colors";
-import { BALOO_REGULAR } from "../../redux/types";
+import { LUSAIL_REGULAR } from "../../redux/types";
 import { TypographyText } from "../Typography";
 import { useTheme } from "../ThemeProvider";
 
@@ -28,7 +28,7 @@ const DropDown = ({ items, onItemPress }) => {
                   <TypographyText
                     textColor={isDark ? colors.white : colors.darkBlue}
                     size={16}
-                    font={BALOO_REGULAR}
+                    font={LUSAIL_REGULAR}
                     title={item?.label || item}
                   />
                 </TouchableOpacity>

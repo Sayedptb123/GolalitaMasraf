@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import BackSvg from "../../assets/back.svg";
-import { BALOO_SEMIBOLD } from "../../redux/types";
+import { LUSAIL_REGULAR } from "../../redux/types";
 import { Text } from "react-native";
 import { useTheme } from "../ThemeProvider";
 import { colors } from "../colors";
@@ -22,7 +22,7 @@ const CustomHeader = ({
   title,
 }) => {
   const { isDark } = useTheme();
-  const iconColor = isDark ? "#fff" : "#312B3E";
+  const iconColor = isDark ? "#fff" : "#072536";
 
   const ICONS = {
     back: <BackSvg color={iconColor} />,
@@ -80,7 +80,8 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 18,
-    fontFamily: BALOO_SEMIBOLD,
+    fontFamily: LUSAIL_REGULAR,
+    fontWeight: "700",
   },
   iconWrapper: {
     justifyContent: "center",

@@ -12,7 +12,6 @@ import AllSvg from "../../../assets/all.svg";
 import ArrowDownSvg from "../../../assets/arrow_down_thin.svg";
 import { useTheme } from "../../ThemeProvider";
 import { getTextAlign } from "../../../../utils";
-import { colors } from "../../../components/colors";
 
 const CountryPicker = (props) => {
   const { label, onChange, value, placeholder } = props;
@@ -76,7 +75,7 @@ const CountryPicker = (props) => {
           />
         </View>
       )}
-      <View style={[styles.picker,{borderColor:isDark ? colors.white : colors.darkBlue}]}>
+      <View style={styles.picker}>
         <View style={styles.country}>
           <CountryPickerComponent
             {...{
@@ -98,7 +97,7 @@ const CountryPicker = (props) => {
                   );
                 }
 
-                return <FlagButton countryCode={value?.cca2} withFlagButton  />;
+                return <FlagButton countryCode={value?.cca2} withFlagButton />;
               },
             }}
             onClose={() => setVisible(false)}

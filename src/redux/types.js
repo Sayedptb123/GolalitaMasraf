@@ -1,11 +1,5 @@
 // fonts
-export const LUSAIL_REGULAR = "Baloo-Regular";
-// fonts
-export const BALOO_REGULAR = "Baloo-Regular";
-export const BALOO_MEDIUM = "Baloo-Medium";
-export const BALOO_SEMIBOLD = "Baloo-SemiBold";
-export const BALOO_BOLD = "Baloo-Bold";
-export const BALOO_EXTRABOLD = "Baloo-ExtraBold";
+export const LUSAIL_REGULAR = "Lusail-Regular";
 
 // merchant types
 export const PREMIUM = "premium";
@@ -18,4 +12,4 @@ export const DISCOUNT = "discount";
 export const PROMOCODE = "promocode";
 export const GIFTCARD = "giftcard";
 
-export const VERSION = "1.4.7";
+export const VERSION = "1.3.8";

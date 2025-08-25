@@ -3,6 +3,7 @@ import { Image, Linking, TouchableOpacity, View } from "react-native";
 import styles from "./styles";
 import { colors } from "../../components/colors";
 import { mainStyles } from "../../styles/mainStyles";
+import FastImage from "react-native-fast-image";
 import { TypographyText } from "../../components/Typography";
 import { LUSAIL_REGULAR } from "../../redux/types";
 import { Marker } from "react-native-maps";
@@ -59,7 +60,7 @@ const CustomMarker = ({ item, pressedItem, setPressedItem, index }) => {
             ]}
           >
             <View style={mainStyles.centeredRow}>
-              <Image
+              <FastImage
                 style={styles.merchantInfo__logo}
                 source={{
                   uri: pressedItem.merchant_logo,

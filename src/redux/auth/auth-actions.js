@@ -4,9 +4,6 @@ import {
   SET_IS_MAIN_USER,
   SET_IS_USER_JUST_LOG_OUT,
   SET_LOGIN_LOADING,
-  SET_PROFILE_LOADING,
-  SET_CONFIRMATIONCODE_LOADING,
-  SET_REGISTERATIONCODE_LOADING,
   SET_PUBLIC_ORGANIZATIONS,
   SET_SPLASH_SCREEN_VISIBLE,
   SET_TOKEN,
@@ -14,22 +11,8 @@ import {
   SET_USER_ID,
   SET_VERSION,
   SET_WORK_STATUS,
+  SET_PROFILE_LOADING,
 } from "./auth-types";
-
-export const setProfileLoading = (profileLoading) => ({
-  type: SET_PROFILE_LOADING,
-  profileLoading,
-});
-
-export const setConfirmationcodeLoading = (confirmationcodeLoading) => ({
-  type: SET_CONFIRMATIONCODE_LOADING,
-  confirmationcodeLoading,
-});
-
-export const setRegisterationcodeLoading = (registrationcodeLoading) => ({
-  type: SET_REGISTERATIONCODE_LOADING,
-  registrationcodeLoading,
-});
 
 export const setUser = (user) => ({ type: SET_USER, user });
 export const setIsLoginError = (isLoginError) => ({
@@ -40,6 +23,12 @@ export const setLoginLoading = (loading) => ({
   type: SET_LOGIN_LOADING,
   loading,
 });
+
+export const setProfileLoading = (profileLoading) => ({
+  type: SET_PROFILE_LOADING,
+  profileLoading,
+});
+
 export const setToken = (token) => ({ type: SET_TOKEN, token });
 export const setUserId = (userId) => ({ type: SET_USER_ID, userId });
 export const setWorkStatus = (workStatus) => ({

@@ -1,109 +1,135 @@
-import React from "react";
+import React,{useEffect} from "react";
 import { ImageBackground, View } from "react-native";
 import styles from "./styles";
 import { colors } from "../colors";
 import { LUSAIL_REGULAR } from "../../redux/types";
 import { TypographyText } from "../Typography";
-import { mainStyles } from "../../styles/mainStyles";
 import { useTranslation } from "react-i18next";
-import { getFlexDirection } from "../../../utils";
+
+const cardImage = require("../../assets/card.jpg");
 
 const Card = ({
   availablePoints,
   name,
   expiryDate,
+  barcode,
   lname,
+  nameAr,
+  lnameAr,
   renderHeader,
   isVIP,
-  isMainUser,
-  index,
 }) => {
-  const { t } = useTranslation();
+  const {i18n, t } = useTranslation();
 
-  const cardBorderStyle = { borderWidth: 1, borderColor: colors.mainDarkMode };
-  const imageBackground =
-    isMainUser && index === 0
-      ? require("../../assets/card_bg_new.jpg")
-      : require("../../assets/card_bg.jpg");
+  const language = i18n.language;
+  useEffect(() => {
 
+  }, [language]);
   return (
     <View>
-      {renderHeader?.()}
-      <View style={[styles.wrapper, cardBorderStyle]}>
+      {/* {renderHeader?.()} */}
+      <View style={styles.wrapper}>
         <ImageBackground
-          source={imageBackground}
+          source={cardImage}
           style={styles.card}
           resizeMode="stretch"
         >
-          <View
-            style={{
-              height: "100%",
-              justifyContent: "space-between",
-              position: "absolute",
-              top: 10,
-              left: 20,
-            }}
-          >
-            <View style={[mainStyles.betweenRow, getFlexDirection()]}>
-              <View style={styles.textWrapper}>
-                {/* <TypographyText
-                textColor={colors.white}
-                size={14}
-                font={LUSAIL_REGULAR}
-                title={t("CardPage.availablePoint")}
-              />
-              <TypographyText
-                textColor={colors.white}
-                size={18}
-                font={LUSAIL_REGULAR}
-                title={"Golalita members"}
-                style={{ fontWeight: "700" }}
-              /> */}
-              </View>
-            </View>
-            <View
-              style={[
-                mainStyles.betweenRow,
-                { alignItems: "flex-end" },
-                getFlexDirection(),
-              ]}
-            >
-              <View style={styles.textWrapper}>
-                <View>
-                  <TypographyText
-                    textColor={colors.white}
-                    size={14}
-                    font={LUSAIL_REGULAR}
-                    title={t("CardPage.exp")}
-                  />
-                  <TypographyText
-                    textColor={colors.white}
-                    size={16}
-                    font={LUSAIL_REGULAR}
-                    title={expiryDate}
-                    style={{ marginTop: -4, fontWeight: "700" }}
-                  />
-                </View>
-              </View>
-            </View>
-          </View>
-
-          <View
-            style={[
-              mainStyles.centeredRow,
-              {
-                //marginTop: 5, marginBottom: 15,
-              },
-            ]}
-          >
+          <View style={styles.cardNoBlock}>
             <TypographyText
               textColor={colors.white}
               size={24}
               font={LUSAIL_REGULAR}
-              title={name}
-              style={{ fontWeight: "700" }}
+              title={barcode.replace(/(.{4})(?=.)/g, "$1 ")}
+              style={[
+                styles.cardNoText, //, styles.name
+              ]}
               numberOfLines={1}
             />
+          </View>
+
+          <View style={styles.bottomRow}>
+            <View>
+              <TypographyText
+                textColor={colors.white}
+                size={14}
+                font={LUSAIL_REGULAR}
+                title={null}
+              />
+              <TypographyText
+                textColor={colors.white}
+                size={16}
+                font={LUSAIL_REGULAR}
+                title={null}
+                style={styles.generalText}
+              />
+            </View>
+
+          <View style={{}}>
+          <View style={styles.nameBlockAr}>
+              <TypographyText
+                textColor={colors.white}
+                size={20}
+                font={LUSAIL_REGULAR}
+                title={nameAr}
+                style={[
+                  styles.generalText, //, styles.name
+                ]}
+                numberOfLines={1}
+              />
+              <TypographyText
+                textColor={colors.white}
+                size={20}
+                font={LUSAIL_REGULAR}
+                title={" "}
+                style={[
+                  styles.generalText, //, styles.name
+                ]}
+                numberOfLines={1}
+              />
+              <TypographyText
+                textColor={colors.white}
+                size={20}
+                font={LUSAIL_REGULAR}
+                title={lnameAr}
+                style={[
+                  styles.generalText, //, styles.name
+                ]}
+                numberOfLines={1}
+              />
+            </View>
+            <View style={styles.nameBlock}>
+              <TypographyText
+                textColor={colors.white}
+                size={20}
+                font={LUSAIL_REGULAR}
+                title={name}
+                style={[
+                  styles.generalText, //, styles.name
+                ]}
+                numberOfLines={1}
+              />
+              <TypographyText
+                textColor={colors.white}
+                size={20}
+                font={LUSAIL_REGULAR}
+                title={" "}
+                style={[
+                  styles.generalText, //, styles.name
+                ]}
+                numberOfLines={1}
+              />
+              <TypographyText
+                textColor={colors.white}
+                size={20}
+                font={LUSAIL_REGULAR}
+                title={lname}
+                style={[
+                  styles.generalText, //, styles.name
+                ]}
+                numberOfLines={1}
+              />
+            </View>
+          </View>
           </View>
         </ImageBackground>
       </View>

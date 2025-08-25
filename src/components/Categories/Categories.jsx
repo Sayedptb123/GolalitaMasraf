@@ -1,160 +1,221 @@
-import { StyleSheet, View, FlatList, Image } from "react-native";
-import { useTranslation } from "react-i18next";
-import { TouchableOpacity } from "react-native";
-import { useSelector } from "react-redux";
-import { useTheme } from "../../components/ThemeProvider";
-import { TypographyText } from "../../components/Typography";
+import React, { useEffect, useRef, useState } from "react";
+import {
+  ActivityIndicator,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { colors } from "../colors";
+import { TypographyText } from "../Typography";
 import { LUSAIL_REGULAR } from "../../redux/types";
-import { colors } from "../../components/colors";
-import { useNavigation } from "@react-navigation/native";
-import FullScreenLoader from "../../components/Loaders/FullScreenLoader";
+import { mainStyles } from "../../styles/mainStyles";
+import { sized } from "../../Svg";
+import BackSvg from "../../assets/back.svg";
+import { useTheme } from "../ThemeProvider";
+import { useTranslation } from "react-i18next";
+import FastImage from "react-native-fast-image";
+import { getFlexDirection } from "../../../utils";
 
-const IMAGE_SIZE = 72;
+const IMAGE_SIZE = 123;
 
-const Categories = () => {
-  const { isDark } = useTheme();
+const Categories = ({
+  data,
+  isShowLoading,
+  title,
+  onPress,
+  onBackPress,
+  style,
+  selectedCategory,
+  selectedChildCategory,
+}) => {
   const { t, i18n } = useTranslation();
-  const navigation = useNavigation();
-  const parentCategories = useSelector(
-    (state) => state.merchantReducer.parentCategories
-  );
-  const loading = useSelector(
-    (state) => state.merchantReducer.parentCategoriesLoading
+  const { isDark } = useTheme();
+  const [subCategories, setSubCategories] = useState(null);
+  const scrollRef = useRef(null);
+
+  const BackIcon = sized(
+    BackSvg,
+    12,
+    12,
+    isDark ? colors.white : colors.darkBlue
   );
 
   const language = i18n.language;
 
-  const navigateToMerchant = (category) => {
-    if (!category.children?.length) {
-      navigation.navigate("merchants", {
-        screen: "merchants-list",
-        params: {
-          selectedCategoryId: category.id,
-          parentCategoryId: category?.parent_id?.[0],
-          parentCategoryName:
-            language === "ar" ? category?.x_name_arabic : category.name,
-        },
-      });
+  useEffect(() => {
+    if (selectedCategory) {
+      const subCategories = data.find(
+        (category) => +category.id === +selectedCategory
+      )?.children;
 
-      return;
+      if (subCategories?.length) {
+        setSubCategories(subCategories);
+      }
+    }
+  }, []);
+
+  if (!data)
+    return (
+      <View style={[mainStyles.centeredRow, { paddingVertical: 50 }, style]}>
+        <ActivityIndicator size={"large"} color={colors.green} />
+      </View>
+    );
+
+  const handlePress = (category) => {
+    const subCategories = data.find(
+      (item) => +item.id === +category.id
+    )?.children;
+
+    if (subCategories?.length) {
+      setSubCategories(subCategories);
+
+      scrollRef.current?.scrollTo({
+        x: 0,
+        animated: false,
+      });
     }
 
-    navigation.navigate("categories", {
-      screen: "categories-child",
-      params: {
-        childCategories: category.children,
-        parentCategoryName:
-          language === "ar" ? category?.x_name_arabic : category.name,
-      },
+    const { parent_id: parentIdData = null, id } = category;
+    const parentCategoryId = parentIdData?.[0];
+
+    onPress(id, parentCategoryId);
+  };
+
+  const handleBackPress = () => {
+    setSubCategories(null);
+    // onPress(null);
+    onBackPress?.(null);
+
+    scrollRef.current?.scrollTo({
+      x: 0,
+      animated: false,
     });
   };
 
-  if (loading) {
-    return <FullScreenLoader />;
-  }
+  const categories = subCategories || data;
 
   return (
-    <View
-      style={{
-        ...styles.wrapper,
-        backgroundColor: isDark ? colors.darkBlue : colors.white,
-      }}
-    >
-      <TypographyText
-        title={t("Categories.title")}
-        textColor={isDark ? colors.mainDarkMode : "#000"}
-        size={26}
-        font={LUSAIL_REGULAR}
-      />
-      <FlatList
-        data={parentCategories}
-        numColumns={3}
-        contentContainerStyle={styles.contentContainerStyle}
-        renderItem={({ item }) => (
-      //  console.log("itemL",item)
-          <TouchableOpacity
-            onPress={() => navigateToMerchant(item)}
-            style={styles.listItem}
-          >
-            <View style={[styles.imageWrapper]}>
-              <Image
-                style={styles.categoryImage}
-                source={{
-                  uri:
-                    (isDark ? item.x_image_url_4 : item.x_image_url_3) ||
-                    undefined,
-                }}
+    <View style={style}>
+      {!!title && (
+        <View
+          style={[
+            mainStyles.row,
+            getFlexDirection(),
+            { justifyContent: "space-between" },
+          ]}
+        >
+          <TypographyText
+            textColor={isDark ? colors.white : colors.darkBlue}
+            size={20}
+            font={LUSAIL_REGULAR}
+            style={{ fontWeight: "700" }}
+            title={title}
+          />
+
+          {Array.isArray(subCategories) && (
+            <TouchableOpacity
+              onPress={handleBackPress}
+              style={{ flexDirection: "row", alignItems: "center" }}
+            >
+              <BackIcon />
+
+              <TypographyText
+                textColor={isDark ? colors.white : colors.darkBlue}
+                size={14}
+                font={LUSAIL_REGULAR}
+                style={{ fontWeight: "700" }}
+                title={t("General.back")}
               />
-            </View>
-            <TypographyText
-              textColor={isDark ? colors.white : "#000"}
-              size={16}
-              font={LUSAIL_REGULAR}
-              title={language === "ar" ? item.x_name_arabic : item.name}
-              style={styles.categoryName}
-              numberOfLines={2}
-            />
-          </TouchableOpacity>
-        )}
-      />
+            </TouchableOpacity>
+          )}
+        </View>
+      )}
+
+      <ScrollView
+        ref={scrollRef}
+        showsHorizontalScrollIndicator={false}
+        horizontal={true}
+        style={styles.list}
+        contentContainerStyle={styles.contentContainerStyle}
+      >
+        {categories?.map((category, index) => {
+          return (
+            <TouchableOpacity
+              onPress={() => handlePress(category)}
+              key={`category${index}`}
+              style={styles.categoryItem}
+            >
+              <View style={styles.imageWrapper}>
+                <FastImage
+                  style={[
+                    styles.image,
+                    subCategories
+                      ? {
+                          width: IMAGE_SIZE,
+                          height: IMAGE_SIZE,
+                        }
+                      : {},
+                  ]}
+                  source={{
+                    uri: subCategories
+                      ? category.image_icon
+                      : category.x_image_url_3 || undefined,
+                  }}
+                />
+              </View>
+              <TypographyText
+                textColor={isDark ? colors.white : "#000"}
+                size={14}
+                font={LUSAIL_REGULAR}
+                title={
+                  language === "ar" ? category.x_name_arabic : category.name
+                }
+                style={styles.categoryName}
+                numberOfLines={1}
+              />
+            </TouchableOpacity>
+          );
+        })}
+      </ScrollView>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  wrapper: {
-    flex: 1,
-    minHeight: 200,
-    minWidth: "100%",
-    marginTop: 25,
-  },
-  listItem: {
-    flex: 1,
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginTop: 16,
-    borderRadius: 32,
-    //backgroundColor:'red'
-  },
   categoryName: {
     marginTop: 4,
     flex: 1,
-    width: "100%",
+    width: IMAGE_SIZE,
     fontWeight: "700",
-    width: 74,
-    textAlign: "center",
   },
   categoryItem: {
     marginRight: 16,
-    flex: 1,
-    margin: 1,
-    justifyContent: "center",
-    alignItems: "center",
   },
   list: {
     marginTop: 16,
-    paddingBottom: 40,
   },
   imageWrapper: {
+    ...mainStyles.generalShadow,
+    backgroundColor: "#fff",
     borderRadius: 8,
+    height: IMAGE_SIZE,
     justifyContent: "center",
     alignItems: "center",
-    // ...mainStyles.generalShadow,
-    width: IMAGE_SIZE + 5,
-    height: IMAGE_SIZE + 5,
-    borderRadius: 32,
   },
   image: {
-    width: IMAGE_SIZE,
-    height: IMAGE_SIZE,
-    borderRadius: 32,
+    width: 60,
+    height: 60,
+    borderRadius: 8,
   },
-  categoryImage: {
-    width: IMAGE_SIZE,
-    height: IMAGE_SIZE,
-    borderRadius: 32,
+  noData: {
+    height: IMAGE_SIZE + 26,
+    justifyContent: "center",
+    alignItems: "center",
   },
-  contentContainerStyle: { flexGrow: 1 },
+  contentContainerStyle: {
+    paddingLeft: 5,
+  },
 });
 
 export default Categories;

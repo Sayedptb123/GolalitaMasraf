@@ -2,6 +2,7 @@ import * as React from "react";
 // import {useColorScheme} from 'react-native-appearance';
 import { Text, TouchableOpacity } from "react-native";
 import { colors } from "./colors";
+
 const darkColors = {
   mainBg: "#2F1539",
 };
@@ -17,10 +18,13 @@ export const ThemeContext = React.createContext({
   setScheme: () => {},
 });
 
+colors.darkBlue = "#000";
+colors.navyBlue = "#000";
+
 export const ThemeProvider = (props) => {
   // Getting the device color theme, this will also work with react-native-web
   // const colorScheme = useColorScheme(); // Can be dark | light | no-preference
-  const colorScheme = "light";
+  const colorScheme = "dark";
   /*
    * To enable changing the app theme dynamicly in the app (run-time)
    * we're gonna use useState so we can override the default device theme
@@ -39,10 +43,10 @@ export const ThemeProvider = (props) => {
     // Overrides the isDark value will cause re-render inside the context.
     setScheme: (scheme) => {
       if (scheme === "dark") {
-        colors.darkBlue = "#0076a5";
-        colors.navyBlue = "#06b1d6";
+        colors.darkBlue = "#000";
+        colors.navyBlue = "#000";
       } else {
-        colors.darkBlue = "#4cc1e1d9";
+        colors.darkBlue = "#940037";
         colors.navyBlue = "#072536";
       }
       //#072536

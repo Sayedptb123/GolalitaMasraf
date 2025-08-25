@@ -3,24 +3,24 @@ import LocationPicker from "../../../MainScreens/MerchantsPage/MerchantsFilters/
 import { View } from "react-native";
 
 const FormikLocationPicker = (props) => {
-  const { wrapperStyle, name,onChangeCallback, ...restProps } = props;
+  const {
+    wrapperStyle,
+    name,
+    onChangeCallback,
+    selectedCountry,
+    ...restProps
+  } = props;
   return (
     <View style={wrapperStyle}>
       <Field name={name}>
-        {({ field: { value }, form: { setFieldValue } }) => {
-          return (
-            <LocationPicker
-              {...restProps}
-              value={value}
-              onChange={(val) => {
-                setFieldValue(name, val);
-                if (onChangeCallback) {
-                  onChangeCallback(val); // Call the callback
-                }
-              }}
-            />
-          );
-        }}
+        {({ field: { value }, form: { setFieldValue } }) => (
+          <LocationPicker
+            {...restProps}
+            selectedCountry={selectedCountry}
+            value={value}
+            onChange={(val) => setFieldValue(name, val)}
+          />
+        )}
       </Field>
     </View>
   );

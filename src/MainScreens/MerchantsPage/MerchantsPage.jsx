@@ -1,10 +1,4 @@
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useCallback, useEffect, useMemo, useRef } from "react";
 import { View, ActivityIndicator, FlatList, StyleSheet } from "react-native";
 import { colors } from "../../components/colors";
 import { mainStyles, SCREEN_HEIGHT } from "../../styles/mainStyles";
@@ -24,8 +18,6 @@ import MerchantListHeader from "./components/MerchantsHeader";
 import { getFavouriteMerchantsList } from "../../redux/favouriteMerchants/favourite-merchants-thunks";
 import { TypographyText } from "../../components/Typography";
 import { LUSAIL_REGULAR } from "../../redux/types";
-import MerchantTabs from "./components/MerchantTabs";
-import { TABS } from "./components/MerchantTabs/config";
 
 const MerchantsPage = ({
   route,
@@ -51,11 +43,6 @@ const MerchantsPage = ({
     ? parentCategoryName
     : t("Drawer.allMerchants");
 
-  const [tabsData, setTabsLocation] = useState({
-    location: null,
-    tabType: TABS.ALPHABETICAL,
-  });
-
   useEffect(() => {
     getFavouriteMerchantsList();
   }, []);
@@ -63,9 +50,11 @@ const MerchantsPage = ({
   useEffect(() => {
     canGetMoreDataRef.current = true;
 
+
+
     getMerchantList({
       page: 1,
-     // category: categoryId,
+      category: categoryId,
       filters: params?.filters,
       onGetData: (dataLength, limit) => {
         if (dataLength !== limit) {
@@ -90,7 +79,7 @@ const MerchantsPage = ({
 
     getMerchantList({
       page: "next",
-      //category: categoryId,
+      category: categoryId,
       filters: params?.filters,
       onGetData: (dataLength, limit) => {
         if (dataLength !== limit) {
@@ -104,27 +93,10 @@ const MerchantsPage = ({
     merchants.length,
     categoryId,
     params?.filters,
-    tabsData.location,
   ]);
 
   const handleFavouritePress = (merchant) => {
     toggleFavourites(merchant.merchant_id);
-  };
-
-  const handleTabChage = (id, userLocation) => {
-    if (id === TABS.NEARBY) {
-      if (userLocation) {
-        setTabsLocation({ location: userLocation, tabType: id });
-
-        return;
-      }
-
-      return;
-    }
-
-    if (id === TABS.ALPHABETICAL) {
-      return setTabsLocation({ location: null, tabType: id });
-    }
   };
 
   const renderItem = useCallback(

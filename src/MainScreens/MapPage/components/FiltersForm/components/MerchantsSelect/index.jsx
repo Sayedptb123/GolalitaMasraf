@@ -1,13 +1,14 @@
 import React, { useMemo } from "react";
 import Select from "../../../../../../components/Form/Select";
 import useMerchants from "../../../../hooks/useMerchants";
-import { useTranslation } from "react-i18next";
+import i18next from "i18next";
 
-const transformCategories = (categories,isArabic) => {
+const transformMerchants = (merchants) => {
+  const language = i18next.language;
 
-  return categories?.map((item) => ({
+  return merchants?.map((item) => ({
     value: item.merchant_name,
-    label: !isArabic ? item.merchant_name :item.x_arabic_name,
+    label: language === "ar" ? item.x_arabic_name : item.merchant_name,
   }));
 };
 
@@ -21,10 +22,8 @@ const MerchantsSelect = ({
 }) => {
   const { isLoading, data } = useMerchants(latitude, longitude);
 
-  const { i18n } = useTranslation();
-  const isArabic = i18n.language === "ar";
   const options = useMemo(() => {
-    const transformedData = transformCategories(data,isArabic) || [];
+    const transformedData = transformMerchants(data) || [];
 
     return transformedData;
   }, [data?.length, locationId]);

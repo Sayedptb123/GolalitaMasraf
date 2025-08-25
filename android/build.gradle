@@ -1,3 +1,4 @@
+
 buildscript {
     ext {
         buildToolsVersion = "35.0.0"
@@ -6,6 +7,11 @@ buildscript {
         targetSdkVersion = 35
         ndkVersion = "27.1.12297006"
         kotlinVersion = "2.1.20"
+ 
+        googlePlayServicesVersion = "21.0.1" 
+            
+        
+
     }
     repositories {
         google()
@@ -15,7 +21,15 @@ buildscript {
         classpath("com.android.tools.build:gradle")
         classpath("com.facebook.react:react-native-gradle-plugin")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin")
+        classpath("com.google.gms:google-services:4.4.3")
     }
 }
 
+plugins {
+    id "org.jetbrains.kotlin.android" version '2.1.20' apply false
+}
+
+
 apply plugin: "com.facebook.react.rootproject"
+apply plugin: 'com.google.gms.google-services'
+

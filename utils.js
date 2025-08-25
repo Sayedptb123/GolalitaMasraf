@@ -193,13 +193,16 @@ export function removeTags(str) {
 export const phoneRegExp1 =
   /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
 
-  export const phoneRegExp = /^(\+974[3-7]\d{7}|\+?[1-9]\d{7})$/; 
-
+export const phoneRegExp = /^(\+974[3-7]\d{7}|\+?[1-9]\d{7})$/;
 export const dateForWeeks = new Date().setDate(new Date().getDate() - 1);
 
 export const reverseString = (str) => str.split("").reverse().join("");
 
 export const getOffsetAndLimit = (page, limit = 20) => {
+  if (!page) {
+    return;
+  }
+
   return { offset: (page - 1) * limit, limit };
 };
 

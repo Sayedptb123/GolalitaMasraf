@@ -17,28 +17,25 @@ import {
   SET_PREMIUM_BANNERS_LOADING,
   SET_PARENT_CATEGORIES,
   SET_TRAVEL_CATEGORIES,
-  SET_MERCHANT_DETAILS_LOADING,
+  SET_FAVORITE_GIFTS,
   SET_PARENT_CATEGORIES_LOADING,
+  SET_MERCHANT_DETAILS_LOADING,
   SET_CATEGORIES_TYPE,
 } from "./merchant-types";
 
 export const setMerchants = (merchants) => ({ type: SET_MERCHANTS, merchants });
+
 export const setPremiumMerchants = (premiumMerchants) => ({
   type: SET_PREMIUM_MERCHANTS,
   premiumMerchants,
 });
-
-export const setLocalClients = (localClients) => ({
-  type: SET_LOCAL_CLIENTS,
-  localClients,
-});
-
 export const setOffers = (offers) => ({ type: SET_OFFERS, offers });
 
 export const setMerchantOffers = (merchantOffers) => ({
   type: SET_MERCHANT_OFFERS,
   merchantOffers,
 });
+
 export const setCategories = (categories) => ({
   type: SET_CATEGORIES,
   categories,
@@ -79,6 +76,10 @@ export const setFavoriteOffers = (favoriteOffers) => ({
   type: SET_FAVORITE_OFFERS,
   favoriteOffers,
 });
+export const setFavoriteGifts = (favoriteGifts) => ({
+  type: SET_FAVORITE_GIFTS,
+  favoriteGifts,
+});
 export const setPremiumBannersLoading = (premiumBanners) => ({
   type: SET_PREMIUM_BANNERS_LOADING,
   premiumBanners,
@@ -87,12 +88,14 @@ export const setPremiumBanners = (premiumBanners) => ({
   type: SET_PREMIUM_BANNERS,
   premiumBanners,
 });
-
+export const setLocalClients = (localClients) => ({
+  type: SET_LOCAL_CLIENTS,
+  localClients,
+});
 export const setInternationalClients = (internationalClients) => ({
   type: SET_INTERNATIONAL_CLIENTS,
   internationalClients,
 });
-
 export const setOrganizations = (organizations) => ({
   type: SET_ORGANIZATIONS,
   organizations,

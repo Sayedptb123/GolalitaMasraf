@@ -1,26 +1,29 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   TouchableOpacity,
   View,
   Image,
   StyleSheet,
   StatusBar,
-} from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import Swiper from "react-native-swiper";
-import { styles } from "./styles";
-import { sized } from "../../Svg";
-import { mainStyles, SCREEN_WIDTH } from "../../styles/mainStyles";
-import { TypographyText } from "../../components/Typography";
-import { colors } from "../../components/colors";
-import { BALOO_BOLD, BALOO_SEMIBOLD, LUSAIL_REGULAR } from "../../redux/types";
-import BackSvg from "../../assets/back.svg";
-import { useTranslation } from "react-i18next";
-import { useTheme } from "../../components/ThemeProvider";
-import { getConfig } from "./config";
-import CommonButton from "../../components/CommonButton/CommonButton";
-import i18next from "i18next";
-import { getIfEverLoggedIn } from "../../api/asyncStorage";
+} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Swiper from 'react-native-swiper';
+import { styles } from './styles';
+import { sized } from '../../Svg';
+import { mainStyles, SCREEN_WIDTH } from '../../styles/mainStyles';
+import { TypographyText } from '../../components/Typography';
+import { colors } from '../../components/colors';
+import { LUSAIL_REGULAR } from '../../redux/types';
+import BackSvg from '../../assets/back.svg';
+import Logo from '../../assets/logo.svg';
+import { useTranslation } from 'react-i18next';
+import { useTheme } from '../../components/ThemeProvider';
+import { getConfig } from './config';
+import CommonButton from '../../components/CommonButton/CommonButton';
+import i18next from 'i18next';
+import { getIfEverLoggedIn } from '../../api/asyncStorage';
+
+import BottomIcon from '../component/BottomIcon';
 
 const OnBoarding = ({ navigation }) => {
   const { isDark } = useTheme();
@@ -32,15 +35,12 @@ const OnBoarding = ({ navigation }) => {
 
   const swiperData = useMemo(() => getConfig(i18n.language), [i18n.language]);
 
-  const iconsAndTextColor = isDark ? colors.mainDarkMode : "#000";
+  const iconsAndTextColor = isDark ? colors.mainDarkMode : colors.darkBlue;
   const backgroundColor = isDark ? colors.darkBlue : colors.bg;
 
   const BackIcon = sized(BackSvg, 13, 24, iconsAndTextColor);
-  const logoIcon = isDark
-    ? require("../../assets/horizontal_logo_white.png")
-    : require("../../assets/horizontal_logo.png");
 
-  const handleIndexChange = (index) => {
+  const handleIndexChange = index => {
     if (index === 0 && !isFirstSlide) {
       setIsFirstSlide(true);
     }
@@ -49,23 +49,24 @@ const OnBoarding = ({ navigation }) => {
       setIsFirstSlide(false);
     }
 
-    if (index === 3) setIsSkip(true);
+    if (index === 4) setIsSkip(true);
 
     return null;
   };
 
   const handleScipPress = async () => {
     const ifEverLoggedIn = await getIfEverLoggedIn();
+    console.log(ifEverLoggedIn, 'ifEverLoggedIn');
 
     if (ifEverLoggedIn) {
-      navigation.navigate("Login");
+      navigation.navigate('Login');
     }
 
     if (!ifEverLoggedIn) {
-      navigation.navigate("RegCodeVerification");
+      navigation.navigate('RegCodeVerification');
     }
 
-    AsyncStorage.setItem("isBoard", false.toString());
+    AsyncStorage.setItem('isBoard', false.toString());
   };
 
   useEffect(() => {
@@ -94,8 +95,9 @@ const OnBoarding = ({ navigation }) => {
         <TypographyText
           textColor={iconsAndTextColor}
           size={18}
-          font={BALOO_SEMIBOLD}
-          title={t("OnBoarding.skip")}
+          font={LUSAIL_REGULAR}
+          title={t('OnBoarding.skip')}
+          style={{ fontWeight: '700' }}
         />
       </TouchableOpacity>
       <Swiper
@@ -114,101 +116,104 @@ const OnBoarding = ({ navigation }) => {
           if (!index) {
             return (
               <TouchableOpacity
-                style={[styles.item, mainStyles.p20]}
+                style={[
+                  styles.item,
+                  mainStyles.p20,
+                  { justifyContent: 'space-evenly' },
+                ]}
                 activeOpacity={1}
                 key={item.key}
               >
-                <View style={[mainStyles.centeredRow, { marginTop: 75 }]}>
-                  <Image
-                    source={logoIcon}
+                <View style={localStyles.logosBlock}>
+                  <View style={localStyles.logo}>
+                    <Logo
+                      color={isDark ? colors.mainDarkMode : colors.darkBlue}
+                    />
+                  </View>
+                  <TypographyText
+                    title={t('OnBoarding.welcomeTo')}
+                    textColor={iconsAndTextColor}
+                    size={24}
+                    font={LUSAIL_REGULAR}
                     style={[
-                      localStyles.logoBig,
-                      // {
-                      //   tintColor: isDark
-                      //     ? colors.mainDarkMode
-                      //     : colors.darkBlue,
-                      // },
+                      mainStyles.centeredText,
+                      {
+                        //marginVertical: 24,
+                        fontWeight: '900',
+                      },
                     ]}
                   />
                 </View>
-                <TypographyText
-                  title={t("OnBoarding.welcomeTo")}
-                  textColor={iconsAndTextColor}
-                  size={24}
-                  font={LUSAIL_REGULAR}
-                  style={[
-                    mainStyles.centeredText,
-                    { fontWeight: "900", marginVertical: 24 },
-                  ]}
-                />
+
                 <View>
                   <CommonButton
-                    label={"English"}
+                    label={'English'}
                     textColor={
-                      i18next.language === "en"
+                      i18next.language === 'en'
                         ? isDark
-                          ? "white"
+                          ? colors.mainDarkModeText
                           : colors.white
                         : isDark
-                        ? colors.mainDarkModeText
-                        : colors.darkBlue
+                          ? colors.white
+                          : colors.darkBlue
                     }
                     style={{
                       backgroundColor:
-                        i18next.language === "en"
+                        i18next.language === 'en'
                           ? isDark
-                            ? colors.navyBlue
+                            ? colors.mainDarkMode
                             : colors.darkBlue
-                          : isDark
-                          ? "white"
-                          : colors.white,
-                      borderStyle: "solid",
-                      borderWidth: i18next.language === "en" ? 0 : 1,
+                          : 'transparent',
+                      borderStyle: 'solid',
+                      borderWidth: i18next.language === 'en' ? 0 : 1,
                       borderColor: isDark
                         ? colors.mainDarkMode
                         : colors.darkBlue,
-                      shadowColor: "rgba(0, 0, 0, 0)",
+                      shadowColor: 'rgba(0, 0, 0, 0)',
                       marginBottom: 20,
                     }}
                     onPress={() => {
-                      i18next.changeLanguage("en");
-
+                      i18next.changeLanguage('en');
+                      AsyncStorage.setItem('lang', 'en');
                       swiperRef.current.scrollBy(1);
                     }}
                   />
                   <CommonButton
-                    label={"عربي"}
+                    label={'عربي'}
                     textColor={
-                      i18next.language === "ar"
+                      i18next.language === 'ar'
                         ? isDark
-                          ? "white"
+                          ? colors.mainDarkModeText
                           : colors.white
                         : isDark
-                        ? colors.mainDarkModeText
-                        : colors.darkBlue
+                          ? colors.mainDarkMode
+                          : colors.darkBlue
                     }
                     style={{
                       backgroundColor:
-                        i18next.language === "ar"
+                        i18next.language === 'ar'
                           ? isDark
-                            ? colors.navyBlue
+                            ? colors.mainDarkMode
                             : colors.darkBlue
-                          : isDark
-                          ? "white"
-                          : "white",
-                      borderStyle: "solid",
-                      borderWidth: i18next.language === "ar" ? 0 : 1,
+                          : 'transparent',
+                      borderStyle: 'solid',
+                      borderWidth: i18next.language === 'ar' ? 0 : 1,
                       borderColor: isDark
                         ? colors.mainDarkMode
                         : colors.darkBlue,
-                      shadowColor: "rgba(0, 0, 0, 0)",
+                      shadowColor: 'rgba(0, 0, 0, 0)',
                       marginBottom: 20,
                     }}
                     onPress={() => {
-                      i18next.changeLanguage("ar");
+                      i18next.changeLanguage('ar');
+                      AsyncStorage.setItem('lang', 'ar');
                       swiperRef.current.scrollBy(1);
                     }}
                   />
+                </View>
+
+                <View style={{ marginBottom: 26 }}>
+                  <BottomIcon />
                 </View>
               </TouchableOpacity>
             );
@@ -231,16 +236,23 @@ const OnBoarding = ({ navigation }) => {
 const localStyles = StyleSheet.create({
   swiperImage: {
     width: SCREEN_WIDTH,
-    height: "100%",
+    height: '100%',
   },
   logo: {
-    height: 40,
-    width: 40,
+    marginBottom: 30,
   },
   logoBig: {
-    height: 220,
-    width: 250,
-    resizeMode: "contain",
+    height: 165,
+    width: 165,
+  },
+  additionalLogo: {
+    height: 100,
+    resizeMode: 'contain',
+    //width: 165,
+  },
+  logosBlock: {
+    alignItems: 'center',
+    width: '98%',
   },
 });
 

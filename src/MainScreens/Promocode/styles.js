@@ -1,10 +1,12 @@
 import { StyleSheet } from "react-native";
 import { mainStyles, SCREEN_HEIGHT } from "../../styles/mainStyles";
 import { colors } from "../../components/colors";
-import { BALOO_REGULAR, BALOO_SEMIBOLD } from "../../redux/types";
+import { LUSAIL_REGULAR } from "../../redux/types";
 
 export const styles = StyleSheet.create({
   container: {
+    ...mainStyles.lightShadow,
+    padding: 20,
     borderRadius: 8,
     marginTop: 20,
     marginBottom: 30,
@@ -30,16 +32,24 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     color: colors.label,
     fontSize: 40,
-    fontFamily: BALOO_SEMIBOLD,
+    fontFamily: LUSAIL_REGULAR,
+    fontWeight: "700",
     textAlign: "center",
   },
   label: {
     color: colors.grey,
-    marginTop: 6,
+    fontSize: 12,
+    fontFamily: LUSAIL_REGULAR,
+    textAlign: "center",
   },
-  rulesWrapper: {
+  labelWrapper: {
     flexDirection: "row",
-    alignItems: "center",
     justifyContent: "center",
+    marginTop: 10,
+    fontSize: 5,
+  },
+  contentContainer: {
+    paddingBottom: 60,
+    flexGrow: 1,
   },
 });

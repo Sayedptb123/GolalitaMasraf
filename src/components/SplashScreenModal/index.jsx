@@ -1,18 +1,14 @@
-import { useEffect } from "react";
-import { SCREEN_HEIGHT, SCREEN_WIDTH } from "../../styles/mainStyles";
-import { StyleSheet, View, Modal, Image, Platform } from "react-native";
-import RNBootSplash from "react-native-bootsplash";
+import { useEffect } from 'react';
+import { StyleSheet, View, Modal, Image, Platform } from 'react-native';
+import BootSplash from 'react-native-bootsplash';
+import { SCREEN_HEIGHT, SCREEN_WIDTH } from '../../styles/mainStyles';
 
 const SplashScreenModal = ({ isVisible }) => {
   useEffect(() => {
-    if (Platform.OS === "android") {
-      RNBootSplash.hide({ fade: true });
-    }
+    BootSplash.hide();
   }, []);
 
-  const logo = Platform.OS === "ios" 
-    ? require("../../assets/sjc.gif")
-    : { uri: "golalita" };
+  const logo = require('../../assets/emtiaz.gif');
 
   return (
     <Modal

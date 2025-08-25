@@ -1,6 +1,7 @@
 import { View, TouchableOpacity, Image, StyleSheet } from "react-native";
 import Swiper from "react-native-swiper";
 import { colors } from "../colors";
+import ImageWithLoader from "../ImageWithLoader";
 
 const AdwertSwiper = (props) => {
   const { isDark, data, onBannerPress, style } = props;
@@ -28,10 +29,9 @@ const AdwertSwiper = (props) => {
             onPress={() => onBannerPress(item)}
             style={styles.swiperItem}
           >
-            <Image
+            <ImageWithLoader
               source={{ uri: item.banner_image }}
               style={styles.swiperImage}
-              resizeMode="cover"
             />
           </TouchableOpacity>
         ))}
@@ -42,13 +42,14 @@ const AdwertSwiper = (props) => {
 
 const styles = StyleSheet.create({
   wrapper: {
-    height: 145,
+    height: 181,
     width: "100%",
   },
   swiperImage: {
-    height: 145,
+    height: 181,
     width: "100%",
-    borderRadius: 8,
+    borderRadius: 15,
+    resizeMode: "stretch",
   },
   swiperItem: {
     flex: 1,

@@ -16,6 +16,7 @@ const AsyncFormikMerchantSelect = ({ onChange }) => {
     const merchants = await getAllMerchants();
 
     const options = transformCategories(merchants);
+
     return options;
   };
 

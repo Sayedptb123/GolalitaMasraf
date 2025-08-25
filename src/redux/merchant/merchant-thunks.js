@@ -1,7 +1,8 @@
-import { merchantApi } from "./merchant-api";
+import { merchantApi } from './merchant-api';
 import {
   setAdvert,
   setCategories,
+  setFavoriteGifts,
   setFavoriteOffers,
   setInternationalClients,
   setLocalClients,
@@ -19,28 +20,29 @@ import {
   setPremiumMerchants,
   setSocialMedia,
   setTravelCategories,
-} from "./merchant-actions";
-import { CLIENT, PREMIUM, STANDARD } from "../types";
-import { Platform } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { CONTENT_DISABLED } from "../auth/auth-types";
-import authApi from "../auth/auth-api";
+} from './merchant-actions';
+import { CLIENT, PREMIUM, STANDARD } from '../types';
+import { Platform } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { CONTENT_DISABLED } from '../auth/auth-types';
+import authApi from '../auth/auth-api';
 import {
   setIsMerchantsLoading,
   setIsOffersLoading,
-} from "../loaders/loaders-actions";
-import { showMessage } from "react-native-flash-message";
-import { logout } from "../auth/auth-thunks";
-import { getOffsetAndLimit } from "../../../utils";
-import { navigate, push } from "../../Navigation/RootNavigation";
-import { setClickedNotificationData } from "../notifications/notifications-actions";
-import axios from "axios";
-import { getMerchantDisscountForOffers } from "../../api/merchants";
-import { getFavouriteMerchantsList } from "../favouriteMerchants/favourite-merchants-thunks";
+} from '../loaders/loaders-actions';
+import { showMessage } from 'react-native-flash-message';
+import { logout } from '../auth/auth-thunks';
+import { getOffsetAndLimit } from '../../../utils';
+import { navigate, push } from '../../Navigation/navigationHelpers';
+import { setClickedNotificationData } from '../notifications/notifications-actions';
+import axios from 'axios';
+import { getMerchantDisscountForOffers } from '../../api/merchants';
+import { getFavouriteMerchantsList } from '../favouriteMerchants/favourite-merchants-thunks';
+import i18next from 'i18next';
 
 export const getCategories = () => async (dispatch, getState) => {
   const { workStatus } = getState().authReducer;
-  const token = await AsyncStorage.getItem("token");
+  const token = await AsyncStorage.getItem('token');
   const res = await merchantApi.getCategories({
     params: {
       token,
@@ -49,24 +51,23 @@ export const getCategories = () => async (dispatch, getState) => {
   });
 
   dispatch(
-    setCategories(workStatus === CONTENT_DISABLED ? [] : res.data.result)
+    setCategories(workStatus === CONTENT_DISABLED ? [] : res.data.result),
   );
 };
 
-const getSubCategoriesFunc = async (parentCategories, type, country) => {
+const getSubCategoriesFunc = async (parentCategories, type) => {
   const newCategories = [];
 
-  const token = await AsyncStorage.getItem("token");
+  const token = await AsyncStorage.getItem('token');
 
-  const getSubCategories = async (id) => {
-    return new Promise(async (resolve) => {
+  const getSubCategories = async id => {
+    return new Promise(async resolve => {
       const res = await merchantApi.getParentCategoriesById({
         params: {
           token,
-          parent_id: id,
           type,
-          //country,
-          org_id: 6603,
+          parent_id: id,
+          org_id: 24967,
         },
       });
 
@@ -92,8 +93,9 @@ const getSubCategoriesFunc = async (parentCategories, type, country) => {
 };
 
 const getSubCategoriesFunc2 = async (parentCategories, token) => {
+  console.log('inside getSubCategoriesFunc2');
   const getSubCategories = async (id, token) => {
-    return new Promise(async (resolve) => {
+    return new Promise(async resolve => {
       const res = await merchantApi.getParentCategoriesById({
         params: {
           token,
@@ -108,10 +110,12 @@ const getSubCategoriesFunc2 = async (parentCategories, token) => {
   const getSubCategoriesForOneCategory = async (newCategories, token) => {
     let i = 0;
 
+    console.log(newCategories, 'newCategories');
+
     for (let item of newCategories) {
       const subCategories = await getSubCategories(item.id, token);
 
-      newCategories[i].items = subCategories.map((item) => ({
+      newCategories[i].items = subCategories.map(item => ({
         title: item.name,
         id: item.id,
       }));
@@ -128,47 +132,40 @@ const getSubCategoriesFunc2 = async (parentCategories, token) => {
 
   const newCategories = await getSubCategoriesForOneCategory(
     parentCategories,
-    token
+    token,
   );
 
   return newCategories;
 };
 
-export const getParentCategories = (type) => async (dispatch) => {
+export const getParentCategories = type => async dispatch => {
   try {
     dispatch(setParentCategoriesLoading(true));
 
-    const token = await AsyncStorage.getItem("token");
+    const token = await AsyncStorage.getItem('token');
 
     const params = {
       token,
       fields:
-        "['id','name','parent_id', 'x_name_arabic', 'x_image_url_2', 'image_url', 'x_image_url_3', 'x_image_url_4', 'x_gif_image']",
+        "['id','name','parent_id', 'x_name_arabic', 'x_image_url_2', 'image_url', 'x_image_url_3', 'x_gif_image']",
       type,
-      //country,
-      org_id: 6603,
+      org_id: 24967,
     };
-
-    console.log(params, "params");
 
     const res = await merchantApi.getParentCategories({
       params,
     });
 
-    const parentCategories = res.data.result;
-
-    const newCategories = await getSubCategoriesFunc(parentCategories, type);
-
-    dispatch(setParentCategories(newCategories || []));
+    dispatch(setParentCategories(res.data.result || []));
   } catch (err) {
-    console.log(err, "get parrent categories error");
+    console.log(err, 'get parrent categories error');
   } finally {
     dispatch(setParentCategoriesLoading(false));
   }
 };
 
-export const getTravelSubCategories = () => async (dispatch) => {
-  const token = await AsyncStorage.getItem("token");
+export const getTravelSubCategories = () => async dispatch => {
+  const token = await AsyncStorage.getItem('token');
 
   const res = await merchantApi.getParentCategoriesById({
     params: {
@@ -178,7 +175,7 @@ export const getTravelSubCategories = () => async (dispatch) => {
   });
 
   const parentCategories =
-    res.data.result?.map((item) => ({
+    res.data.result?.map(item => ({
       title: item.name,
       ...item,
     })) || [];
@@ -194,10 +191,10 @@ export const getPremiumBanners =
     setPremiumBannersLoading(true);
 
     const { premiumBannersPage } = getState().merchantReducer;
-    const pageVal = page === "next" ? premiumBannersPage + 1 : page;
+    const pageVal = page === 'next' ? premiumBannersPage + 1 : page;
     const concat = !page || pageVal === 1 ? false : true;
 
-    const token = await AsyncStorage.getItem("token");
+    const token = await AsyncStorage.getItem('token');
 
     const userRes = await authApi.getUserBanners({
       params: {
@@ -209,7 +206,7 @@ export const getPremiumBanners =
     const banners = userRes.data.result;
 
     const sortedBanners = banners.sort((a, b) =>
-      a.x_sequence > b.x_sequence ? 1 : -1
+      a.x_sequence > b.x_sequence ? 1 : -1,
     );
 
     dispatch(setPremiumBanners({ data: sortedBanners, concat, page: pageVal }));
@@ -224,8 +221,9 @@ export const getMerchantList =
       dispatch(setMerchants({ data: [] }));
     }
 
-    const { workStatus } = getState().authReducer;
-    const token = await AsyncStorage.getItem("token");
+    const { workStatus, user } = getState().authReducer;
+
+    const token = await AsyncStorage.getItem('token');
     const isWorkStatusDisabled = workStatus === CONTENT_DISABLED;
 
     if (isWorkStatusDisabled) {
@@ -235,26 +233,32 @@ export const getMerchantList =
 
     const { merchantsPage } = getState().merchantReducer;
 
-    const pageVal = page === "next" ? merchantsPage + 1 : page;
+    const pageVal = page === 'next' ? merchantsPage + 1 : page;
 
     const params = {
       token,
-      // category_id: category ? [category] : [],
+      category_id: category ? [category] : [],
       ...filters,
       ...getOffsetAndLimit(pageVal),
+      x_for_employee_type: user?.employee_type,
     };
+
+    console.log(params, 'merchant params bwefore requeest');
 
     const merchantsRes = await merchantApi.getAllMerchant({
       params,
     });
 
-    const merchantsData = merchantsRes.data.result;
+    console.log(merchantsRes.data?.result?.length, 'merchantsRes');
 
-    onGetData?.(merchantsData?.length, params.limit);
+    const merchantsData = merchantsRes.data.result;
 
     const sortedMerchants = merchantsData;
 
+    onGetData?.(sortedMerchants?.length, params.limit);
+
     const data = transform ? transform(sortedMerchants) : sortedMerchants;
+
     const concat = !page || pageVal === 1 ? false : true;
 
     dispatch(setMerchants({ data, concat, page: pageVal }));
@@ -266,7 +270,7 @@ export const getMerchants =
   (type, category_id, isSkip, mapRef, setPressedItem) =>
   async (dispatch, getState) => {
     const { workStatus } = getState().authReducer;
-    const token = await AsyncStorage.getItem("token");
+    const token = await AsyncStorage.getItem('token');
     let res;
     if (type === CLIENT || type === PREMIUM || type === STANDARD) {
       if (!isSkip) dispatch(setIsMerchantsLoading(true));
@@ -275,7 +279,7 @@ export const getMerchants =
         params: {
           token,
           domain: `[['go_entity', '=', 'merchant'] 
-        ${type ? `, ['merchant_type', '=', '${type}']` : ""}]`,
+        ${type ? `, ['merchant_type', '=', '${type}']` : ''}]`,
           fields:
             "['id','name','image_url', 'partner_latitude', 'partner_longitude', 'x_online_store']",
         },
@@ -283,8 +287,8 @@ export const getMerchants =
 
       dispatch(
         setPremiumMerchants(
-          workStatus === CONTENT_DISABLED ? [] : res.data.result
-        )
+          workStatus === CONTENT_DISABLED ? [] : res.data.result,
+        ),
       );
     } else {
       if (!isSkip) {
@@ -303,7 +307,7 @@ export const getMerchants =
           workStatus === CONTENT_DISABLED
             ? []
             : res.data.result.banners.sort((a, b) =>
-                a.x_sequence > b.x_sequence ? 1 : -1
+                a.x_sequence > b.x_sequence ? 1 : -1,
               );
 
         dispatch(setPremiumBanners({ data }));
@@ -320,11 +324,11 @@ export const getMerchants =
             workStatus === CONTENT_DISABLED
               ? []
               : res.data.result.sort((a, b) =>
-                  a.x_sequence > b.x_sequence ? 1 : -1
+                  a.x_sequence > b.x_sequence ? 1 : -1,
                 ),
           concat: false,
           page: 1,
-        })
+        }),
       );
 
       if (!isSkip) dispatch(setIsMerchantsLoading(false));
@@ -344,64 +348,69 @@ export const getMerchants =
 export const getMerchantDetails =
   (merchant_id, navigation, t, title, isOrganization, isOnlineStore, isB1G1) =>
   async (dispatch, getState) => {
-    dispatch(setMerchantDetailsLoading(true));
+    try {
+      dispatch(setMerchantDetailsLoading(true));
 
-    navigate("premiumPartner", {
-      screen: "premiumPartner-main",
-      params: {
-        title,
-        isOrganization,
-        isOnlineStore,
-        isB1G1,
-      },
-    });
-
-    const { workStatus } = getState().authReducer;
-    const { token } = getState().authReducer;
-
-    let res;
-
-    if (isOrganization) {
-      res = await merchantApi.getOrganizationDetails({
+      navigate('premiumPartner', {
+        screen: 'premiumPartner-main',
         params: {
-          token,
-          org_id: merchant_id,
-        },
-      });
-    } else {
-      res = await merchantApi.getMerchantDetails({
-        params: {
-          token,
-          merchant_id,
+          title,
+          isOrganization,
+          isOnlineStore,
+          isB1G1,
         },
       });
 
-      const ribbon_text = await getMerchantDisscountForOffers(merchant_id);
+      const { workStatus } = getState().authReducer;
+      const { token } = getState().authReducer;
 
-      res.data.result.ribbon_text = ribbon_text;
+      let res;
+
+      if (isOrganization) {
+        res = await merchantApi.getOrganizationDetails({
+          params: {
+            token,
+            org_id: merchant_id,
+          },
+        });
+      } else {
+        res = await merchantApi.getMerchantDetails({
+          params: {
+            token,
+            merchant_id,
+          },
+        });
+
+        const ribbon_text = await getMerchantDisscountForOffers(merchant_id);
+        res.data.result.ribbon_text = ribbon_text;
+        res.data.result.x_discount_tag_arabic =
+          ribbon_text.x_ribbon_text_arabic;
+      }
+
+      dispatch(
+        setMerchantDetails(
+          workStatus === CONTENT_DISABLED
+            ? []
+            : {
+                ...res.data.result,
+                id: merchant_id,
+                isOrganization,
+                isB1G1,
+                isOnlineStore,
+              },
+        ),
+      );
+
+      const { clickedNotification } = getState().notificationsReducer;
+
+      if (clickedNotification) {
+        dispatch(setClickedNotificationData(null));
+      }
+    } catch (err) {
+      console.log(err, 'err');
+    } finally {
+      dispatch(setMerchantDetailsLoading(false));
     }
-
-    dispatch(
-      setMerchantDetails(
-        workStatus === CONTENT_DISABLED
-          ? []
-          : {
-              ...res.data.result,
-              id: merchant_id,
-              isOrganization,
-              isB1G1,
-              isOnlineStore,
-            }
-      )
-    );
-
-    const { clickedNotification } = getState().notificationsReducer;
-
-    if (clickedNotification) {
-      dispatch(setClickedNotificationData(null));
-    }
-
-    dispatch(setMerchantDetailsLoading(false));
   };
 
 export const getOffers =
@@ -421,7 +430,7 @@ export const getOffers =
           data: [],
           page: 1,
           concat: false,
-        })
+        }),
       );
     }
 
@@ -431,8 +440,8 @@ export const getOffers =
     const reqParams = merchant_id
       ? { token, merchant_id, ...additionalRequestParams }
       : merchant_category_id
-      ? { token, merchant_category_id, ...additionalRequestParams }
-      : { token, ...additionalRequestParams };
+        ? { token, merchant_category_id, ...additionalRequestParams }
+        : { token, ...additionalRequestParams };
 
     let pageVal;
 
@@ -440,10 +449,10 @@ export const getOffers =
     if (page) {
       const { offersPage } = getState().merchantReducer;
 
-      if (page === "next") {
+      if (page === 'next') {
         pageVal = offersPage + 1;
         offsetAndLimit = getOffsetAndLimit(pageVal);
-      } else if (typeof page === "number") {
+      } else if (typeof page === 'number') {
         pageVal = page;
         offsetAndLimit = getOffsetAndLimit(page);
       }
@@ -458,8 +467,8 @@ export const getOffers =
     if (merchant_id)
       dispatch(
         setMerchantOffers(
-          workStatus === CONTENT_DISABLED ? [] : res.data.result
-        )
+          workStatus === CONTENT_DISABLED ? [] : res.data.result,
+        ),
       );
     else {
       const concat = !page || pageVal === 1 ? false : true;
@@ -472,14 +481,14 @@ export const getOffers =
           data: workStatus === CONTENT_DISABLED ? [] : data,
           page: pageVal,
           concat,
-        })
+        }),
       );
     }
 
     dispatch(setIsOffersLoading(false));
   };
 
-export const getOfferById = (product_id) => async (dispatch, getState) => {
+export const getOfferById = product_id => async (dispatch, getState) => {
   try {
     const { token } = getState().authReducer;
     const res = await merchantApi.getProductById({
@@ -488,9 +497,9 @@ export const getOfferById = (product_id) => async (dispatch, getState) => {
 
     const product = res.data.result?.[0];
 
-    push("ProductPage", { product });
+    push('ProductPage', { product });
   } catch (err) {
-    console.log(err, "errr");
+    console.log(err, 'errr1');
   } finally {
     dispatch(setClickedNotificationData(null));
   }
@@ -516,7 +525,7 @@ export const getProducts =
         params = { ...params, ...getOffsetAndLimit(1) };
       }
 
-      if (page === "next") {
+      if (page === 'next') {
         const { merchantProductsPage } = getState().merchantReducer;
 
         pageVal = merchantProductsPage + 1;
@@ -533,9 +542,17 @@ export const getProducts =
         merchantProducts:
           workStatus === CONTENT_DISABLED ? [] : res.data.result,
         merchantProductsPage: pageVal,
-      })
+      }),
     );
   };
+
+export const getFavoriteGiftCards = () => async (dispatch, getState) => {
+  const { token } = getState().authReducer;
+
+  const res = await merchantApi.getFavoriteGifts({ params: { token } });
+
+  dispatch(setFavoriteGifts(res.data.result));
+};
 
 export const getFavoriteOffers =
   (isHideLoading, selectedCategory, isVouchers) =>
@@ -543,10 +560,11 @@ export const getFavoriteOffers =
     const { workStatus } = getState().authReducer;
     const { token } = getState().authReducer;
     let body = { token, merchant_category_id: selectedCategory };
+
     if (isVouchers) {
-      body = { ...body, is_voucher: "True" };
+      body = { ...body, is_voucher: 'True' };
     } else {
-      body = { ...body, is_save: "True" };
+      body = { ...body, is_save: 'True' };
     }
     if (!isHideLoading) dispatch(setIsOffersLoading(true));
 
@@ -554,37 +572,40 @@ export const getFavoriteOffers =
       params: body,
     });
 
+    console.log(res.data, 'favourite offers res');
+
     if (!isHideLoading) dispatch(setIsOffersLoading(false));
     dispatch(
-      setFavoriteOffers(workStatus === CONTENT_DISABLED ? [] : res.data.result)
+      setFavoriteOffers(workStatus === CONTENT_DISABLED ? [] : res.data.result),
     );
   };
 
 export const getLocalClients = () => async (dispatch, getState) => {
-  const token = await AsyncStorage.getItem("token");
+  const token = await AsyncStorage.getItem('token');
   try {
     const res = await merchantApi.getMerchant({
       params: {
         token: token,
-        domain: "[ ['local_client', '=', True]]",
+        domain:
+          "[['local_client', '=', True], ['x_not_in_home_page', '=', False]]",
         fields: "['id','name','image_url','x_sequence', 'create_date']",
         ...getOffsetAndLimit(1),
       },
     });
 
-    dispatch(
-      setLocalClients(
-        res.data.result.sort((a, b) =>
-          new Date(a.create_date) > new Date(b.create_date) ? -1 : 1
-        )
-      )
+    const data = res.data.result;
+
+    const sortedData = data.sort((a, b) =>
+      new Date(a.create_date) > new Date(b.create_date) ? -1 : 1,
     );
+
+    dispatch(setLocalClients(sortedData));
   } catch (e) {
     console.log(e);
   }
 };
 export const getInternationalClients = () => async (dispatch, getState) => {
-  const token = await AsyncStorage.getItem("token");
+  const token = await AsyncStorage.getItem('token');
   try {
     const res = await merchantApi.getMerchant({
       params: {
@@ -595,8 +616,8 @@ export const getInternationalClients = () => async (dispatch, getState) => {
     });
     dispatch(
       setInternationalClients(
-        res.data.result.sort((a, b) => (a.x_sequence > b.x_sequence ? 1 : -1))
-      )
+        res.data.result.sort((a, b) => (a.x_sequence > b.x_sequence ? 1 : -1)),
+      ),
     );
   } catch (e) {
     console.log(e);
@@ -616,7 +637,7 @@ export const getOrganizations =
       });
 
       const data = res.data.result
-        .map((d) => ({
+        .map(d => ({
           ...d,
           merchant_logo: d.org_logo,
           banner_image: d.org_banner,
@@ -637,31 +658,32 @@ export const getOrganizations =
 export const bookNow =
   (body, t, setIsSuccessBook) => async (dispatch, getState) => {
     const { token } = getState().authReducer;
+
     try {
       const res = await axios.post(
-        "https://golalitatwffer.com/api/go/sendinblue_email/V2",
+        'https://golalitatwffer.com/api/go/sendinblue_email/V2',
         {
           params: {
             ...body,
             token,
           },
-        }
+        },
       );
 
       if (res.data?.result?.success) {
         showMessage({
-          message: t("Profile.submitSuccess"),
-          type: "success",
+          message: t('Profile.submitSuccess'),
+          type: 'success',
         });
         setIsSuccessBook(true);
       } else {
         showMessage({
-          message: t("Login.somethingWrong"),
-          type: "success",
+          message: t('Login.somethingWrong'),
+          type: 'success',
         });
       }
     } catch (e) {
-      console.log(e, "error");
+      console.log(e, 'error');
       console.log(e);
     }
   };
@@ -674,9 +696,12 @@ export const deleteAccount = () => async (dispatch, getState) => {
         token,
       },
     });
+    if (res?.data?.result?.success) {
+      alert(i18next.t('Profile.deletedSuccesfully'));
+    }
     dispatch(logout());
   } catch (e) {
-    console.log(e);
+    console.log('delete account  error****:', e);
   }
 };
 
@@ -690,28 +715,34 @@ export const getAdvert = () => async (dispatch, getState) => {
     dispatch(
       setAdvert({
         ad_1: res.data.result.ad_1
-          .filter((item) =>
-            Platform.OS === "android" ? item.x_android : item.x_ios
+          .filter(
+            item =>
+              !item.is_sjc &&
+              (Platform.OS === 'android' ? item.x_android : item.x_ios),
           )
           .sort((a, b) => a.sequence - b.sequence),
         ad_2: res.data.result.ad_2
-          .filter((item) =>
-            Platform.OS === "android" ? item.x_android : item.x_ios
+          .filter(
+            item =>
+              !item.is_sjc &&
+              (Platform.OS === 'android' ? item.x_android : item.x_ios),
           )
           .sort((a, b) => a.sequence - b.sequence),
         ad_3: res.data.result.ad_3
-          .filter((item) =>
-            Platform.OS === "android" ? item.x_android : item.x_ios
+          .filter(
+            item =>
+              !item.is_sjc &&
+              (Platform.OS === 'android' ? item.x_android : item.x_ios),
           )
           .sort((a, b) => a.sequence - b.sequence),
-      })
+      }),
     );
   } catch (e) {
     console.log(e);
   }
 };
 
-export const trackBanner = (body) => async (dispatch, getState) => {
+export const trackBanner = body => async (dispatch, getState) => {
   const { token } = getState().authReducer;
   try {
     const res = await merchantApi.trackBanner({
@@ -741,14 +772,13 @@ export const getSocialMedia = () => async (dispatch, getState) => {
 
 export const saveOffer =
   (offer_id, t, isVoucher) => async (dispatch, getState) => {
-    console.log("inside save");
     const { token } = getState().authReducer;
     const { favoriteOffers } = getState().merchantReducer;
 
     const is_save =
-      favoriteOffers?.find?.((o) => o?.id === offer_id) !== undefined;
+      favoriteOffers?.find?.(o => o?.id === offer_id) !== undefined;
 
-    console.log(!is_save, offer_id, "!is_save");
+    console.log(!is_save, offer_id, '!is_save');
 
     try {
       let body = { token, product_id: offer_id };
@@ -759,18 +789,20 @@ export const saveOffer =
         body = { ...body, is_save: !is_save };
       }
 
+      console.log(body, 'body');
+
       const res = await merchantApi.saveOffer({
         params: body,
       });
       if (res.data.result?.success) {
         showMessage({
-          message: t("Product.saved"),
-          type: "success",
+          message: t('Product.saved'),
+          type: 'success',
         });
       } else {
         showMessage({
           message: res.data.result?.error,
-          type: "danger",
+          type: 'danger',
         });
       }
       dispatch(getFavoriteOffers(true));
@@ -779,14 +811,13 @@ export const saveOffer =
     }
   };
 
-export const toggleFavourites = (merchant_id) => async (dispatch, getState) => {
+export const toggleFavourites = merchant_id => async (dispatch, getState) => {
   const { token } = getState().authReducer;
   const { favouriteMerchants } = getState().favouriteMerchantsReducer;
 
-  const customer_id = await AsyncStorage.getItem("tracking_partner_id");
-
+  const customer_id = await AsyncStorage.getItem('tracking_partner_id');
   const isFavouriteMerchant = !!favouriteMerchants.find(
-    (item) => item.merchant_id === merchant_id
+    item => item.merchant_id === merchant_id,
   );
 
   try {
@@ -803,7 +834,7 @@ export const toggleFavourites = (merchant_id) => async (dispatch, getState) => {
     if (!res?.data?.result?.success) {
       showMessage({
         message: res.data.result?.error,
-        type: "danger",
+        type: 'danger',
       });
     }
 
@@ -815,7 +846,7 @@ export const toggleFavourites = (merchant_id) => async (dispatch, getState) => {
 
 export const redeem = (body, t) => async (dispatch, getState) => {
   const { token, user } = getState().authReducer;
-  const userId = await AsyncStorage.getItem("userId");
+  const userId = await AsyncStorage.getItem('userId');
 
   try {
     const res = await merchantApi.redeem({
@@ -824,7 +855,7 @@ export const redeem = (body, t) => async (dispatch, getState) => {
         customer_name: user.name,
         customer_phone: user.phone,
         customer_email: user.email,
-        track_type: "b1g1",
+        track_type: 'b1g1',
         track_value: body.merchant_code,
         product_id: body.product_id,
         track_date_time: new Date(),
@@ -834,23 +865,24 @@ export const redeem = (body, t) => async (dispatch, getState) => {
 
     if (res.data.result === true) {
       showMessage({
-        message: t("MainScreen.success"),
-        type: "success",
+        message: t('MainScreen.success'),
+        type: 'success',
       });
 
-      dispatch(track("b1g1", body.product_id, false, body.merchant_code));
-      navigate("offer-apply-code-confirmation", {
+      dispatch(track('b1g1', body.product_id, false, body.merchant_code));
+
+      navigate('offer-apply-code-confirmation', {
         product_id: body.product_id,
         merchant_id: body.merchant_id,
       });
     } else {
       const errroMsg =
-        typeof res.data.result.error === "string"
+        typeof res.data.result.error === 'string'
           ? res.data.result.error
-          : t("General.error");
+          : t('General.error');
       showMessage({
         message: errroMsg,
-        type: "danger",
+        type: 'danger',
       });
     }
   } catch (e) {
@@ -859,10 +891,10 @@ export const redeem = (body, t) => async (dispatch, getState) => {
 };
 
 export const track =
-  (track_type, product_id, isSendEmail, value, onFinishCallBack) =>
+  (track_type, product_id, isSendEmail, value) =>
   async (dispatch, getState) => {
     const { token, user } = getState().authReducer;
-    const userId = await AsyncStorage.getItem("tracking_partner_id");
+    const userId = await AsyncStorage.getItem('tracking_partner_id');
 
     try {
       let body = {
@@ -880,12 +912,10 @@ export const track =
       };
       if (isSendEmail) {
         const res = await merchantApi.sendEmail(body);
-        console.log("send email", res.data);
-        onFinishCallBack?.();
+        console.log('send email', res.data);
       } else {
         const res = await merchantApi.track(body);
-        console.log("track", res.data);
-        onFinishCallBack?.();
+        console.log('track', res.data);
       }
     } catch (e) {
       console.log(e);

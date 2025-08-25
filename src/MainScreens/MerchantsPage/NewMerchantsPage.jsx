@@ -7,10 +7,11 @@ import { getMerchantList } from "../../redux/merchant/merchant-thunks";
 import { useTranslation } from "react-i18next";
 import { setMerchants } from "../../redux/merchant/merchant-actions";
 import MainLayout from "../../components/MainLayout";
+import MainScreenTop from "../MainScreen/MainScreenTop";
 import { useTheme } from "../../components/ThemeProvider";
 import NewMerchants from "../../components/NewMerchants";
-import { getMerchantDetails } from "../../redux/merchant/merchant-thunks";
 import Header from "../../components/Header";
+import { getMerchantDetails } from "../../redux/merchant/merchant-thunks";
 const NewMerchantsPage = ({
   route,
   getMerchantList,
@@ -22,6 +23,7 @@ const NewMerchantsPage = ({
   const canGetMoreDataRef = useRef(true);
   const { isDark } = useTheme();
 
+  const title = t("Drawer.newMerchants");
   const categoryId = params?.selectedCategoryId;
 
   useEffect(() => {
@@ -42,18 +44,7 @@ const NewMerchantsPage = ({
   return (
     <MainLayout
       outsideScroll={true}
-      headerChildren={
-        <Header label={t("MainScreen.localClients")}
-          btns={["back"]}
-          additionalBtnsProps={{
-            back: {
-              onPress: () => {
-                navigation.navigate("Main");
-              },
-            },
-          }}
-          />
-      }
+      headerChildren={<Header label={title} style={styles.header} />}
       headerHeight={50}
       contentStyle={styles.contentStyle}
       style={{ backgroundColor: isDark ? colors.darkBlue : colors.white }}
@@ -61,7 +52,7 @@ const NewMerchantsPage = ({
       <NewMerchants
         style={styles.clients}
         isDark={isDark}
-        title={t("MainScreen.localClients")}
+       // title={t("MainScreen.localClients")}
         onPress={(merchantId) => {
           getMerchantDetails(
             merchantId,

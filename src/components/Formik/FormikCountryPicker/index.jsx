@@ -3,7 +3,7 @@ import CountryPicker from "../../Form/CountryPicker";
 import { View } from "react-native";
 
 const FormikCountryPicker = (props) => {
-  const { wrapperStyle,value, name,onChangeCallback, ...restProps } = props;
+  const { wrapperStyle, name, ...restProps } = props;
   return (
     <View style={wrapperStyle}>
       <Field name={name}>
@@ -14,9 +14,6 @@ const FormikCountryPicker = (props) => {
               value={value}
               onChange={(val) => {
                 setFieldValue(name, val);
-                if (onChangeCallback) {
-                  onChangeCallback(val); // Call the callback
-                }
               }}
             />
           );

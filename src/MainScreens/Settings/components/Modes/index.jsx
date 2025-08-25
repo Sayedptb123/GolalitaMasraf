@@ -1,3 +1,4 @@
+import React from "react";
 import { View } from "react-native";
 import { TypographyText } from "../../../../components/Typography";
 import { colors } from "../../../../components/colors";
@@ -18,37 +19,39 @@ const DarkThemeActiveIcon = sized(DarkThemeActiveSvg, 13);
 const DarkThemeDarkIcon = sized(DarkThemeDarkSvg, 13);
 
 const Modes = () => {
-  const { t } = useTranslation();
   const { isDark, setScheme } = useTheme();
+  const { t } = useTranslation();
 
   const iconColor = isDark ? colors.white : "#072536";
   const LightThemeDarkIcon = sized(LightThemeDarkSvg, 14, 14, iconColor);
 
   return (
     <View>
-      <TypographyText
-        textColor={isDark ? colors.white : colors.darkBlue}
-        size={18}
-        font={LUSAIL_REGULAR}
-        title={t("Settings.theme")}
-        style={[mainStyles.p20, { marginTop: 25, fontWeight: "700" }]}
-      />
-      <TwoButtons
-        isLight={true}
-        selectedButton={isDark ? 1 : 0}
-        icon1={!isDark ? <LightThemeActiveIcon /> : <LightThemeDarkIcon />}
-        icon2={isDark ? <DarkThemeActiveIcon /> : <DarkThemeDarkIcon />}
-        onPress1={() => {
-          setScheme("light");
-          AsyncStorage.setItem("isDark", false.toString());
-        }}
-        onPress2={() => {
-          setScheme("dark");
-          AsyncStorage.setItem("isDark", true.toString());
-        }}
-        label1={t("Settings.light")}
-        label2={t("Settings.dark")}
-      />
+      <View>
+        <TypographyText
+          textColor={isDark ? colors.white : colors.darkBlue}
+          size={18}
+          font={LUSAIL_REGULAR}
+          title={t("Settings.theme")}
+          style={[mainStyles.p20, { marginTop: 25, fontWeight: "700" }]}
+        />
+        <TwoButtons
+          isLight={!isDark}
+          selectedButton={isDark ? 1 : 0}
+          icon1={!isDark ? <LightThemeActiveIcon /> : <LightThemeDarkIcon />}
+          icon2={isDark ? <DarkThemeActiveIcon /> : <DarkThemeDarkIcon />}
+          onPress1={() => {
+            setScheme("light");
+            AsyncStorage.setItem("isDark", false.toString());
+          }}
+          onPress2={() => {
+            setScheme("dark");
+            AsyncStorage.setItem("isDark", true.toString());
+          }}
+          label1={t("Settings.light")}
+          label2={t("Settings.dark")}
+        />
+      </View>
     </View>
   );
 };

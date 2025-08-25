@@ -1,5 +1,5 @@
 import { TouchableOpacity } from "react-native";
-import { BALOO_SEMIBOLD } from "../../../../redux/types";
+import { LUSAIL_REGULAR } from "../../../../redux/types";
 import { StyleSheet } from "react-native";
 import { TypographyText } from "../../../../components/Typography";
 
@@ -18,7 +18,7 @@ const CommonButton = (props) => {
       <TypographyText
         textColor={textColor}
         size={12}
-        font={BALOO_SEMIBOLD}
+        font={LUSAIL_REGULAR}
         title={text}
         style={[styles.text, textStyle]}
         numberOfLines={1}
@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
   },
   text: {
     marginLeft: 8,
+    fontWeight: "700",
   },
 });
 

@@ -14,7 +14,6 @@ import { sized } from "../../Svg";
 import { useTheme } from "../ThemeProvider";
 import { colors } from "../colors";
 import { useTranslation } from "react-i18next";
-import Header from "../Header";
 
 const FilterScreen = (props) => {
   const {
@@ -24,9 +23,7 @@ const FilterScreen = (props) => {
     children,
     title,
     initialValues,
-    isGopoints,
     onBackPress,
-    defaultValues
   } = props;
 
   const { isDark } = useTheme();
@@ -49,22 +46,33 @@ const FilterScreen = (props) => {
         { backgroundColor: isDark ? colors.darkBlue : colors.white },
       ]}
     >
-      <Header label={title} btns={["back"]} />
+      <View style={styles.header}>
+        <TouchableOpacity style={styles.backBtn} onPress={onBackPress}>
+          <ArrowIcon />
+        </TouchableOpacity>
+        <View style={styles.title}>
+          <TypographyText
+            textColor={isDark ? colors.white : colors.darkBlue}
+            size={20}
+            font={LUSAIL_REGULAR}
+            title={title}
+            numberOfLines={1}
+            style={{ marginRight: 32, fontWeight: "700" }}
+          />
+        </View>
+      </View>
       <View style={styles.main}>
-        <Formik initialValues={initialValues} enableReinitialize onSubmit={onSubmit}>
+        <Formik initialValues={initialValues} onSubmit={onSubmit}>
           {({ submitForm, dirty, resetForm }) => {
             const isDirty =
               dirty ||
               Object.values(initialValues).filter((item) => {
                 return Array.isArray(item) && item.length > 0;
-              }).length > 0 ||
-              isGopoints !== initialValues.gpoint;;
+              }).length > 0;
 
             const handleReset = () => {
-              defaultValues
-                ? resetForm({ values: defaultValues })
-                : resetForm();
-              resetForm(defaultValues);
+              resetForm();
+
               onReset?.();
             };
             return (

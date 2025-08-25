@@ -1,11 +1,10 @@
 import React, { useEffect, useRef } from "react";
 import { StyleSheet } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import CategoriesFilter from "../../../../MainScreen/components/Categories/CategoriesFilter";
 import { useFormikContext } from "formik";
 import { setCategoriesType } from "../../../../../redux/merchant/merchant-actions";
 import { getParentCategories } from "../../../../../redux/merchant/merchant-thunks";
-import { getFlexDirection } from "../../../../../../utils";
+import CategoriesFilter from "../../../../MainScreen/components/Categories/CategoriesFilter";
 
 const CategoriesTypes = () => {
   const dispatch = useDispatch();
@@ -29,7 +28,7 @@ const CategoriesTypes = () => {
     <CategoriesFilter
       type={categoriesType}
       onChange={handleChange}
-      style={{ marginTop: 30, marginBottom: 15, ...getFlexDirection() }}
+      style={{ marginTop: 30, marginBottom: 15 }}
     />
   );
 };

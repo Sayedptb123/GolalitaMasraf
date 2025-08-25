@@ -17,7 +17,6 @@ import * as Yup from "yup";
 import CommonButton from "../../components/CommonButton/CommonButton";
 import { useSelector } from "react-redux";
 import { userSelector } from "../../redux/auth/auth-selectors";
-import { saveBill } from "../../api/merchants";
 import AsyncFormikMerchantSelect from "./componets/AsyncFormikMerchantSelect";
 import FormikCameraPicker from "./componets/FormikCameraPicker";
 import FormikDatePickers from "./componets/FormikDatePickers";
@@ -25,7 +24,18 @@ import FormikTextInput from "../../components/Formik/FormikTextInput";
 import FullScreenLoader from "../../components/Loaders/FullScreenLoader";
 import { showMessage } from "react-native-flash-message";
 import { useState } from "react";
-import { getCurrentLocation, requestLocationPermission } from "../../helpers";
+import {
+  getCurrentLocation,
+  requestLocationPermission,
+  toEnglishNumber,
+} from "../../helpers";
+import { saveBill } from "../../api/merchants";
+
+const digitValidate = (value, context) => {
+  var reg = new RegExp("^[\u0660-\u0669 0-9]+$");
+
+  return reg.test(value);
+};
 
 const BillScanner = ({ navigation }) => {
   const { t } = useTranslation();
@@ -33,7 +43,6 @@ const BillScanner = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (values) => {
-    console.log(values, "values");
     try {
       const status = await requestLocationPermission();
 
@@ -72,11 +81,11 @@ const BillScanner = ({ navigation }) => {
         customer_id: user.partner_id,
         customer_phone: user.phone,
         customer_email: user.email,
-        total_bill_amount: +values.total_bill_amount,
+        total_bill_amount: toEnglishNumber(values.total_bill_amount),
         merchant_name: values.merchant_name,
         date: values.date,
         time: values.time,
-        discount: +values.discount,
+        discount: toEnglishNumber(values.discount),
         bill_image: values.bill_image,
         geo_latitude: geo_latitude,
         geo_longitude: geo_longitude,
@@ -130,10 +139,20 @@ const BillScanner = ({ navigation }) => {
           validationSchema={Yup.object({
             bill_image: Yup.string().required(t("Login.required")),
             merchant_name: Yup.string().required(t("Login.required")),
-            discount: Yup.number()
+            discount: Yup.string()
+              .test(
+                "check for arabic and english digits",
+                t("BillScanner.wrongNumberValidation"),
+                digitValidate
+              )
               .required(t("Login.required"))
               .notOneOf([0], t("Login.required")),
-            total_bill_amount: Yup.number()
+            total_bill_amount: Yup.string()
+              .test(
+                "check for arabic and english digits",
+                t("BillScanner.wrongNumberValidation"),
+                digitValidate
+              )
               .required(t("Login.required"))
               .notOneOf([0], t("Login.required")),
             date: Yup.string().required(t("Login.required")),
@@ -167,7 +186,6 @@ const BillScanner = ({ navigation }) => {
                         name="discount"
                         error={errors?.["discount"]}
                       />
-
                       <FormikTextInput
                         label={t("BillScanner.amountLabel")}
                         value={values.total_bill_amount}

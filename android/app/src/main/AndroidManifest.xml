@@ -1,13 +1,59 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest
+  package="com.emtiazapp"
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  >
   <uses-permission android:name="android.permission.INTERNET" />
+  <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+  <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+  <uses-permission android:name="android.permission.MEDIA_LIBRARY" />
+  <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+  <uses-permission android:name="android.permission.RECORD_AUDIO" />
+  <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+  <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+  <uses-permission android:name="android.permission.USE_FINGERPRINT" />
+  <uses-permission android:name="android.permission.VIBRATE" />
+  <uses-permission android:name="android.permission.WAKE_LOCK" />
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+  <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+  <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+  <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+  <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
+  <uses-permission android:name="android.permission.DETECT_SCREEN_CAPTURE" />
+  
 
   <application
     android:name=".MainApplication"
     android:label="@string/app_name"
     android:icon="@mipmap/ic_launcher"
-    android:allowBackup="false"
+    android:allowBackup="true"
     android:theme="@style/AppTheme"
-    android:supportsRtl="true">
+    android:usesCleartextTraffic="true">
+    <service
+      android:name="io.invertase.notifee.HeadlessService"
+      android:exported="false">
+      <intent-filter>
+        <action android:name="io.invertase.notifee.BACKGROUND_EVENT" />
+      </intent-filter>
+    </service>
+
+    <service
+      android:name="com.google.firebase.messaging.FirebaseMessagingService"
+      android:exported="true"
+      tools:replace="android:exported" />
+
+    <meta-data
+      android:name="com.google.android.geo.API_KEY"
+      android:value="AIzaSyAYjhzanBtI_zeCxlnel5cw7zriaWTcOTo" />
+    <meta-data
+      android:name="com.google.firebase.messaging.default_notification_icon"
+      android:resource="@drawable/icon" />
+    <meta-data
+      android:name="com.dieam.reactnativepushnotification.notification_foreground"
+      android:value="true" />
+
     <activity
       android:name=".MainActivity"
       android:label="@string/app_name"
@@ -20,6 +66,26 @@
         <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
+      <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+        <data android:scheme="com.emtiazapp" />
+        <data android:scheme="exp+golalita" />
+        <data android:scheme="golalita" />
+      </intent-filter>
     </activity>
+
+    <provider
+      android:name="androidx.core.content.FileProvider"
+      android:authorities="com.emtiazapp.fileprovider"
+      android:grantUriPermissions="true"
+      android:exported="false"
+      tools:replace="android:authorities">
+      <meta-data
+        android:name="android.support.FILE_PROVIDER_PATHS"
+        android:resource="@xml/wallet_passes_file_paths"
+        tools:replace="android:resource" />
+    </provider>
   </application>
 </manifest>

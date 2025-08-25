@@ -29,12 +29,10 @@ const NotificationsBtn = () => {
         <NotificationSvg
           color={
             isNotifications
-              ? isDark
-                ? colors.navyBlue
-                : colors.darkBlue
+              ? colors.mainDarkMode
               : isDark
               ? colors.white
-              : "#999CAD"
+              : "#202226"
           }
           height={20}
           width={20}

@@ -21,7 +21,6 @@ import EditSvg from "../../assets/edit.svg";
 import { bookNow } from "../../redux/merchant/merchant-thunks";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import ModalInfo from "../../components/ModalInfo/ModalInfo";
-import Header from "../../components/Header";
 
 const EditIcon = sized(EditSvg, 17, 19);
 
@@ -67,8 +66,9 @@ const BookHotel = ({ user, bookNow, route, navigation }) => {
       }}
       validationSchema={Yup.object({
         name: Yup.string().required(t("Login.required")),
-       // country: Yup.string().required(t("Login.required")),
-       // city: Yup.string().required(t("Login.required")),
+        x_moi_last_name: Yup.string().required(t("Login.required")),
+        // country: Yup.string().required(t("Login.required")),
+        //city: Yup.string().required(t("Login.required")),
         departure_date: Yup.string().required(t("Login.required")),
         return_date: Yup.string().required(t("Login.required")),
       })}
@@ -93,7 +93,7 @@ const BookHotel = ({ user, bookNow, route, navigation }) => {
               hotel_email: params?.email,
               product_price:
                 typeof values.product_price === "number"
-                  ? Number(values.product_price)  + " QAR"
+                  ? Number(values.product_price) + " QAR"
                   : undefined,
             },
             t,
@@ -137,7 +137,10 @@ const BookHotel = ({ user, bookNow, route, navigation }) => {
               }}
             >
               <SafeAreaView style={{ flex: 1 }}>
-                <Header label={t("ProductPage.requestReservationDetails")} btns={["back"]} />
+                <CommonHeader
+                  isWhite={isDark}
+                  label={t("Merchants.requestReservation")}
+                />
                 <View
                   style={[
                     mainStyles.p20,
@@ -155,7 +158,7 @@ const BookHotel = ({ user, bookNow, route, navigation }) => {
                     <TouchableOpacity activeOpacity={1}>
                       <View style={{ marginTop: 20, marginHorizontal: 4 }}>
                         {/* <Input
-                          label={t("Profile.fullName")}
+                          label={t("Profile.firstName")}
                           value={values.name}
                           onChangeText={handleChange("name")}
                           placeholder={t("Profile.fullName")}
@@ -165,7 +168,18 @@ const BookHotel = ({ user, bookNow, route, navigation }) => {
                           wrapperStyle={{ marginBottom: 20, marginTop: 5 }}
                           onSubmitEditing={() => Keyboard.dismiss()}
                         />
-                        <Input
+
+                  <Input
+                    label={t("Profile.lastName")}
+                    value={values.x_moi_last_name}
+                    editable={false}
+                    wrapperStyle={{ marginBottom: 20 }}
+                    // onChangeText={handleChange("lastName")}
+                    error={errors.name}
+                    returnKeyType={"next"}
+                    // onSubmitEditing={() => ref_to_input2.current.focus()}
+                  /> */}
+                        {/* <Input
                           label={t("ContactUs.mobileNumber")}
                           initialValue={values.phone}
                           onChangePhoneNumber={handleChange("phone")}
@@ -175,7 +189,7 @@ const BookHotel = ({ user, bookNow, route, navigation }) => {
                           editable={!user.phone}
                           wrapperStyle={{ marginBottom: 20 }}
                           disableInputRtl
-                        /> 
+                        />
                         <Input
                           label={t("ContactUs.email")}
                           value={values.email}
@@ -186,7 +200,7 @@ const BookHotel = ({ user, bookNow, route, navigation }) => {
                           error={errors.email}
                           wrapperStyle={{ marginBottom: 20 }}
                           onSubmitEditing={() => ref_to_input2.current.focus()}
-                        />*/}
+                        /> */}
                         {/* <Input
                           innerRef={ref_to_input2}
                           label={t("Profile.country")}
@@ -211,41 +225,41 @@ const BookHotel = ({ user, bookNow, route, navigation }) => {
                         /> */}
                         <Input
                           innerRef={ref_to_input4}
-                          label={t("Profile.departureDate")}
+                          // label={t("Profile.departureDate")}
                           value={getDateString(values.departure_date)}
                           onChangeText={() => {}}
                           placeholder={t("Profile.departureDate")}
                           returnKeyType={"next"}
                           error={errors.departure_date}
-                          wrapperStyle={{ marginBottom: 20 }}
+                          wrapperStyle={{ marginBottom: 10 }}
                           onFocus={() => setIsDepartureDateVisible(true)}
                           onSubmitEditing={() => ref_to_input5.current.focus()}
                         />
                         <Input
                           innerRef={ref_to_input5}
-                          label={t("Profile.returnDate")}
+                          // label={t("Profile.returnDate")}
                           value={getDateString(values.return_date)}
                           onChangeText={() => {}}
                           placeholder={t("Profile.returnDate")}
                           returnKeyType={"next"}
                           error={errors.return_date}
                           onFocus={() => setIsReturnDateVisible(true)}
-                          wrapperStyle={{ marginBottom: 20 }}
+                          wrapperStyle={{ marginBottom: 10 }}
                           onSubmitEditing={() => ref_to_input6.current.focus()}
                         />
                         {values.product_name && (
                           <Input
-                          label={t("Product.name")}
+                            label={t("Profile.productName")}
                             value={values.product_name}
                             placeholder={"Name placeholder"}
                             error={errors.product_name}
-                            wrapperStyle={{ marginBottom: 20 }}
+                            wrapperStyle={{ marginBottom: 10 }}
                             editable={false}
                           />
                         )}
                         {values.product_price !== undefined && (
                           <Input
-                          label={t("ProductPage.price")}
+                            label={"Price"}
                             value={values.product_price.toString()}
                             placeholder={"Price placeholder"}
                             error={errors.product_price}
@@ -255,23 +269,25 @@ const BookHotel = ({ user, bookNow, route, navigation }) => {
                         )}
                         <Input
                           innerRef={ref_to_input6}
-                          label={t("Profile.numberAdults")}
+                          label={values.no_adult && t("Profile.numberAdults")}
                           value={values.no_adult}
                           onChangeText={handleChange("no_adult")}
                           placeholder={t("Profile.numberAdults")}
                           returnKeyType={"next"}
-                          wrapperStyle={{ marginBottom: 20 }}
+                          wrapperStyle={{ marginBottom: 10 }}
                           keyboardType={"numeric"}
                           onSubmitEditing={() => ref_to_input7.current.focus()}
                         />
                         <Input
                           innerRef={ref_to_input7}
-                          label={t("Profile.numberChildren")}
+                          label={
+                            values.no_children && t("Profile.numberChildren")
+                          }
                           value={values.no_children}
                           onChangeText={handleChange("no_children")}
                           placeholder={t("Profile.numberChildren")}
                           returnKeyType={"next"}
-                          wrapperStyle={{ marginBottom: 20 }}
+                          wrapperStyle={{ marginBottom: 10 }}
                           keyboardType={"numeric"}
                           onSubmitEditing={() => ref_to_input8.current.focus()}
                         />
@@ -279,9 +295,9 @@ const BookHotel = ({ user, bookNow, route, navigation }) => {
                           innerRef={ref_to_input8}
                           value={values.note}
                           onChangeText={handleChange("note")}
-                          label={t("Profile.note")}
+                          // label={t("Profile.note")}
                           placeholder={t("Profile.note")}
-                          wrapperStyle={{ marginBottom: 20 }}
+                          wrapperStyle={{ marginBottom: 10 }}
                           returnKeyType={"next"}
                           onSubmitEditing={Keyboard.dismiss}
                           height={335}

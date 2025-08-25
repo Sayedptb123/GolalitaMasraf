@@ -2,6 +2,6 @@ module.exports = function (api) {
   api.cache(true);
   return {
     presets: ['@react-native/babel-preset'],
-    plugins: ['react-native-reanimated/plugin', 'react-native-paper/babel'],
+    plugins: ['react-native-reanimated/plugin'],
   };
 };

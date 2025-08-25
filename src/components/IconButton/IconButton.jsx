@@ -1,28 +1,13 @@
 import React from "react";
 import { TouchableOpacity, StyleSheet, View } from "react-native";
 import { colors } from "../colors";
-import { BALOO_REGULAR, BALOO_SEMIBOLD } from "../../redux/types";
+import { LUSAIL_REGULAR } from "../../redux/types";
 import { TypographyText } from "../Typography";
 import { useTheme } from "../ThemeProvider";
 import { getFlexDirection, isRTL } from "../../../utils";
 
-const IconButton = ({
-  icon,
-  label,
-  color,
-  style,
-  textColor,
-  textStyle,
-  ...props
-}) => {
+const IconButton = ({ icon, label, color, style, textColor, ...props }) => {
   const { isDark } = useTheme();
-
-  const textStyles = [textStyle];
-
-  if (icon) {
-    textStyles.push(isRTL() ? { marginRight: 6 } : { marginLeft: 6 });
-  }
-
   return (
     <TouchableOpacity onPress={props.onPress}>
       <View
@@ -39,9 +24,14 @@ const IconButton = ({
         <TypographyText
           textColor={color ? color : isDark ? colors.green : colors.grey}
           size={12}
-          font={BALOO_SEMIBOLD}
+          font={LUSAIL_REGULAR}
           title={label}
-          style={textStyles}
+          style={
+            icon && [
+              isRTL() ? { marginRight: 6 } : { marginLeft: 6 },
+              { fontWeight: "700" },
+            ]
+          }
         />
       </View>
     </TouchableOpacity>

@@ -1,8 +1,6 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import Categories from "./Categories";
-import ChildCategories from "./ChildCategories";
-
+import ChildCategories from "../MerchantsPage/ChildCategories";
 
 const Stack = createStackNavigator();
 

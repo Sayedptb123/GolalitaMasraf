@@ -3,10 +3,10 @@ import { useTheme } from "../ThemeProvider";
 import { colors } from "../colors";
 import HTMLView from "react-native-htmlview";
 
-export const getHtmlStyleSheet = (isDark, language) => {
+export const getHtmlStyleSheet = (isDark, language, color) => {
   const styles = {
     div: {
-      color: `${isDark ? colors.white : colors.mai}`,
+      color: color || `${isDark ? colors.white : colors.darkBlue}`,
     },
     a: {
       color: isDark ? colors.white : colors.darkBlue,
@@ -43,15 +43,17 @@ export const getHtmlStyleSheet = (isDark, language) => {
   return styles;
 };
 
-const HTMLRenderer = ({ value, ...restProps }) => {
+const HTMLRenderer = ({ value, isBlack, color, ...restProps }) => {
   const { isDark } = useTheme();
   const { i18n } = useTranslation();
-  const textColor = isDark ? colors.white : colors.mainDarkModeText;
+
+  const textColor =
+    color !== undefined ? color : isDark ? colors.white : colors.darkBlue;
 
   return (
     <HTMLView
       value={value}
-      stylesheet={getHtmlStyleSheet(isDark, i18n.language)}
+      stylesheet={getHtmlStyleSheet(isDark, i18n.language, color)}
       addLineBreaks={true}
       paragraphBreak={false}
       textComponentProps={{

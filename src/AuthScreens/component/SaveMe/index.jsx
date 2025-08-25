@@ -4,6 +4,7 @@ import { TypographyText } from "../../../components/Typography";
 import { colors } from "../../../components/colors";
 import { useTheme } from "../../../components/ThemeProvider";
 import { useTranslation } from "react-i18next";
+import { getFlexDirection } from "../../../../utils";
 
 const SaveMe = ({ isActive, onChange }) => {
   const { isDark } = useTheme();
@@ -15,7 +16,7 @@ const SaveMe = ({ isActive, onChange }) => {
 
       <TypographyText
         title={t("Login.rememberMe")}
-        textColor={isDark ? "white" : colors.mainDarkModeText}
+        textColor={isDark ? colors.darkGrey : colors.darkBlue}
         size={14}
         style={styles.text}
       />

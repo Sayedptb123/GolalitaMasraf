@@ -85,25 +85,18 @@ export const subscribeNotification =
 
 export const getMessageNotifications = () => async (dispatch, getState) => {
   const token = await AsyncStorage.getItem("token");
-  const { isNotificationModal } = getState().notificationsReducer;
 
+  const { isNotificationModal } = getState().notificationsReducer;
   try {
     dispatch(setMessageNotificationsLoading(true));
-
+    console.log("before get notifications");
     const res = await notificationsApi.getMessageNotifications({
       params: { token },
     });
-
     if (res.data.result.error === undefined) {
       dispatch(setMessageNotifications(res.data.result));
-
-      const modalNotifications = res.data.result.filter(
-        (item) => item.imp_notification
-      );
-
-      if (!isNotificationModal && modalNotifications.length) {
+      if (res.data.result.length !== 0 && isNotificationModal === false)
         dispatch(setIsNotificationModal(true));
-      }
     }
   } catch (e) {
     console.log(e);
@@ -115,7 +108,6 @@ export const getMessageNotifications = () => async (dispatch, getState) => {
 export const deleteNotification = (body) => async (dispatch, getState) => {
   const { token } = getState().authReducer;
 
-  console.log(body, "body");
   try {
     const res = await notificationsApi.deleteNotification({
       params: {
@@ -131,26 +123,7 @@ export const deleteNotification = (body) => async (dispatch, getState) => {
   }
 };
 
-export const readNotification =
-  (notification_id) => async (dispatch, getState) => {
-    const { token } = getState().authReducer;
-
-    try {
-      await notificationsApi.readNotification({
-        params: {
-          token,
-          notification_id: notification_id,
-          read_status: "read",
-        },
-      });
-
-      dispatch(getMessageNotifications());
-    } catch (e) {
-      console.log(e, "change notification status error");
-    }
-  };
-
-export const readAllNotifications = () => async (_, getState) => {
+export const readAllNotifications = () => async (dispatch, getState) => {
   const { token } = getState().authReducer;
   let { messageNotifications } = getState().notificationsReducer;
   messageNotifications = messageNotifications.filter(

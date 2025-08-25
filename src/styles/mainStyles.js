@@ -1,34 +1,34 @@
-import { Dimensions, PixelRatio, StyleSheet } from "react-native";
-import { colors } from "../components/colors";
-import { getFlexDirection, isRTL } from "../../utils";
+import { Dimensions, PixelRatio, StyleSheet } from 'react-native';
+import { colors } from '../components/colors';
+import { getFlexDirection, isRTL } from '../../utils';
 
-export const SCREEN_HEIGHT = Dimensions.get("screen").height;
-export const SCREEN_WIDTH = Dimensions.get("screen").width;
-export const WINDOW_HEIGHT = Dimensions.get("window").height;
-export const WINDOW_WIDTH = Dimensions.get("window").width;
+export const SCREEN_HEIGHT = Dimensions.get('screen').height;
+export const SCREEN_WIDTH = Dimensions.get('screen').width;
+export const WINDOW_HEIGHT = Dimensions.get('window').height;
+export const WINDOW_WIDTH = Dimensions.get('window').width;
 
-export const getPixel = (size) => {
+export const getPixel = size => {
   return PixelRatio.getPixelSizeForLayoutSize(size);
 };
 
 export const mainStyles = StyleSheet.create({
   row: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   centeredRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   centeredText: {
-    width: "100%",
-    textAlign: "center",
+    width: '100%',
+    textAlign: 'center',
   },
   betweenRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   p20: {
     paddingHorizontal: 20,
@@ -56,7 +56,7 @@ export const mainStyles = StyleSheet.create({
     borderRadius: 10,
   },
   logoWrapper: {
-    shadowColor: "rgba(153, 156, 173, 0.3)",
+    shadowColor: 'rgba(153, 156, 173, 0.3)',
     shadowOffset: {
       width: 0,
       height: 2,
@@ -67,14 +67,14 @@ export const mainStyles = StyleSheet.create({
     width: 64,
     height: 64,
     backgroundColor: colors.white,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     marginRight: 10,
     borderRadius: 50,
-    position: "relative",
+    position: 'relative',
   },
   lightShadow: {
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 2,
@@ -95,48 +95,48 @@ export const mainStyles = StyleSheet.create({
     marginHorizontal: 3,
   },
   swiper__img: {
-    width: "100%",
+    width: '100%',
     height: 230,
     borderRadius: 14,
     // resizeMode: "cover",
   },
   overlay: {
-    position: "absolute",
+    position: 'absolute',
     width: SCREEN_WIDTH,
-    height: "100%",
-    backgroundColor: "rgba(0, 0, 0, 0.65)",
+    height: '100%',
+    backgroundColor: 'rgba(0, 0, 0, 0.65)',
     left: 0,
     top: 0,
-    alignItems: "flex-end",
+    alignItems: 'flex-end',
     paddingBottom: 23,
     zIndex: 99999,
   },
   twoButtons: {
-    flexDirection: "row",
+    flexDirection: 'row',
     borderWidth: 1,
     borderColor: colors.white,
-    borderStyle: "solid",
+    borderStyle: 'solid',
     borderRadius: 100,
-    width: "90%",
-    justifyContent: "space-around",
+    width: '90%',
+    justifyContent: 'space-around',
     padding: 7,
   },
   twoButtons__item: {
     borderRadius: 26,
-    flexDirection: "row",
+    flexDirection: 'row',
     flex: 1,
-    justifyContent: "center",
-    overflow: "hidden",
-      padding: 6,
+    justifyContent: 'center',
+    overflow: 'hidden',
+    padding: 6,
   },
   twoButtons__button: {
-    paddingHorizontal: 6,
-    alignItems: "center",
+    paddingHorizontal: 2,
     paddingVertical: 8,
-    flexDirection: "row",
-    justifyContent: "center",
-    padding: 12,
-    flex: 1
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 6,
+    flex: 1,
   },
   twoButtons__selected: {
     backgroundColor: colors.white,
@@ -153,11 +153,11 @@ export const mainStyles = StyleSheet.create({
     // shadowOpacity: 0.33,
     // shadowRadius: 30,
     // elevation: 10,
-    alignItems: "center",
-    justifyContent: "center",
-    borderStyle: "solid",
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderStyle: 'solid',
     borderWidth: 1,
-    borderColor: "transparent",
+    borderColor: 'transparent',
   },
   categoryInner__icon: {
     width: 44,
@@ -166,11 +166,11 @@ export const mainStyles = StyleSheet.create({
   },
   categoryWrapper: {
     marginRight: 0,
-    alignItems: "center",
+    alignItems: 'center',
     width: 70,
   },
   tooltip: {
-    shadowColor: "rgba(51, 42, 64, 0.15)",
+    shadowColor: 'rgba(51, 42, 64, 0.15)',
     shadowOffset: {
       width: 5,
       height: 5,
@@ -179,7 +179,7 @@ export const mainStyles = StyleSheet.create({
     shadowRadius: 15,
     elevation: 24,
     backgroundColor: colors.white,
-    position: "absolute",
+    position: 'absolute',
     width: 110,
     paddingVertical: 5,
     paddingHorizontal: 11,
@@ -188,26 +188,26 @@ export const mainStyles = StyleSheet.create({
     borderRadius: 5,
   },
   tooltip__close: {
-    position: "absolute",
+    position: 'absolute',
     top: 5,
     right: 0,
   },
   square: {
     width: 13,
     height: 13,
-    transform: [{ rotate: "45deg" }],
-    position: "absolute",
+    transform: [{ rotate: '45deg' }],
+    position: 'absolute',
     bottom: -12,
     backgroundColor: colors.white,
-    left: "40%",
+    left: '40%',
   },
   swiper__image: {
-    width: "100%",
+    width: '100%',
     height: 145,
     borderRadius: 10,
   },
   banner_ad: {
-    width: "100%",
+    width: '100%',
     height: 230,
     marginBottom: 20,
   },
@@ -216,7 +216,7 @@ export const mainStyles = StyleSheet.create({
     height: SCREEN_HEIGHT / 1.7,
     backgroundColor: colors.white,
     borderRadius: 8,
-    position: "relative",
+    position: 'relative',
     zIndex: 1000,
   },
   notificationModal__image: {
@@ -228,19 +228,19 @@ export const mainStyles = StyleSheet.create({
     // height: SCREEN_WIDTH / 100 * 90,
   },
   notificationModal__button: {
-    width: "50%",
+    width: '50%',
     height: 45,
     marginTop: 20,
   },
   notificationModal__close: {
-    position: "absolute",
+    position: 'absolute',
     top: -13,
     right: -13,
     backgroundColor: colors.white,
     width: 30,
     height: 30,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     borderRadius: 50,
     shadowColor: colors.darkBlue,
     zIndex: 1000,
@@ -256,15 +256,15 @@ export const mainStyles = StyleSheet.create({
     backgroundColor: colors.transparent,
     borderWidth: 1,
     borderColor: colors.orange,
-    borderStyle: "solid",
+    borderStyle: 'solid',
   },
   select: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     borderWidth: 1,
-    borderStyle: "solid",
-    borderColor: "#8286B1",
+    borderStyle: 'solid',
+    borderColor: '#8286B1',
     paddingHorizontal: 16,
     paddingVertical: 13,
     borderRadius: 10,
@@ -283,13 +283,13 @@ export const mainStyles = StyleSheet.create({
     height: 130,
   },
   modal__close: {
-    position: "absolute",
+    position: 'absolute',
     top: 10,
     right: 10,
     zIndex: 1000,
   },
   generalShadow: {
-    shadowColor: "#000000",
+    shadowColor: '#000000',
     shadowOffset: {
       width: 0,
       height: 3,

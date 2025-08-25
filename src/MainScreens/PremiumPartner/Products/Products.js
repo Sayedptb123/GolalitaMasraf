@@ -11,7 +11,7 @@ import { connect } from "react-redux";
 // import {getProducts} from "../../../redux/merchant/merchant-thunks";
 import { TypographyText } from "../../../components/Typography";
 import { colors } from "../../../components/colors";
-import { BALOO_REGULAR } from "../../../redux/types";
+import { LUSAIL_REGULAR } from "../../../redux/types";
 import { useTranslation } from "react-i18next";
 
 const FilterIcon = sized(FilterSvg, 14);
@@ -47,7 +47,7 @@ const Products = ({ merchantDetails }) => {
           <TypographyText
             textColor={isDark ? colors.white : colors.darkBlue}
             size={16}
-            font={BALOO_REGULAR}
+            font={LUSAIL_REGULAR}
             title={t("MainScreen.productsNotFound")}
           />
         </View>

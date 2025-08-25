@@ -5,7 +5,7 @@ import BurgerSvg from "../../assets/burger.svg";
 import { sized } from "../../Svg";
 import { useNavigation } from "@react-navigation/native";
 import { colors } from "../../components/colors";
-import { BALOO_BOLD, BALOO_REGULAR, BALOO_SEMIBOLD } from "../../redux/types";
+import { LUSAIL_REGULAR } from "../../redux/types";
 import { TypographyText } from "../../components/Typography";
 import BackWhiteSvg from "../../assets/back_white.svg";
 import { useTheme } from "../../components/ThemeProvider";
@@ -56,8 +56,9 @@ const MainScreenHeader = ({ headerLabel, user }) => {
           <TypographyText
             textColor={iconColor}
             size={18}
-            font={BALOO_SEMIBOLD}
+            font={LUSAIL_REGULAR}
             title={headerLabel}
+            style={{ fontWeight: "700" }}
           />
         ) : (
           <TouchableOpacity
@@ -85,8 +86,8 @@ const MainScreenHeader = ({ headerLabel, user }) => {
           <Image
             style={styles.avatar}
             source={
-              user.photo
-                ? { uri: user?.photo }
+              user?.photo
+                ? { uri: user.photo }
                 : require("../../assets/avatar.png")
             }
           />
@@ -97,7 +98,7 @@ const MainScreenHeader = ({ headerLabel, user }) => {
           <TypographyText
             textColor={iconColor}
             size={14}
-            font={BALOO_REGULAR}
+            font={LUSAIL_REGULAR}
             title={t("CardPage.availablePoint")}
             style={[]}
           />
@@ -106,9 +107,9 @@ const MainScreenHeader = ({ headerLabel, user }) => {
           <TypographyText
             textColor={iconColor}
             size={48}
-            font={BALOO_BOLD}
+            font={LUSAIL_REGULAR}
             title={user.available_points}
-            style={{ marginTop: -10 }}
+            style={{ marginTop: -10, fontWeight: "900" }}
           />
         </View>
       </View>
@@ -130,17 +131,17 @@ const MainScreenHeader = ({ headerLabel, user }) => {
             <TypographyText
               textColor={isDark ? colors.white : colors.darkBlue}
               size={24}
-              font={BALOO_BOLD}
+              font={LUSAIL_REGULAR}
               title={user?.total_points_used}
-              style={{ marginLeft: 3 }}
+              style={{ marginLeft: 3, fontWeight: "900" }}
             />
           </View>
           <TypographyText
             textColor={isDark ? colors.white : colors.darkBlue}
             size={18}
-            font={BALOO_SEMIBOLD}
+            font={LUSAIL_REGULAR}
             title={t("MainScreen.pointUsed")}
-            style={[]}
+            style={{ fontWeight: "700" }}
           />
         </TouchableOpacity>
         <TouchableOpacity
@@ -149,16 +150,16 @@ const MainScreenHeader = ({ headerLabel, user }) => {
           <TypographyText
             textColor={isDark ? colors.white : colors.darkBlue}
             size={24}
-            font={BALOO_BOLD}
-            title={user?.total_saving}
-            style={[]}
+            font={LUSAIL_REGULAR}
+            title={`QAR ${user?.total_saving}`}
+            style={{ fontWeight: "900" }}
           />
           <TypographyText
             textColor={isDark ? colors.white : colors.darkBlue}
             size={18}
-            font={BALOO_SEMIBOLD}
+            font={LUSAIL_REGULAR}
             title={t("MainScreen.totalSaving")}
-            style={[]}
+            style={{ fontWeight: "700" }}
           />
         </TouchableOpacity>
       </View>

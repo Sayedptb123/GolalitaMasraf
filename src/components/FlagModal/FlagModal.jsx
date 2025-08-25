@@ -16,7 +16,7 @@ class FlagModal extends Component {
     this.isRtl = props.disableRtl ? false : isRTL();
 
     this.state = {
-      cca2: "QA",
+      cca2: "US",
       isShowModal: false,
     };
   }
@@ -28,9 +28,7 @@ class FlagModal extends Component {
   }
 
   onPressFlag() {
-    if (!this.props.disabled) {
-      this.setState({ ...this.state, isShowModal: true });
-    }
+    this.setState({ ...this.state, isShowModal: true });
   }
 
   selectCountry(country) {
@@ -61,12 +59,12 @@ class FlagModal extends Component {
             ),
             flexDirection: "row",
             flex: 1,
-            value: this.props.value,
+            fontSize: 14,
           }}
           {...this.props}
         />
 
-        {/* <CountryPicker
+        <CountryPicker
           ref={(ref) => {
             this.countryPicker = ref;
           }}
@@ -76,8 +74,7 @@ class FlagModal extends Component {
           translation="eng"
           cca2={this.state.cca2}
           visible={this.state.isShowModal}
-          dis
-        /> */}
+        />
       </View>
     );
   }

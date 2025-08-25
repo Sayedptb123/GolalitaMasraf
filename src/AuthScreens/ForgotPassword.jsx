@@ -7,15 +7,12 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import i18next from "i18next";
 import { colors } from "../components/colors";
-import {
-  getPixel,
-  mainStyles,
-  SCREEN_HEIGHT,
-  SCREEN_WIDTH,
-} from "../styles/mainStyles";
+import Logo from "../assets/logo.svg";
+import { getPixel, mainStyles, SCREEN_HEIGHT } from "../styles/mainStyles";
 import { TypographyText } from "../components/Typography";
-import { BALOO_MEDIUM } from "../redux/types";
+import { LUSAIL_REGULAR } from "../redux/types";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import Input from "../components/Input/Input";
@@ -28,28 +25,27 @@ import { sendOTP, sendOTPEmail } from "../redux/auth/auth-thunks";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { phoneRegExp } from "../../utils";
 import TwoButtons from "../components/TwoButtons/TwoButtons";
+import BackSvg from "../assets/back_white.svg";
+import { sized } from "../Svg";
 import PhoneInput from "../components/Form/PhoneInput";
-import BackBtn from "../components/Btns/BackBtn";
 
 const INPUT_TYPES = {
   email: "email",
   phone: "phone",
 };
 
-const ForgotPassword = ({
-  navigation,
-  sendOTP,
-  sendOTPEmail,
-  profileLoading,
-}) => {
+const ForgotPassword = ({ navigation, sendOTP, sendOTPEmail }) => {
   const [isSuccessSend, setIsSuccessSend] = useState(false);
+
   const [inputType, setInputType] = useState(INPUT_TYPES.email);
   const { isDark } = useTheme();
+  const BackIcon = sized(
+    BackSvg,
+    22,
+    22,
+    isDark ? colors.white : colors.darkBlue
+  );
   const { t } = useTranslation();
-
-  const logo = isDark
-    ? require("../assets/horizontal_logo_white.png")
-    : require("../assets/horizontal_logo.png");
 
   let validationSchema;
 
@@ -97,43 +93,49 @@ const ForgotPassword = ({
       <View
         scrollEnabled={Platform.OS === "android"}
         style={{
-          backgroundColor: isDark ? colors.darkBlue : colors.white,
+          backgroundColor: isDark ? colors.darkBlue : colors.bg,
           height: SCREEN_HEIGHT,
         }}
       >
         <SafeAreaView style={{ flex: 1 }}>
-          <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
+          <KeyboardAwareScrollView
+            contentContainerStyle={{ flex: 1 }}
+            showsVerticalScrollIndicator={false}
+          >
+            <TouchableOpacity
+              style={{ transform: [], padding: 11 }}
+              onPress={navigation.goBack}
+            >
+              <BackIcon />
+            </TouchableOpacity>
             <TouchableOpacity
               activeOpacity={1}
               onPress={Keyboard.dismiss}
               style={{ flex: 1 }}
             >
-              <BackBtn onPress={()=>navigation?.goBack()} noTitle/>
+              <View style={styles.goldShadeWrapper}></View>
+              {/* <BackgroundSvg style={styles.bg} /> */}
               <View
                 style={[
                   mainStyles.centeredRow,
                   { marginTop: getPixel(10), flexDirection: "column" },
                 ]}
               >
-                <Image
-                  source={logo}
-                  style={[
-                    mainStyles.registerIcon,
-                    {
-                      width: SCREEN_WIDTH / 2,
-                      height: SCREEN_WIDTH / 2,
-                      resizeMode: "contain",
-                      marginTop: 22,
-                      tintColor: colors.darkBlue,
-                    },
-                  ]}
-                />
+                <View style={styles.logo}>
+                  <Logo
+                    color={isDark ? colors.mainDarkMode : colors.darkBlue}
+                  />
+                </View>
                 <TypographyText
                   title={t("Login.pleaseEnterData")}
-                  textColor={isDark ? colors.white : colors.mainDarkModeText}
+                  textColor={isDark ? colors.mainDarkMode : colors.darkBlue}
                   size={18}
-                  font={BALOO_MEDIUM}
-                  style={[mainStyles.centeredText, mainStyles.p20]}
+                  font={LUSAIL_REGULAR}
+                  style={[
+                    mainStyles.centeredText,
+                    mainStyles.p20,
+                    { fontWeight: "700" },
+                  ]}
                 />
               </View>
 
@@ -152,8 +154,10 @@ const ForgotPassword = ({
                     handleSubmit,
                     errors,
                     submitCount,
+                    setFieldValue,
                   }) => {
                     errors = submitCount > 0 ? errors : {};
+
                     return (
                       <>
                         <TwoButtons
@@ -171,34 +175,27 @@ const ForgotPassword = ({
                             if (inputType !== INPUT_TYPES.phone) {
                               setInputType(INPUT_TYPES.phone);
                               handleChange("email")("");
+                              setFieldValue("phone", "+974");
                             }
                           }}
                           label1={t("Login.email")}
                           label2={t("Login.phone")}
                         />
                         {inputType === INPUT_TYPES.phone && (
-                          // <Input
-                          //   label={t("ContactUs.mobileNumber")}
-                          //   placeholder={t("Login.yourPhone")}
-                          //   initialValue={values.phone}
-                          //   onChangePhoneNumber={handleChange("phone")}
-                          //   error={errors.phone}
-                          //   returnKeyType={"next"}
-                          //   wrapperStyle={{ marginBottom: 50 }}
-                          //   disableInputRtl
-                          // />
                           <PhoneInput
-                         label={t("ContactUs.mobileNumber")}
-                         value={values.phone}
-                         error={errors.phone}
-                         onChange={handleChange("phone")}
-                         defaultPhoneSchema={"+974"}
-                       />
+                            placeholder={t("Login.yourPhone")}
+                            value={values.phone}
+                            error={errors.phone}
+                            onChange={handleChange("phone")}
+                            defaultPhoneSchema={"+974"}
+                            wrapperStyle={{ marginTop: 17 }}
+                            disableInputRtl
+                          />
                         )}
 
                         {inputType === INPUT_TYPES.email && (
                           <Input
-                            label={t("Login.email")}
+                            // label={t("Login.email")}
                             placeholder={t("Login.emailPlaceholder")}
                             value={values.email}
                             onChangeText={(e) =>
@@ -207,7 +204,12 @@ const ForgotPassword = ({
                             error={errors.email}
                             returnKeyType={"next"}
                             autoCapitalize="none"
-                            wrapperStyle={{ marginBottom: 60 }}
+                            wrapperStyle={
+                              {
+                                //marginBottom: 60
+                                // backgroundColor:'green'
+                              }
+                            }
                             keyboardType={
                               Platform.OS === "android"
                                 ? "visible-password"
@@ -221,8 +223,8 @@ const ForgotPassword = ({
                         <CommonButton
                           onPress={handleSubmit}
                           label={t("OnBoarding.next")}
-                          textColor={isDark ? "white" : colors.white}
-                          loading={profileLoading}
+                          style={{ marginTop: 40 }}
+                          textColor={isDark ? colors.black : colors.white}
                         />
                       </>
                     );
@@ -253,9 +255,29 @@ const styles = {
   link: {
     paddingVertical: 5,
   },
+  logo: {
+    height: "30%",
+  },
+  goldShadeWrapper: {
+    width: 500,
+    height: 500,
+    borderRadius: 250,
+    // paddingTop: 100,
+    // paddingBottom: 85,
+    //backgroundColor: "#DDBD6B",
+    position: "absolute",
+    right: -200,
+    top: -220,
+    shadowColor: "#DDBD6B",
+    shadowOffset: {
+      width: 120,
+      height: 120,
+    },
+    shadowOpacity: 0.35,
+    shadowRadius: 3.84,
+    elevation: 55,
+    zIndex: 10000,
+  },
 };
 
-export default connect(
-  (state) => ({ profileLoading: state.authReducer.profileLoading }),
-  { sendOTP, sendOTPEmail }
-)(ForgotPassword);
+export default connect(null, { sendOTP, sendOTPEmail })(ForgotPassword);
