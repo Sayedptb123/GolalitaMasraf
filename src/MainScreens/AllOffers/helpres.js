@@ -1,5 +1,5 @@
 import { getStringDate, isRTL } from "../../../utils";
-import { navigate ,navigationRef} from "../../Navigation/RootNavigation";
+import { navigate ,navigationRef} from "../../Navigation/navigationHelpers";
 import { getMerchantDetails, getOffers } from "../../api/merchants";
 import { getMerchantDetails as getMerchantDetailsRedux  } from "../../redux/merchant/merchant-thunks";
 import i18n from "../../languages";
