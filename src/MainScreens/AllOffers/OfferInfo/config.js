@@ -6,7 +6,7 @@ import { Linking } from "react-native";
 import { getStringDate, isRTL } from "../../../../utils";
 import { B1G1, PROMOCODE } from "../../../redux/types";
 import { colors } from "../../../components/colors";
-import { navigate } from "../../../Navigation/RootNavigation";
+import { navigate } from "../../../Navigation/navigationHelpers";
 
 export const getInfoBtnsConfig = (offer, isDark) => {
   const btnColor = isDark ? colors.mainDarkMode : colors.darkBlue;
