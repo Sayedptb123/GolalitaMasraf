@@ -4,13 +4,13 @@ import {
   StyleSheet,
   TouchableOpacity,
   View,
+  Image,
 } from "react-native";
 import { TypographyText } from "../Typography";
 import PremiumSvg from "../../assets/premium.svg";
 import { SCREEN_HEIGHT, mainStyles } from "../../styles/mainStyles";
 import { colors } from "../colors";
 import { BALOO_SEMIBOLD } from "../../redux/types";
-import FastImage from "react-native-fast-image";
 import { sized } from "../../Svg";
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -39,7 +39,7 @@ const Clients = (props) => {
     ({ item }) => (
       <TouchableOpacity onPress={() => onPress(item.id)} style={styles.item}>
         <View style={styles.logoWrapper}>
-          <FastImage
+          <Image
             source={{
               uri: item.image_url,
             }}

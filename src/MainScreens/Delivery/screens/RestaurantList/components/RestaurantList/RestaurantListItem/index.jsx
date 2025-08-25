@@ -1,6 +1,5 @@
 import React from "react";
-import { View, TouchableOpacity, StyleSheet } from "react-native";
-import FastImage from "react-native-fast-image";
+import { View, TouchableOpacity, StyleSheet, Image } from "react-native";
 import {
   LocationIconSmall,
   StarDark,
@@ -42,7 +41,7 @@ const RestaurantListItem = ({
         <View style={[styles.descriptionWrapper]}>
           <View style={styles.row}>
             <View style={styles.merchantLogoWrapper}>
-              <FastImage
+              <Image
                 style={styles.merchantLogo}
                 source={{
                   uri: merchantLogo,

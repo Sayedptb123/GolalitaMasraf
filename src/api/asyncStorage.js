@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import FastImage from "react-native-fast-image";
+
 
 const ASYNC_STORAGE_CONSTANTS = {
   IF_EVER_LOGGED_IN: "IF_EVER_LOGGED_IN",
@@ -35,8 +35,8 @@ export const resetImageCacheDate = async () => {
     const isExpired = await isImageCacheDateExpired();
 
     if (isExpired) {
-      await FastImage.clearMemoryCache();
-      await FastImage.clearDiskCache();
+      //await FastImage.clearMemoryCache();
+      //await FastImage.clearDiskCache();
       const newExpirationDate = String(new Date().getTime());
       await AsyncStorage.setItem("lastImageCacheResetDate", newExpirationDate);
     }

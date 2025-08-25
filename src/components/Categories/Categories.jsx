@@ -1,7 +1,6 @@
-import { StyleSheet, View, FlatList } from "react-native";
+import { StyleSheet, View, FlatList, Image } from "react-native";
 import { useTranslation } from "react-i18next";
 import { TouchableOpacity } from "react-native";
-import FastImage from "react-native-fast-image";
 import { useSelector } from "react-redux";
 import { useTheme } from "../../components/ThemeProvider";
 import { TypographyText } from "../../components/Typography";
@@ -78,7 +77,7 @@ const Categories = () => {
             style={styles.listItem}
           >
             <View style={[styles.imageWrapper]}>
-              <FastImage
+              <Image
                 style={styles.categoryImage}
                 source={{
                   uri:

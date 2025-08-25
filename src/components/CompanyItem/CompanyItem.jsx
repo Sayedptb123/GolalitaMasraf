@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { TouchableOpacity, StyleSheet, View } from "react-native";
+import { TouchableOpacity, StyleSheet, View, Image } from "react-native";
 import { mainStyles, SCREEN_WIDTH } from "../../styles/mainStyles";
 import { colors } from "../colors";
 import { BALOO_SEMIBOLD } from "../../redux/types";
@@ -12,7 +12,6 @@ import { connect } from "react-redux";
 import { getMerchantDetails } from "../../redux/merchant/merchant-thunks";
 import { useNavigation } from "@react-navigation/native";
 import { subscribeNotification } from "../../redux/notifications/notifications-thunks";
-import FastImage from "react-native-fast-image";
 import { dateForWeeks, getFlexDirection, isRTL } from "../../../utils";
 import { useTranslation } from "react-i18next";
 import { getCategoryNameByIdAndLang } from "../Categories/helpres";
@@ -74,14 +73,14 @@ const CompanyItem = ({ width, merchant, getMerchantDetails, isPadding }) => {
         }}
       >
         {merchant.banner_image || merchant.banners?.length > 0 ? (
-          <FastImage
+          <Image
             style={styles.company__preview}
             source={{
               uri:
                 merchant.banner_image ??
                 merchant.map_banner ??
                 merchant.banners[0].banner_image,
-              priority: FastImage.priority.fast,
+             // priority: FastImage.priority.fast,
             }}
           />
         ) : (
@@ -111,10 +110,10 @@ const CompanyItem = ({ width, merchant, getMerchantDetails, isPadding }) => {
             { position: "absolute", top: -60, left: 20 },
           ]}
         >
-          <FastImage
+          <Image
             source={{
               uri: merchant.merchant_logo ?? merchant.image_512,
-              priority: FastImage.priority.fast,
+              //priority: FastImage.priority.fast,
             }}
             style={{ width: 47, height: 47, borderRadius: 50 }}
           />

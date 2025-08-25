@@ -29,7 +29,6 @@ import ShareActiveSvg from "../../assets/share_active.svg";
 import StarActiveSvg from "../../assets/star_active.svg";
 import { useTranslation } from "react-i18next";
 import { getFlexDirection, getStringDate } from "../../../utils";
-import FastImage from "react-native-fast-image";
 import CommonButton from "../../components/CommonButton/CommonButton";
 import { captureRef } from "react-native-view-shot";
 import ImageViewer from "react-native-image-zoom-viewer";
@@ -196,7 +195,7 @@ const ProductPage = ({
               >
                 <View style={[mainStyles.row, getFlexDirection()]}>
                   <View style={[mainStyles.logoWrapper, { marginLeft: 6 }]}>
-                    <FastImage
+                    <Image
                       source={{
                         uri: product.merchant_logo,
                       }}

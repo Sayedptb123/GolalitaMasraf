@@ -1,7 +1,6 @@
 import React from "react";
 import { Image, TouchableOpacity, View } from "react-native";
 import { mainStyles } from "../../styles/mainStyles";
-import FastImage from "react-native-fast-image";
 import { styles } from "./styles";
 import { colors } from "../colors";
 import { BALOO_REGULAR, BALOO_SEMIBOLD } from "../../redux/types";
@@ -102,7 +101,7 @@ const StoreItem = ({
         {id ? (
           <Image source={{ uri: merchant_logo }} style={styles.logo} />
         ) : (
-          <FastImage
+          <Image
             source={{
               uri:
                 merchant_logo ??

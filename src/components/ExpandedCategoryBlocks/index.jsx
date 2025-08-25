@@ -4,11 +4,11 @@ import {
   View,
   Dimensions,
   ActivityIndicator,
+  Image,
 } from "react-native";
 import { TypographyText } from "../Typography";
 import { colors } from "../colors";
 import { BALOO_SEMIBOLD } from "../../redux/types";
-import FastImage from "react-native-fast-image";
 import { StyleSheet } from "react-native";
 import { sized } from "../../Svg";
 import ArrowDownSvg from "../../assets/arrow_down_thin.svg";
@@ -78,7 +78,7 @@ function ExpandedCategoryBlocks(props) {
               key={item.id}
             >
               {item.image_icon && (
-                <FastImage
+                <Image
                   source={{
                     uri: item.image_icon,
                   }}

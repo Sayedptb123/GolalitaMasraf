@@ -1,11 +1,10 @@
-import { SafeAreaView, StyleSheet, View, FlatList } from "react-native";
+import { SafeAreaView, StyleSheet, View, FlatList, Image } from "react-native";
 import CommonHeader from "../../../components/CommonHeader/CommonHeader";
 import { useTheme } from "../../../components/ThemeProvider";
 import { colors } from "../../../components/colors";
 import { mainStyles } from "../../../styles/mainStyles";
 import { useTranslation } from "react-i18next";
 import { TouchableOpacity } from "react-native";
-import FastImage from "react-native-fast-image";
 import { TypographyText } from "../../../components/Typography";
 import { LUSAIL_REGULAR } from "../../../redux/types";
 import { useSelector } from "react-redux";
@@ -74,7 +73,7 @@ const Categories = ({ navigation }) => {
               }}
             >
               <View style={[styles.imageWrapper]}>
-                <FastImage
+                <Image
                   style={styles.categoryImage}
                   source={{
                     uri:
