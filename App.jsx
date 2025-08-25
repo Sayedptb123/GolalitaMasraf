@@ -1,42 +1,41 @@
-import React, { useEffect, useState } from 'react';
-import { BackHandler } from 'react-native';
-import { connect, Provider, useDispatch } from 'react-redux';
-import store from './src/redux/store';
-import { ThemeProvider, useTheme } from './src/components/ThemeProvider';
-import './src/pushNotifications/pushNotificationBootStrap';
+import React, { useEffect, useState } from "react";
+import { BackHandler, Image } from "react-native";
+import { connect, Provider, useDispatch } from "react-redux";
+import store from "./src/redux/store";
+import { ThemeProvider, useTheme } from "./src/components/ThemeProvider";
 import {
   getAppStatus,
   getInitialData,
   getVersion,
-} from './src/redux/auth/auth-thunks';
-import { useTranslation } from 'react-i18next';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { APP_DISABLED } from './src/redux/auth/auth-types';
-import { Root } from './src/Navigation';
-import UpdateModal from './src/components/UpdateModal';
-import FlashMessage from 'react-native-flash-message';
-import { colors } from './src/components/colors';
-import { VERSION } from './src/redux/types';
-import './src/languages/index';
-import { QueryClient, QueryClientProvider } from 'react-query';
-import { I18nManager } from 'react-native';
-import { resetImageCacheDate } from './src/api/asyncStorage';
-import { checkIfTokenIsValid } from './src/api/auth';
-import { setIsAuthorized } from './src/redux/auth/auth-actions';
-import SplashScreenModal from './src/components/SplashScreenModal';
+} from "./src/redux/auth/auth-thunks";
+import { useTranslation } from "react-i18next";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { APP_DISABLED } from "./src/redux/auth/auth-types";
+import { Root } from "./src/Navigation/Root";
+import UpdateModal from "./src/components/UpdateModal";
+import FlashMessage from "react-native-flash-message";
+import { colors } from "./src/components/colors";
+import { VERSION } from "./src/redux/types";
+import "./src/languages/index";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { I18nManager } from "react-native";
+import { resetImageCacheDate } from "./src/api/asyncStorage";
+import { checkIfTokenIsValid } from "./src/api/auth";
+import { setIsAuthorized } from "./src/redux/auth/auth-actions";
+import SplashScreenModal from "./src/components/SplashScreenModal";
 import RedirectToStoresModal, {
   STORES_CONFIG,
-} from './src/components/RedirectToStoresModal';
-import Geocoder from 'react-native-geocoding';
-import PortalProvider from './src/components/Portal/PortalProvider';
-import usePushNotifications from './src/pushNotifications/usePushNotifications';
-import { useSecurityCheck } from './src/utils/deviceSecurityCheck';
+} from "./src/components/RedirectToStoresModal";
+import Geocoder from "react-native-geocoding";
+import codePush from "react-native-code-push";
+import CodePushUpdate from "./src/components/CodePushUpdate";
+import PortalProvider from "./src/components/Portal/PortalProvider";
 
 I18nManager.allowRTL(false);
 
 const queryClient = new QueryClient();
 
-Geocoder.init('AIzaSyAYjhzanBtI_zeCxlnel5cw7zriaWTcOTo', { language: 'en' });
+Geocoder.init("AIzaSyAYjhzanBtI_zeCxlnel5cw7zriaWTcOTo", { language: "en" });
 
 let App = ({
   workStatus,
@@ -54,28 +53,27 @@ let App = ({
 
   const [isLoading, setIsLoading] = useState(true);
 
-  usePushNotifications();
-  // useSecurityCheck();
-
-
-
   useEffect(() => {
     (async () => {
       const isTokenValid = await checkIfTokenIsValid();
+
+      console.log(isTokenValid, "isTokenValid");
 
       if (!isTokenValid) {
         dispatch(setIsAuthorized(false));
         return;
       }
 
-      const isLoggedOut = await AsyncStorage.getItem('isUserLoggedOut');
+      const isLoggedOut = await AsyncStorage.getItem("isUserLoggedOut");
 
-      if (isLoggedOut === 'true') {
+      console.log(isLoggedOut, "isLoggedOut");
+
+      if (isLoggedOut === "true") {
         dispatch(setIsAuthorized(false));
         return;
       }
 
-      if (isLoggedOut === 'false') {
+      if (isLoggedOut === "false") {
         dispatch(getInitialData());
       }
     })();
@@ -88,7 +86,7 @@ let App = ({
   }, [!!user]);
 
   useEffect(() => {
-    if (typeof isAuthorized === 'boolean') {
+    if (typeof isAuthorized === "boolean") {
       setIsLoading(false);
     }
   }, [isAuthorized]);
@@ -101,8 +99,8 @@ let App = ({
   useEffect(() => {
     getAppStatus();
     (async () => {
-      const lang = await AsyncStorage.getItem('lang');
-      i18n.changeLanguage(lang ?? 'en');
+      const lang = await AsyncStorage.getItem("lang");
+      i18n.changeLanguage(lang ?? "en");
     })();
   }, []);
 
@@ -110,12 +108,12 @@ let App = ({
     (async () => {
       try {
         const isdark =
-          (await AsyncStorage.getItem('isDark')) === 'true' ||
-          (await AsyncStorage.getItem('isDark')) === null;
+          (await AsyncStorage.getItem("isDark")) === "false" ||
+          (await AsyncStorage.getItem("isDark")) === null;
 
-        isdark ? setScheme('dark') : setScheme('light');
+        isdark ? setScheme("light") : setScheme("dark");
       } catch (error) {
-        console.error('Error retrieving settings:', error);
+        console.error("Error retrieving settings:", error);
       }
     })();
   }, []);
@@ -124,27 +122,27 @@ let App = ({
     if (version) {
       let latestVersion = version;
       let lastLatestVersionNumber =
-        latestVersion.split('.')[latestVersion.split('.').length - 1];
+        latestVersion.split(".")[latestVersion.split(".").length - 1];
       let secondLatestVersionNumber =
-        latestVersion.split('.')[latestVersion.split('.').length - 2];
+        latestVersion.split(".")[latestVersion.split(".").length - 2];
       let lastCurrentVersionNumber =
-        VERSION.split('.')[VERSION.split('.').length - 1];
+        VERSION.split(".")[VERSION.split(".").length - 1];
       let secondCurrentVersionNumber =
-        VERSION.split('.')[VERSION.split('.').length - 2];
-      let latestVersionNumber = latestVersion.split('.').join('');
-      let currentVersionNumber = VERSION.split('.').join('');
+        VERSION.split(".")[VERSION.split(".").length - 2];
+      let latestVersionNumber = latestVersion.split(".").join("");
+      let currentVersionNumber = VERSION.split(".").join("");
 
       if (latestVersionNumber > currentVersionNumber) {
         if (
           lastLatestVersionNumber !== lastCurrentVersionNumber &&
           latestVersionNumber - currentVersionNumber < 5
         ) {
-          setUpdateModal('easy');
+          setUpdateModal("easy");
         } else if (secondLatestVersionNumber !== secondCurrentVersionNumber) {
-          setUpdateModal('hard');
+          setUpdateModal("hard");
         }
       }
-      console.log('latestVersion', latestVersion, VERSION === latestVersion); // 0.1.2
+      console.log("latestVersion", latestVersion, VERSION === latestVersion); // 0.1.2
     }
   }, [version]);
 
@@ -154,7 +152,7 @@ let App = ({
     }
   }, [workStatus]);
 
-  if (STORES_CONFIG.find(item => item.name === user?.organisation)) {
+  if (STORES_CONFIG.find((item) => item.name === user?.organisation)) {
     return <RedirectToStoresModal organization={user.organisation} />;
   }
 
@@ -178,7 +176,7 @@ let App = ({
   );
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   user: state.authReducer.user,
   workStatus: state.authReducer.workStatus,
   version: state.authReducer.version,
@@ -196,10 +194,14 @@ const AppWrapper = () => {
           <PortalProvider>
             <App />
           </PortalProvider>
+
+          <CodePushUpdate />
         </ThemeProvider>
       </QueryClientProvider>
     </Provider>
   );
 };
 
-export default AppWrapper;
+const codePushOptions = { checkFrequency: codePush.CheckFrequency.MANUAL };
+
+export default codePush(codePushOptions)(AppWrapper);
