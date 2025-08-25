@@ -32,7 +32,7 @@ import {
 import { showMessage } from "react-native-flash-message";
 import { logout } from "../auth/auth-thunks";
 import { getOffsetAndLimit } from "../../../utils";
-import { navigate, push } from "../../Navigation/RootNavigation";
+import { navigate, push } from "../../Navigation/navigationHelpers";
 import { setClickedNotificationData } from "../notifications/notifications-actions";
 import axios from "axios";
 import { getMerchantDisscountForOffers } from "../../api/merchants";
