@@ -1,4 +1,3 @@
-import { navigate } from "../Navigation/RootNavigation";
 import {
   getMerchantDetails,
   getOfferById,
@@ -6,6 +5,7 @@ import {
 import store from "../redux/store";
 import i18n from "i18next";
 import { setClickedNotificationData } from "../redux/notifications/notifications-actions";
+import { navigate } from "../Navigation/navigationHelpers";
 
 export const NotificatiionClickHanlder = {
   general: () => {
@@ -13,6 +13,8 @@ export const NotificatiionClickHanlder = {
     store.dispatch(setClickedNotificationData(null));
   },
   merchant: (merchant_id, notification) => {
+    console.log(merchant_id, "merchant id");
+    console.log(notification, "notification");
     store.dispatch(setClickedNotificationData(notification));
     store.dispatch(getMerchantDetails(merchant_id, null, i18n.t));
   },
