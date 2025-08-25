@@ -18,7 +18,7 @@ import { APP_DISABLED, APP_ENABLED, CONTENT_DISABLED } from "./auth-types";
 import { showMessage } from "react-native-flash-message";
 import { setPremiumMerchants } from "../merchant/merchant-actions";
 import i18next from "i18next";
-import { navigationRef } from "../../Navigation/RootNavigation";
+import { navigationRef } from '../../Navigation/navigationHelpers';
 import { Platform } from "react-native";
 import { setIfEverLoggedIn } from "../../api/asyncStorage";
 import { getAdvert, getParentCategories } from "../merchant/merchant-thunks";
