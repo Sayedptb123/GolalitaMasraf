@@ -31,7 +31,6 @@ import Geocoder from 'react-native-geocoding';
 import PortalProvider from './src/components/Portal/PortalProvider';
 import usePushNotifications from './src/pushNotifications/usePushNotifications';
 import { useSecurityCheck } from './src/utils/deviceSecurityCheck';
-import { addSslPinningErrorListener } from 'react-native-ssl-public-key-pinning';
 
 I18nManager.allowRTL(false);
 
@@ -58,15 +57,7 @@ let App = ({
   usePushNotifications();
   // useSecurityCheck();
 
-  useEffect(() => {
-    const subscription = addSslPinningErrorListener(error => {
-      // Triggered when an SSL pinning error occurs due to pin mismatch
-      console.log(error.serverHostname, 'ssl error');
-    });
-    return () => {
-      subscription.remove();
-    };
-  }, []);
+
 
   useEffect(() => {
     (async () => {
