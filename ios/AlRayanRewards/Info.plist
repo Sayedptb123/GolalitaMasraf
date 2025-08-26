@@ -36,11 +36,11 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Al Rayan Rewards uses the camera to let user put a photo in his profile page.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Emtiaz accesses the library to let user put a photo in his profile page.</string>
+	<string>Al Rayan Rewards accesses the library to let user put a photo in his profile page.</string>
 	<key>NSAppleMusicUsageDescription</key>
 	<string>Al Rayan Rewards uses media access to display notifications with sound</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Emtiaz uses your location for displaying nearest merchants on the map.</string>
+	<string>Al Rayan Rewards uses your location for displaying nearest merchants on the map.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Allow $(PRODUCT_NAME) to access your location</string>
 	<key>RCTNewArchEnabled</key>

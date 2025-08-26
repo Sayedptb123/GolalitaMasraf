@@ -56,7 +56,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		13B07FAE1A68108700A75B9A /* Emtiyaz */ = {
+		13B07FAE1A68108700A75B9A /* AlRayanRewards */ = {
 			isa = PBXGroup;
 			children = (
 				CE2461CC2E4E0EAF007EE80A /* AlRayanRewards.entitlements */,
@@ -68,7 +68,7 @@
 				D3F84FA23FC546898DB3EAE7 /* BootSplash.storyboard */,
 				DB06DF173E944D739C748928 /* Colors.xcassets */,
 			);
-			name = Emtiyaz;
+			name = AlRayanRewards;
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
@@ -96,7 +96,7 @@
 				CE3EB7262E51BB54004789BF /* Baloo-SemiBold.ttf */,
 				CE3EB7242E51BB3D004789BF /* Lusail-Regular.otf */,
 				CE97FEC02E48B9C900E7B96D /* GoogleService-Info.plist */,
-				13B07FAE1A68108700A75B9A /* Emtiyaz */,
+				13B07FAE1A68108700A75B9A /* AlRayanRewards */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
@@ -127,9 +127,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		13B07F861A680F5B00A75B9A /* Emtiyaz */ = {
+		13B07F861A680F5B00A75B9A /* AlRayanRewards */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Emtiyaz" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "AlRayanRewards" */;
 			buildPhases = (
 				C38B50BA6285516D6DCD4F65 /* [CP] Check Pods Manifest.lock */,
 				13B07F871A680F5B00A75B9A /* Sources */,
@@ -162,7 +162,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Emtiyaz" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "AlRayanRewards" */;
 			compatibilityVersion = "Xcode 12.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -175,7 +175,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				13B07F861A680F5B00A75B9A /* Emtiyaz */,
+				13B07F861A680F5B00A75B9A /* AlRayanRewards */,
 			);
 		};
 /* End PBXProject section */
@@ -526,7 +526,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Emtiyaz" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "AlRayanRewards" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
@@ -535,7 +535,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Emtiyaz" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "AlRayanRewards" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
