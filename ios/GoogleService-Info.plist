@@ -11,11 +11,11 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.emtiaz.ios</string>
+	<string>com.golalitamasraf.ios</string>
 	<key>PROJECT_ID</key>
 	<string>golalita-rewards</string>
 	<key>STORAGE_BUCKET</key>
-	<string>golalita-rewards.firebasestorage.app</string>
+	<string>golalita-rewards.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -27,6 +27,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:1063084247741:ios:a09824754348cb2b4e85d4</string>
+	<string>1:1063084247741:ios:cf8af5b6704c51974e85d4</string>
 </dict>
 </plist>
