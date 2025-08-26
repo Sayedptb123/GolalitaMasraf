@@ -395,7 +395,7 @@
 					"FB_SONARKIT_ENABLED=1",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Resources/Info.plist";
-				"INFOPLIST_FILE[sdk=*]" = GolalitaMasraf/Resources/Info.plist;
+				"INFOPLIST_FILE[sdk=*]" = Resources/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Al Rayan Rewards-مكافآت الريان";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -431,7 +431,7 @@
 				DEVELOPMENT_TEAM = V83QSUA898;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = "$(SRCROOT)/Resources/Info.plist";
-				"INFOPLIST_FILE[sdk=*]" = GolalitaMasraf/Resources/Info.plist;
+				"INFOPLIST_FILE[sdk=*]" = Resources/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Al Rayan Rewards-مكافآت الريان";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
