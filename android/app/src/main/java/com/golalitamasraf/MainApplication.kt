@@ -1,4 +1,4 @@
-package com.golalitamasraf.android
+package com.golalitamasraf
 
 import android.app.Application
 import com.facebook.react.PackageList

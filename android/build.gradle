@@ -29,6 +29,18 @@ plugins {
     id "org.jetbrains.kotlin.android" version '2.1.20' apply false
 }
 
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url "https://www.jitpack.io" }
+        maven { url "https://maven.google.com" }
+        maven { url "https://repo1.maven.org/maven2/" }
+        maven { url "https://europe-west3-maven.pkg.dev/talsec-artifact-repository/freerasp" }
+        maven { url "$rootDir/../node_modules/@notifee/react-native/android/libs" }
+    }
+}
+
 
 apply plugin: "com.facebook.react.rootproject"
 apply plugin: 'com.google.gms.google-services'

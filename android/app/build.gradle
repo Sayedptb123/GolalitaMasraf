@@ -76,17 +76,19 @@ def jscFlavor = 'io.github.react-native-community:jsc-android:2026004.+'
 
 android {
     ndkVersion rootProject.ext.ndkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
-    compileSdk rootProject.ext.compileSdkVersion
-    
 
-    namespace "com.golalitamasraf.android"
+    compileSdkVersion rootProject.ext.compileSdkVersion
+
+    namespace "com.golalitamasraf"
     defaultConfig {
-        applicationId "com.golalitamasraf.android"
+        applicationId "com.golalitamasraf"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 54
+        versionName "1.2.6"
+        buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
+        missingDimensionStrategy 'react-native-camera', 'general'
+        resValue 'string', "CODE_PUSH_APK_BUILD_TIME", String.format("\"%d\"", System.currentTimeMillis())
     }
   
     packagingOptions {
@@ -104,14 +106,21 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        release {
+            // Uncomment and configure these lines when you have a proper release keystore
+            // storeFile file('release.keystore')
+            // storePassword System.getenv("KEYSTORE_PASSWORD") ?: "your_keystore_password"
+            // keyAlias System.getenv("KEY_ALIAS") ?: "your_key_alias"
+            // keyPassword System.getenv("KEY_PASSWORD") ?: "your_key_password"
+        }
     }
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
         }
         release {
-            // Caution! In production, you need to generate your own keystore file.
-            // see https://reactnative.dev/docs/signed-apk-android.
+            // For now, use debug signing to avoid build errors
+            // In production, change this to: signingConfig signingConfigs.release
             signingConfig signingConfigs.debug
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"

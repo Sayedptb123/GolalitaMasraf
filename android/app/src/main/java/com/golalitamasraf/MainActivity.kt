@@ -1,4 +1,4 @@
-package com.golalitamasraf.android
+package com.golalitamasraf
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
