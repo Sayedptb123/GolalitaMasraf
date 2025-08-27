@@ -54,6 +54,8 @@ react {
 
     /* Autolinking */
     autolinkLibrariesWithApp()
+    
+    /* Codegen configuration is now handled automatically by the React Native Gradle Plugin */
 }
 
 /**
@@ -86,7 +88,7 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 54
         versionName "1.2.6"
-        buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
+        buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", "false"
         missingDimensionStrategy 'react-native-camera', 'general'
         resValue 'string', "CODE_PUSH_APK_BUILD_TIME", String.format("\"%d\"", System.currentTimeMillis())
     }
@@ -99,6 +101,9 @@ android {
        pickFirst 'lib/x86_64/libc++_shared.so'
        pickFirst 'lib/armeabi-v7a/libc++_shared.so'
     }
+
+
+
     signingConfigs {
         debug {
             storeFile file('debug.keystore')

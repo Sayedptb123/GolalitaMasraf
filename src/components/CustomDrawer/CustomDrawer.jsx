@@ -8,6 +8,8 @@ import UserInfo from "./components/UserInfo";
 import DrawerItemList from "./components/DrawerItemsList";
 import LogOutBtn from "./components/LogOutBtn";
 import { useTheme } from "../ThemeProvider";
+import { navigationRef } from '../../Navigation/navigationHelpers';
+import { DrawerActions } from '@react-navigation/native';
 
 const CustomDrawer = ({ styles }) => {
   const { t } = useTranslation();
@@ -22,7 +24,14 @@ const CustomDrawer = ({ styles }) => {
         style={styles.drawer}
       >
         <View style={localStyles.drawerWrapper}>
-          <Header label={t("TabBar.menu")} style={{ paddingHorizontal: 0 }} />
+          <Header label={t("TabBar.menu")} style={{ paddingHorizontal: 0 }}  additionalBtnsProps={{
+                back: {
+                  onPress: () =>
+                    navigationRef?.current.dispatch(
+                      DrawerActions.closeDrawer(),
+                    ),
+                },
+              }}/>
           <UserInfo />
 
           <DrawerItemList />

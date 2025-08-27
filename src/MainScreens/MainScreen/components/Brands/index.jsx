@@ -6,8 +6,8 @@ import ExpandedCategoryBlocks from "../../../../components/ExpandedCategoryBlock
 import { useTheme } from "../../../../components/ThemeProvider";
 import { useDispatch } from "react-redux";
 import { getMerchantDetails } from "../../../../redux/merchant/merchant-thunks";
-import { navigationRef } from "../../../../Navigation/RootNavigation";
 import { getCategoryNameByIdAndLang } from "../../../../components/Categories/helpres";
+import { navigationRef } from "../../../../Navigation/navigationHelpers";
 
 const Brands = () => {
   const { t } = useTranslation();

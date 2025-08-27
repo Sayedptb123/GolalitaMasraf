@@ -813,7 +813,7 @@ export const toggleFavourites = (merchant_id) => async (dispatch, getState) => {
   }
 };
 
-export const redeem = (body, t) => async (dispatch, getState) => {
+export const redeem = (body, t, navigation) => async (dispatch, getState) => {
   const { token, user } = getState().authReducer;
   const userId = await AsyncStorage.getItem("userId");
 
@@ -839,10 +839,12 @@ export const redeem = (body, t) => async (dispatch, getState) => {
       });
 
       dispatch(track("b1g1", body.product_id, false, body.merchant_code));
-      navigate("offer-apply-code-confirmation", {
-        product_id: body.product_id,
-        merchant_id: body.merchant_id,
-      });
+      if (navigation) {
+        navigation.navigate("offer-apply-code-confirmation", {
+          product_id: body.product_id,
+          merchant_id: body.merchant_id,
+        });
+      }
     } else {
       const errroMsg =
         typeof res.data.result.error === "string"

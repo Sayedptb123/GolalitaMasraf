@@ -15,7 +15,7 @@ import { showMessage } from "react-native-flash-message";
 import ProfileSvg from "../assets/Profile.svg";
 import { useSelector } from "react-redux";
 import AnimatedIcon from "../components/AnimatedIcon";
-
+import { navigate, navigationRef } from '../Navigation/navigationHelpers';
 const HomeIcon = sized(HomeSvg, 28, 30);
 const CardIcon = sized(CardSvg, 28, 30);
 const OffersIcon = sized(OffersSvg, 30, 28);
@@ -36,6 +36,7 @@ export let ButtonTabBar = ({ state, descriptors, navigation }) => {
   const cardPageScreens = ["card"];
   const profileScreens = ["Profile"];
 
+  const currentRouteName = navigationRef.current?.getCurrentRoute()?.name;
   let focusedOptions = descriptors[state.routes[state.index].key].options;
   let routeName = focusedOptions.currentRoute;
 
@@ -46,7 +47,9 @@ export let ButtonTabBar = ({ state, descriptors, navigation }) => {
   const activeColor = isDark ? colors.navyBlue : colors.darkBlue;
   const passiveColor = isDark ? "white" : "black";
   const category = parentCategories?.find((item) => item.id === 60);
-
+  const getColor = screenName => {
+    return currentRouteName === screenName ? activeColor : passiveColor;
+  };
   return (
     <View style={styles.TabView__wrapper}>
       <View
@@ -57,16 +60,11 @@ export let ButtonTabBar = ({ state, descriptors, navigation }) => {
       >
         <TouchableOpacity
           style={styles.TabView__item}
-          onPress={() => navigation.navigate("Main")}
+          onPress={() => navigate("Main")}
         >
           <View style={styles.iconWrapper}>
-            <HomeIcon
-              color={
-                mainScreens.indexOf(routeName) !== -1
-                  ? activeColor
-                  : passiveColor
-              }
-            />
+           
+          <HomeIcon color={getColor('Main')} />
           </View>
           <TypographyText
             textColor={colors.lightGrey}
@@ -74,25 +72,20 @@ export let ButtonTabBar = ({ state, descriptors, navigation }) => {
             font={LUSAIL_REGULAR}
             title={t("TabBar.home")}
             style={[
-              styles.TabView__caption,
-              mainScreens.indexOf(routeName) !== -1 && {
-                color: activeColor,
-              },
+              styles.TabView__caption,{
+                color: getColor('Main'),
+              }
             ]}
           />
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.TabView__item}
-          onPress={() => navigation.navigate("MapPage")}
+          onPress={() => navigate("MapPage")}
         >
           <View style={styles.iconWrapper}>
             <AnimatedIcon
-              color={
-                MapPageScreens.indexOf(routeName) !== -1
-                  ? activeColor
-                  : passiveColor
-              }
+              color={getColor('MapPage')}
             />
           </View>
           <TypographyText
@@ -101,10 +94,9 @@ export let ButtonTabBar = ({ state, descriptors, navigation }) => {
             font={LUSAIL_REGULAR}
             title={t("Drawer.map")}
             style={[
-              styles.TabView__caption,
-              MapPageScreens.indexOf(routeName) !== -1 && {
-                color: activeColor,
-              },
+              styles.TabView__caption,{
+                color: getColor('MapPage'),
+              }
             ]}
           />
         </TouchableOpacity>
@@ -121,46 +113,35 @@ export let ButtonTabBar = ({ state, descriptors, navigation }) => {
               return;
             }
 
-            navigation.navigate("card");
+            navigate("card");
           }}
         >
           <View style={styles.iconWrapper}>
-            <CardIcon
-              color={
-                cardPageScreens.indexOf(routeName) !== -1
-                  ? activeColor
-                  : passiveColor
-              }
-            />
+            
+          <CardIcon color={getColor('card')} />
           </View>
           <TypographyText
             textColor={colors.lightGrey}
             size={13}
             font={LUSAIL_REGULAR}
             title={t("TabBar.card")}
+            
             style={[
-              styles.TabView__caption,
-              cardPageScreens.indexOf(routeName) !== -1 && {
-                color: activeColor,
-              },
+              styles.TabView__caption,{
+                color: getColor('card'),
+              }
             ]}
           />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.TabView__item}
           onPress={() => {
-            navigation.navigate("Profile");
+            navigate("Profile");
             // navigation.openDrawer();
           }}
         >
           <View style={styles.iconWrapper}>
-            <ProfileIcon
-              color={
-                profileScreens.indexOf(routeName) !== -1
-                  ? activeColor
-                  : passiveColor
-              }
-            />
+          <ProfileIcon color={getColor('Profile')} />
           </View>
           <TypographyText
             textColor={colors.lightGrey}
@@ -168,10 +149,9 @@ export let ButtonTabBar = ({ state, descriptors, navigation }) => {
             font={LUSAIL_REGULAR}
             title={t("TabBar.profile")}
             style={[
-              styles.TabView__caption,
-              profileScreens.indexOf(routeName) !== -1 && {
-                color: activeColor,
-              },
+              styles.TabView__caption,{
+                color: getColor('Profile'),
+              }
             ]}
           />
         </TouchableOpacity>

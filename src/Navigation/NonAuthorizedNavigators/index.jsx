@@ -14,6 +14,7 @@ import RegCodeVerification from '../../AuthScreens/Register/RegCodeVerification'
 import CreatePassword from '../../AuthScreens/CreatePassword/CreatePassword';
 import Verification from '../../AuthScreens/Verification/Verification';
 import PrivacyPolicy from '../../MainScreens/PrivacyPolicy';
+import CodeConfirmation from "../../AuthScreens/Register/CodeConfirmation";
 
 const Stack = createStackNavigator();
 
@@ -51,6 +52,10 @@ export const NonUthorizedNavigators = () => {
       <Stack.Screen name="CreatePassword" component={CreatePassword} />
       <Stack.Screen name="Verification" component={Verification} />
       <Stack.Screen name={'PrivacyPolicy'} component={PrivacyPolicy} />
+      <Stack.Screen
+        name="CodeConfirmation"
+        component={CodeConfirmation}
+      />
     </Stack.Navigator>
   );
 };

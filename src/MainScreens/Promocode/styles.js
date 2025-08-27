@@ -34,7 +34,7 @@ export const styles = StyleSheet.create({
     textAlign: "center",
   },
   label: {
-    color: colors.grey,
+    color: colors.darkBlue,
     marginTop: 6,
   },
   rulesWrapper: {

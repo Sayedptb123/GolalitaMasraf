@@ -21,10 +21,7 @@ const Card = ({
   const { t } = useTranslation();
 
   const cardBorderStyle = { borderWidth: 1, borderColor: colors.mainDarkMode };
-  const imageBackground =
-    isMainUser && index === 0
-      ? require("../../assets/card_bg_new.jpg")
-      : require("../../assets/card_bg.jpg");
+  const imageBackground = require("../../assets/card_bg_new.jpg");
 
   return (
     <View>

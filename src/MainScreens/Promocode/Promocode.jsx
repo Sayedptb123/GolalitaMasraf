@@ -115,8 +115,8 @@ console.log("branchesOptions:1",branchesOptions)
                   />
                 </View>
                 <IconButton
-                  color={isDark ? colors.white : null}
-                  icon={isDark ? <PresentActiveIcon /> : <PresentIcon />}
+                  color={isDark ? colors.white : colors.darkBlue}
+                  icon={<PresentActiveIcon />}
                   label={t("ProductPage.redeem")}
                 />
               </View>
@@ -221,13 +221,13 @@ console.log("branchesOptions:1",branchesOptions)
               <View style={[mainStyles.centeredRow, { marginTop: 30 }]}>
                 <IconButton
                   onPress={toContactUs}
-                  color={isDark ? colors.white : null}
+                  color={isDark ? colors.white : colors.darkBlue}
                   label={t("PremiumPartner.reportAnIssue")}
                 />
               </View>
               {params?.expiryDate && (
                 <TypographyText
-                  textColor={!isDark ? colors.grey : colors.white}
+                  textColor={!isDark ? colors.darkBlue : colors.white}
                   size={12}
                   font={BALOO_REGULAR}
                   title={`${t("PremiumPartner.validTill")} ${

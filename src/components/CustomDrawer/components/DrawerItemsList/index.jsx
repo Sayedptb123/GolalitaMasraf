@@ -19,7 +19,6 @@ import FamilySvg from "../../../../assets/family.svg";
 import { colors } from "../../../colors";
 import { useTranslation } from "react-i18next";
 import AnimatedIcon from "../../../AnimatedIcon";
-import { useNavigation } from "@react-navigation/native";
 import i18next from "i18next";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import OffersSvg from "../../../../assets/offers.svg";
@@ -28,12 +27,12 @@ import {
   getGoPointMerchatnsCount,
 } from "../../../../api/merchants";
 
+import { navigate } from '../../../../Navigation/navigationHelpers';
 const DrawerItemList = () => {
   const { isDark } = useTheme();
   const isMainUser = useSelector((state) => state.authReducer.isMainUser);
   const isGuest = useIsGuest();
   const { t, i18n } = useTranslation();
-  const navigation = useNavigation();
 
   const iconColor = isDark ? colors.mainDarkMode : colors.darkBlue;
 
@@ -76,31 +75,31 @@ const DrawerItemList = () => {
       icon: () => <VouchersIcon style={styles.iconWrapper} />, //routeName === 'Cart' ? <BagActiveIcon /> : <BagIcon />,
       title: t("Drawer.vouchersAndGiftCards"),
       onPress: () =>
-        navigation.navigate("myVouchers", {
+        navigate("myVouchers", {
           screen: "myVouchers-list",
         }),
     },
     {
       icon: () => <FamilyIcon style={styles.iconWrapper} />, //routeName === 'Cart' ? <BagActiveIcon /> : <BagIcon />,
       title: t("Drawer.familyMembers"),
-      onPress: () => navigation.navigate("Family"),
+      onPress: () => navigate("Family"),
       hidden: !isMainUser,
     },
     {
       icon: () => <OffersIcon style={styles.iconWrapper} />, //(routeName === 'Main' || routeName === undefined) ? <HomeActiveIcon /> : <HomeIcon />,
       title: t("TabBar.allOffers"),
-      onPress: () => navigation.navigate("AllOffers"),
+      onPress: () => navigate("AllOffers"),
     },
     {
       icon: () => <OffersIcon style={styles.iconWrapper} />, //(routeName === 'Main' || routeName === undefined) ? <HomeActiveIcon /> : <HomeIcon />,
       title: t("Drawer.B1G1"),
-      onPress: () => navigation.navigate("B1G1"),
+      onPress: () => navigate("B1G1"),
     },
     {
       icon: () => <MerchantsIcon style={styles.iconWrapper} />, //routeName === 'Discount' ? <DiscountsActiveIcon /> : <DiscountsIcon />,
       title: t("Drawer.allMerchants"),
       onPress: () =>
-        navigation.navigate("merchants", {
+        navigate("merchants", {
           screen: "merchants-list",
           params: { selectedCategory: null },
         }),
@@ -109,7 +108,7 @@ const DrawerItemList = () => {
       icon: () => <PremiumIcon style={styles.iconWrapper} />, //routeName === 'Discount' ? <DiscountsActiveIcon /> : <DiscountsIcon />,
       title:  t("Drawer.premiumMerchants"),
       onPress: () =>
-        navigation.navigate("merchants", {
+        navigate("merchants", {
           screen: "premiumMerchants-list",
           params: { selectedCategory: null },
         }),
@@ -120,7 +119,7 @@ const DrawerItemList = () => {
     //   icon: () => <GopointIcon style={styles.iconWrapper} />, //routeName === 'Discount' ? <DiscountsActiveIcon /> : <DiscountsIcon />,
     //   title:  t("Drawer.goPoints"),
     //   onPress: () => //alert("Under development")
-    //     navigation.navigate("merchants", {
+    //     navigate("merchants", {
     //       screen: "GoPointsMerchants-list",
     //       params: { selectedCategory: null },
     //     }),
@@ -131,7 +130,7 @@ const DrawerItemList = () => {
       icon: () => <NewMerchantsIcon style={styles.iconWrapper} />, //routeName === 'Discount' ? <DiscountsActiveIcon /> : <DiscountsIcon />,
       title: t("Drawer.newMerchants"),
       onPress: () =>
-        navigation.navigate("merchants", {
+        navigate("merchants", {
           screen: "newMerchants-list",
           params: { selectedCategory: null },
         }),
@@ -139,18 +138,18 @@ const DrawerItemList = () => {
     {
       icon: () => <FavoritesIcon style={styles.iconWrapper} />, //routeName === 'Discount' ? <DiscountsActiveIcon /> : <DiscountsIcon />,
       title: t("Favorites.favorites"),
-      onPress: () => navigation.navigate("favouriteMerchants"),
+      onPress: () => navigate("favouriteMerchants"),
       hidden: false, // isGuest,
     },
     // {
     //   icon: () => <AnimatedIcon />, //routeName === 'Discount' ? <DiscountsActiveIcon /> : <DiscountsIcon />,
     //   title: t("Drawer.map"),
-    //   onPress: () => navigation.navigate("MapPage"),
+    //   onPress: () => navigate("MapPage"),
     // },
     {
       icon: () => <SettingsIcon style={styles.iconWrapper} />, //routeName === 'ToUser' ? <InfoActiveIcon /> : <InfoIcon />,
       title: t("Settings.settings"),
-      onPress: () => navigation.navigate("Settings"),
+      onPress: () => navigate("Settings"),
     },
     {
       icon: () => <PlanetIcon style={styles.iconWrapper} />, //routeName === 'ToUser' ? <InfoActiveIcon /> : <InfoIcon />,
@@ -167,13 +166,13 @@ const DrawerItemList = () => {
     {
       icon: () => <ContactUsIcon style={styles.iconWrapper} />, //<LogoutIcon />,
       title: t("ContactUs.contactUs"),
-      onPress: () => navigation.navigate("ContactUs"),
+      onPress: () => navigate("ContactUs"),
     },
     // {
     //   icon: () => <ScanIcon style={styles.iconWrapper} />,
     //   title: t("Drawer.scanCard"),
     //   onPress: () =>
-    //     navigation.navigate("QrCodeScanner", {
+    //     navigate("QrCodeScanner", {
     //       title: t("Drawer.scanCard"),
     //     }),
     // },
@@ -181,7 +180,7 @@ const DrawerItemList = () => {
     //   icon: () => <ScanIcon style={styles.iconWrapper} />,
     //   title: t("Drawer.scanBill"),
     //   onPress: () =>
-    //     navigation.navigate("BillScanner", {
+    //     navigate("BillScanner", {
     //       title: t("Drawer.scanBill"),
     //     }),
     // }

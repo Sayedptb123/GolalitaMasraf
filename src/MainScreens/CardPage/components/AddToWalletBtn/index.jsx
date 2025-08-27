@@ -81,7 +81,7 @@ const AddToWalletBtn = () => {
   return (
     <CommonButton
       label={t('CardPage.emtiazCard')}
-      textColor={isDark ? colors.mainDarkMode : colors.darkBlue}
+      textColor={isDark ? colors.mainDarkMode : colors.white}
       onPress={handlePress}
       style={{
         width: (SCREEN_WIDTH / 100) * 85,
@@ -91,7 +91,7 @@ const AddToWalletBtn = () => {
         borderWidth: 1,
         shadowColor: 'rgba(0, 0, 0, 0)',
         marginBottom: 40,
-        backgroundColor: 'transparent',
+       // backgroundColor: 'transparent',
         borderColor: isDark ? colors.mainDarkMode : colors.darkBlue,
       }}
       loadingIsCard={loading}
