@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { colors } from "../../../../../../components/colors";
 import { View } from "react-native";
+import { getRoadDistance } from '../../../../../../api/user';
 
 const Distance = ({ latitude, longitude }) => {
   const { t } = useTranslation();
@@ -25,7 +26,7 @@ const Distance = ({ latitude, longitude }) => {
       const userLongitude = data.location.longitude;
 
       if (userLatitude & userLongitude && latitude && longitude) {
-        const distance = getDistance(
+        const distance = getRoadDistance(
           latitude,
           longitude,
           userLatitude,
@@ -33,7 +34,7 @@ const Distance = ({ latitude, longitude }) => {
         );
 
         if (distance) {
-          setDistance(distance.toFixed(2));
+          setDistance(distance);
         }
       }
     } finally {
@@ -58,7 +59,7 @@ const Distance = ({ latitude, longitude }) => {
       )}
       {!loading && (
         <TypographyText
-          title={`${distance} km`}
+        title={distance || ''}
           textColor={isDark ? colors.mainDarkMode : colors.darkBlue}
           size={14}
         />

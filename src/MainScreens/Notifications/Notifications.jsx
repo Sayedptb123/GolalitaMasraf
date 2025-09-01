@@ -39,7 +39,7 @@ const Notifications = ({
   return (
     <MainLayout
       outsideScroll={true}
-      headerChildren={<Header label={t("Notifications.notifications")} />}
+      headerChildren={<Header label={t("Notifications.notifications")} btns={['back']} />}
       headerHeight={50}
       contentStyle={{
         height: SCREEN_HEIGHT - 120,

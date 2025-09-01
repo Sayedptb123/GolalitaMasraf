@@ -416,7 +416,8 @@ const Overview = ({
   if (loading) return <FullScreenLoader />;
 
   return (
-    <ViewShot ref={viewRef} style={{ flex: 1 }}>
+    <ViewShot ref={viewRef} style={{ flex: 1,  backgroundColor: isDark ? colors.darkModeBackground : '#fff',
+    }}>
       <View style={{ flex: 1 }}>
         <Tabs.Container
           minHeaderHeight={1}

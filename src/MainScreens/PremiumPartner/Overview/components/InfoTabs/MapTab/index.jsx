@@ -1,11 +1,36 @@
 import { StyleSheet,Linking } from "react-native";
 import Map from "../../../../../MapPage/Map";
+import {
+  getCurrentLocation,
+  requestLocationPermission,
+} from '../../../../../../helpers';
 
 const MapTab = ({ merchantDetails }) => {
-  const handleMarkerPress = () => {
-    Linking.openURL(
-      `https://www.google.com/maps/dir/Current+Location/${merchantDetails.partner_latitude},${merchantDetails.partner_longitude}`
-    );
+  const handleMarkerPress = async () => {
+    try {
+      const status = await requestLocationPermission();
+
+      if (status === 'granted') {
+        const location = await getCurrentLocation();
+
+        const userLatitude = location.coords.latitude;
+        const userLongitude = location.coords.longitude;
+
+        if (userLatitude && userLongitude) {
+          Linking.openURL(
+            `https://www.google.com/maps/dir/?api=1&origin=${userLatitude},${userLongitude}&destination=${merchantDetails.partner_latitude},${merchantDetails.partner_longitude}&travelmode=driving`,
+          );
+
+          return;
+        }
+      }
+
+      Linking.openURL(
+        `https://www.google.com/maps/dir/Current+Location/${merchantDetails.partner_latitude},${merchantDetails.partner_longitude}`,
+      );
+    } catch (err) {
+      console.log(err, 'err');
+    }
   };
   return (
     <Map

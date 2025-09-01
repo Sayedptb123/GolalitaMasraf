@@ -87,45 +87,12 @@ const Profile = ({
     type,
     verifyHandler,
   } = useVerify(validate_code,verifyEmail,verifyPhone, t);
-  useEffect(() => {
-    (async () => {
-      let permissions = [
-        PERMISSIONS.ANDROID.CAMERA,
-        PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
-      ];
-
-      if (Platform.OS === "android") {
-        if (Platform.Version >= 33) {
-          permissions.push(PERMISSIONS.ANDROID.READ_MEDIA_IMAGES);
-        } else {
-          permissions.push(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
-        }
-      }
-
-      try {
-        let statuses = await checkMultiple(permissions);
-
-        let notGrantedPermissions = Object.entries(statuses)
-          .filter((item) => item[1] !== "granted")
-          .map((item) => item[0]);
-
-        if (notGrantedPermissions.length) {
-          statuses = await requestMultiple(notGrantedPermissions);
-
-          notGrantedPermissions = Object.entries(statuses)
-            .filter((item) => item[1] !== "granted")
-            .map((item) => item[0]);
-        }
-
-        if (notGrantedPermissions.length) {
-          alert("Sorry, we need camera roll permissions to make this work!");
-        }
-      } catch (err) {
-        console.log(err, "error");
-        alert("Sorry, get camera roll permission error");
-      }
-    })();
-  }, [user]);
+  // Simple permission check - just return true to let React Native handle permissions
+  const checkAndRequestPermissions = async () => {
+    // Let React Native Image Picker handle permissions automatically
+    // This will show the permission dialog when needed
+    return true;
+  };
 
   const handleUpdateProfile = async (values) => {
     try {
@@ -159,6 +126,11 @@ const Profile = ({
 
     setIsClicked(false);
 
+    // Check if user cancelled the action
+    if (data.cancelled || !data.assets || data.assets.length === 0) {
+      return;
+    }
+
     const base64 = data?.assets?.[0]?.base64;
 
     if (!base64) {
@@ -176,9 +148,7 @@ const Profile = ({
       undefined,
       t
     );
-    if (!data.cancelled) {
-      setIsDialogWindow(false);
-    }
+    setIsDialogWindow(false);
   };
   const launchCameraFunc = async () => {
     setIsClicked(true);
@@ -189,6 +159,11 @@ const Profile = ({
     });
 
     setIsClicked(false);
+
+    // Check if user cancelled the action
+    if (data.cancelled || !data.assets || data.assets.length === 0) {
+      return;
+    }
 
     const base64 = data?.assets?.[0]?.base64;
 
@@ -203,9 +178,7 @@ const Profile = ({
       phone: user.phone,
       image_1920: base64,
     });
-    if (!data.cancelled) {
-      setIsDialogWindow(false);
-    }
+    setIsDialogWindow(false);
   };
 
   let items = [

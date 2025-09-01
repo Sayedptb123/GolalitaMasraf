@@ -91,6 +91,7 @@ const BookHotel = ({ user, bookNow, route, navigation }) => {
               return_date: getDateString(return_date),
               ...values,
               hotel_email: params?.email,
+              organisation:"Al Rayan Rewards",
               product_price:
                 typeof values.product_price === "number"
                   ? Number(values.product_price)  + " QAR"

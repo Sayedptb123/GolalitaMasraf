@@ -19,6 +19,10 @@ import { isRTL } from "../../../../../utils";
 import { useTranslation } from "react-i18next";
 import Distance from "./components/Distance";
 import { getMerchantDisscountForOffers } from "../../../../api/merchants";
+import {
+  getCurrentLocation,
+  requestLocationPermission,
+} from '../../../../helpers';
 
 const snapPoints = ["30%"];
 
@@ -77,12 +81,31 @@ const MerchantModal = ({ merchant, setSelectedMerchant }) => {
     );
   };
 
-  const handleNavigatePress = () => {
+  const handleNavigatePress = async () => {
     bottomSheetModalRef.current?.close();
+    try {
+      const status = await requestLocationPermission();
 
+      if (status === 'granted') {
+        const location = await getCurrentLocation();
+
+        const userLatitude = location.coords.latitude;
+        const userLongitude = location.coords.longitude;
+
+        if (userLatitude && userLongitude) {
+          Linking.openURL(
+            `https://www.google.com/maps/dir/?api=1&origin=${userLatitude},${userLongitude}&destination=${merchant.partner_latitude},${merchant.partner_longitude}&travelmode=driving`,
+          );
+
+          return;
+        }
+      }
     Linking.openURL(
       `https://www.google.com/maps/dir/Current+Location/${merchant.partner_latitude},${merchant.partner_longitude}`
-    );
+    ); 
+  } catch (err) {
+      console.log(err, 'err');
+    }
   };
 
   useEffect(() => {
