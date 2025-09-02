@@ -18,43 +18,18 @@ const AddToWalletBtn = () => {
   const language = i18n.language;
 
   const handlePress = async () => {
-    const {
-      name,
-      x_user_expiry,
-      barcode,
-      x_moi_last_name,
-      x_first_name_arbic,
-      x_last_name_arbic,
-      phone,
-    } = user;
 
-    let fName = name + ' ' + x_moi_last_name;
-    let fNameAr = x_first_name_arbic + ' ' + x_last_name_arbic;
-    let formattedBarcode = barcode.replace(/(.{4})(?=.)/g, '$1 ');
+    const { name, x_moi_last_name, x_user_expiry, barcode, photo, phone, x_first_name_arbic, x_last_name_arbic } = user;
 
+    let fName = name + " " + x_moi_last_name;
     const data = {
-      name: language === 'ar' ? fNameAr : fName,
-      fileName: fName,
+      name: fName,
       x_user_expiry,
-              organisation: 'Al Rayan Rewards', // user.organisation,
+      organisation: user.organisation,
       available_points: 1,
-      organisation_logo:
-        'https://golalita.com/web/static/src/img/emitiyaz/Layer.png',
-      //photo: photo || cardData.image_url, //profile image
-      barcode,
-      foregroundColor: '#ffffff',
-      backgroundColor: '#000000',
-      textColor: '#ffffff',
-      labelColor: '#ffffff',
-      auxiliaryFieldTextColor: '#000000',
-      applink:
-        'https://apps.apple.com/in/app/golalita-rewards-and-discount/id6473549296',
-      contact: phone,
-      appId: [6473549296], //app id from  apple developer account,
-      background:
-        'https://golalita.com/web/static/src/img/emitiyaz/background.png',
-      qid: formattedBarcode,
+      barcode
     };
+
 
     try {
       setLoading(true);

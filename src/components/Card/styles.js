@@ -3,8 +3,8 @@ import { SCREEN_WIDTH } from "../../styles/mainStyles";
 
 const styles = StyleSheet.create({
   wrapper: {
-   flex:1,
-    width: (SCREEN_WIDTH / 100) * 86,
+   
+    // width: (SCREEN_WIDTH / 100) * 86,
     overflow: "hidden",
     borderRadius: 8,
     //padding:13,
