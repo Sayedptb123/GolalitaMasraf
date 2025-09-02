@@ -99,25 +99,6 @@ const Input = ({
           }}
         />
       </View>
-      {isShowSecurityIcon() && (
-        <TouchableOpacity
-          onPress={() => setIsShowPassword(!isShowPassword)}
-          style={[
-            {
-              position: "absolute",
-              top: isLogin ? 15 : 32,
-              zIndex: 1000,
-              width: 30,
-              height: 30,
-              alignItems: "center",
-              justifyContent: "center",
-            },
-            isRTL() ? { left: 15 } : { right: 15 },
-          ]}
-        >
-          {!isShowPassword ? <EyeActiveIcon /> : <EyeIcon />}
-        </TouchableOpacity>
-      )}
       <View style={{ position: "relative" }}>
         {label === t("ContactUs.mobileNumber") ? (
           <FlagModal
@@ -168,6 +149,25 @@ const Input = ({
           />
         )}
         <View style={{ position: "absolute", left: 15, top: 5 }}>{icon}</View>
+        {isShowSecurityIcon() && (
+          <TouchableOpacity
+            onPress={() => setIsShowPassword(!isShowPassword)}
+            style={[
+              {
+                position: "absolute",
+                top: 11, // Centered: (52 - 30) / 2 = 11
+                zIndex: 1000,
+                width: 30,
+                height: 30,
+                alignItems: "center",
+                justifyContent: "center",
+              },
+              isRTL() ? { left: 15 } : { right: 15 },
+            ]}
+          >
+            {!isShowPassword ? <EyeActiveIcon /> : <EyeIcon />}
+          </TouchableOpacity>
+        )}
       </View>
       {error && (
         <TypographyText
