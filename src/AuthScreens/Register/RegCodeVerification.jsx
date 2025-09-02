@@ -40,14 +40,12 @@ const RegCodeVerification = ({
     navigation.navigate("Login");
   }, []);
   return (
-    <View
-      scrollEnabled={Platform.OS === "android"}
+    <SafeAreaView
       style={{
         backgroundColor: isDark ? colors.darkBlue : colors.bg,
-        height: SCREEN_HEIGHT,
+        flex: 1,
       }}
     >
-      <SafeAreaView style={{ flex: 1 }}>
         <KeyboardAwareScrollView contentContainerStyle={{ flex: 1 }}>
           <TopCircleShadow />
           <TouchableOpacity
@@ -170,7 +168,7 @@ const RegCodeVerification = ({
                           style={{ fontSize: 16 }}
                         />
                       </View>
-                      <View>
+                      <View style={{ paddingBottom: 20 }}>
                         <CommonButton
                           onPress={handleSubmit}
                           label={t("Login.verify")}
@@ -213,8 +211,7 @@ const RegCodeVerification = ({
             </View>
           </TouchableOpacity>
         </KeyboardAwareScrollView>
-      </SafeAreaView>
-    </View>
+    </SafeAreaView>
   );
 };
 
