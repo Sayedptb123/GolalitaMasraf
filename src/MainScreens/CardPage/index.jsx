@@ -25,7 +25,7 @@ const CardPage = () => {
     state => state.transactionsReducer.familyMembers,
   );
   const [data, setData] = useState([user]);
-
+console.log(data, 'data');
   const expiryDate = transformDisplayedExpiryDate(user?.x_user_expiry);
   const mainnBackgroundColor = isDark ? colors.darkBlue : '#fff';
   const barcodeLineColor = isDark ? '#fff' : 'black';
@@ -66,17 +66,28 @@ const CardPage = () => {
           showsPagination={false}
           scrollEnabled={data.length > 1}
         >
-          {data.map(item => (
-            <Card
-              name={item.name}
-              lname={item.x_moi_last_name}
-              nameAr={item.x_first_name_arbic}
-              lnameAr={item.x_last_name_arbic}
-              barcode={item.barcode}
-              expiryDate={expiryDate}
-              availablePoints={item.available_points || item.points}
-            />
-          ))}
+          {data.map((item, index) => {
+            console.log(`Card ${index} data:`, {
+              name: item.name,
+              lname: item.x_moi_last_name,
+              nameAr: item.x_first_name_arbic,
+              lnameAr: item.x_last_name_arbic,
+              fullItem: item
+            });
+            
+            return (
+              <Card
+                key={index}
+                name={item.name}
+                lname={item.x_moi_last_name}
+                nameAr={item.x_first_name_arbic}
+                lnameAr={item.x_last_name_arbic}
+                barcode={item.barcode}
+                expiryDate={expiryDate}
+                availablePoints={item.available_points || item.points}
+              />
+            );
+          })}
         </Swiper>
       </View>
 

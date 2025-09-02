@@ -13,15 +13,30 @@ const Card = ({
   name,
   expiryDate,
   lname,
+  nameAr,
+  lnameAr,
   renderHeader,
   isVIP,
   isMainUser,
   index,
 }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const cardBorderStyle = { borderWidth: 1, borderColor: colors.mainDarkMode };
   const imageBackground = require("../../assets/card_bg_new.jpg");
+  
+  // Debug console logs
+  console.log('Card component props:', {
+    name,
+    lname,
+    nameAr,
+    lnameAr,
+    currentLanguage: i18n.language
+  });
+  
+  // Determine which name to display based on current language
+  const displayName = i18n.language === 'ar' && nameAr ? nameAr : name;
+  const displayLastName = i18n.language === 'ar' && lnameAr ? lnameAr : lname;
 
   return (
     <View>
@@ -97,7 +112,7 @@ const Card = ({
               textColor={colors.white}
               size={24}
               font={LUSAIL_REGULAR}
-              title={name + ' ' + lname}
+              title={displayName + ' ' + displayLastName}
               style={{ fontWeight: "700" }}
               numberOfLines={1}
             />
