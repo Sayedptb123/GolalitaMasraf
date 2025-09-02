@@ -97,7 +97,7 @@ const Card = ({
               textColor={colors.white}
               size={24}
               font={LUSAIL_REGULAR}
-              title={name}
+              title={name + ' ' + lname}
               style={{ fontWeight: "700" }}
               numberOfLines={1}
             />
