@@ -4,7 +4,7 @@ import Header from "../../../components/Header";
 import { SCREEN_HEIGHT ,mainStyles} from "../../../styles/mainStyles";
 import { useRoute } from "@react-navigation/native";
 import { View } from "react-native";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import { userSelector } from "../../../redux/auth/auth-selectors";
 import { getMerchantDetails } from "../../../api/merchants";
@@ -18,6 +18,9 @@ import { useTheme } from "../../../components/ThemeProvider";
 import { colors } from "../../../components/colors";
 import CommonButton from "../../../components/CommonButton/CommonButton";
 import LogoSvg from "../../../assets/logo.svg";
+import { isRTL } from '../../../../utils';
+
+
 
 const getDateString = (date) => {
   if (!date.getFullYear) return "";
@@ -32,7 +35,7 @@ const ApplyCodeConfirmation = ({ navigation }) => {
   const params = route.params;
   const user = useSelector(userSelector);
   const { isDark } = useTheme();
-
+  const merchantDataRef = useRef(null);
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -46,6 +49,7 @@ const ApplyCodeConfirmation = ({ navigation }) => {
       const merchant = await getMerchantDetails({
         merchant_id: params.merchant_id,
       });
+      merchantDataRef.current = merchant;
 
       if (!merchant) {
         throw "err";
@@ -120,7 +124,33 @@ const ApplyCodeConfirmation = ({ navigation }) => {
   useEffect(() => {
     getData();
   }, []);
+  const getAddress = merchant => {
+    if (!merchant) {
+      return '';
+    }
 
+    if (!isRTL()) {
+      return merchant.address;
+    }
+
+    let address = '';
+
+    if (merchant.x_street_ar) {
+      address = address + merchant.x_street_ar + '\n';
+    }
+
+    if (merchant.x_city_ar) {
+      address = address + merchant.x_city_ar + '\n';
+    }
+
+    if (merchant.x_country_ar) {
+      address = address + merchant.x_country_ar + ' ';
+    }
+
+    return address;
+  };
+
+  const address = getAddress(merchantDataRef.current);
   return (
     <MainLayout
       outsideScroll={true}
@@ -148,13 +178,17 @@ const ApplyCodeConfirmation = ({ navigation }) => {
                       <Image source={logo} style={styles.main_logo} />
                     </View>
           <TypographyText
-            title={data.merchant_name}
+            title={
+              isRTL()
+                ? merchantDataRef.current.x_arabic_name
+                : merchantDataRef.current.merchant_name
+            }
             textColor={isDark ? colors.mainDarkMode : colors.darkBlue}
             size={22}
             style={styles.name}
           />
           <TypographyText
-            title={data.location_name}
+            title={address}
             textColor={isDark ? colors.mainDarkMode : colors.darkBlue}
             size={16}
             style={styles.address}
