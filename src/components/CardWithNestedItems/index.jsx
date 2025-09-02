@@ -69,7 +69,15 @@ const CardWithNesetedItems = (props) => {
       </TouchableOpacity>
     );
   };
-
+  const isRtl = isRTL();
+  const newIconStyles = {
+    borderTopLeftRadius: isRtl ? 0 : 4,
+    borderBottomLeftRadius: isRtl ? 0 : 4,
+    borderTopRightRadius: isRtl ? 4 : 0,
+    borderBottomRightRadius: isRtl ? 4 : 0,
+    right: isRtl ? undefined : -16,
+    left: isRtl ? -16 : undefined,
+  };
   const renderParent = (
     <View>
       <TouchableOpacity
@@ -77,7 +85,7 @@ const CardWithNesetedItems = (props) => {
         style={[styles.row, getFlexDirection()]}
       >
         {parentProps.new && (
-          <View style={styles.newIcon}>
+          <View style={{ ...styles.newIcon, ...newIconStyles }}>
             <TypographyText
               textColor={isDark ? colors.white : "#000"}
               size={14}
@@ -88,7 +96,7 @@ const CardWithNesetedItems = (props) => {
           </View>
         )} 
          {parentProps.goPoints && (
-          <View style={styles.newIcon}>
+          <View style={{ ...styles.newIcon, ...newIconStyles }}>
             <TypographyText
               textColor={isDark ? colors.white : "#000"}
               size={14}
@@ -99,7 +107,7 @@ const CardWithNesetedItems = (props) => {
           </View>
         )}
         {parentProps.premium && (
-          <View style={styles.newIcon}>
+          <View style={{ ...styles.newIcon, ...newIconStyles }}>
             <TypographyText
               textColor={isDark ? colors.white : "#000"}
               size={14}
