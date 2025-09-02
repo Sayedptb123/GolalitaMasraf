@@ -6,14 +6,13 @@ import { View } from "react-native";
 import { useSelector } from "react-redux";
 import { useTheme } from "../../../ThemeProvider";
 import { colors } from "../../../colors";
-import { useNavigation } from "@react-navigation/native";
+import { navigate } from "../../../../Navigation/navigationHelpers";
 
 const NotificationsBtn = () => {
   const messageNotifications = useSelector(
     (state) => state.notificationsReducer.messageNotifications
   );
   const { isDark } = useTheme();
-  const navigation = useNavigation();
   const isNotifications = !!messageNotifications?.filter(
     (m) => m.state === "unread"
   )?.length;
@@ -22,7 +21,7 @@ const NotificationsBtn = () => {
     <TouchableOpacity
       style={styles.wrapper}
       onPress={() => {
-        navigation.navigate("Notifications");
+        navigate("Notifications");
       }}
     >
       <View style={styles.iconWrapper}>
