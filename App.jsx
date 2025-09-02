@@ -28,6 +28,7 @@ import RedirectToStoresModal, {
 } from "./src/components/RedirectToStoresModal";
 import Geocoder from "react-native-geocoding";
 import PortalProvider from "./src/components/Portal/PortalProvider";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 I18nManager.allowRTL(false);
 
@@ -186,15 +187,17 @@ App = connect(mapStateToProps, { getAppStatus, getVersion })(App);
 
 const AppWrapper = () => {
   return (
-    <Provider store={store}>
-      <QueryClientProvider client={queryClient}>
-        <ThemeProvider>
-          <PortalProvider>
-            <App />
-          </PortalProvider>
-        </ThemeProvider>
-      </QueryClientProvider>
-    </Provider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <Provider store={store}>
+        <QueryClientProvider client={queryClient}>
+          <ThemeProvider>
+            <PortalProvider>
+              <App />
+            </PortalProvider>
+          </ThemeProvider>
+        </QueryClientProvider>
+      </Provider>
+    </GestureHandlerRootView>
   );
 };
 

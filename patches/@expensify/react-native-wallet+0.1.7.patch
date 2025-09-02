@@ -1,0 +1,12 @@
+diff --git a/android/build.gradle b/android/build.gradle
+index 1234567..abcdefg 100644
+--- a/android/build.gradle
++++ b/android/build.gradle
+@@ -99,7 +99,6 @@ dependencies {
+   // For > 0.71, this will be replaced by `com.facebook.react:react-android:$version` by react gradle plugin
+   //noinspection GradleDynamicVers ion
+   implementation "com.facebook.react:react-native:+"
+   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+-  implementation 'com.google.android.gms:play-services-tapandpay:+'
+ }
+

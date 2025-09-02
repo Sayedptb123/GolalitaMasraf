@@ -1723,6 +1723,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@expensify/react-native-wallet@npm:^0.1.7":
+  version: 0.1.7
+  resolution: "@expensify/react-native-wallet@npm:0.1.7"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 4f28a36629f32025305e331ddbfc6beb5a6e31583396288d8a1288be0dcd6b5ea6871644dd6280f458a77432ca887a00930818d5d4330127da2118b433cec8e0
+  languageName: node
+  linkType: hard
+
 "@expo/config-plugins@npm:^9.0.0 || ^10.0.0":
   version: 10.1.2
   resolution: "@expo/config-plugins@npm:10.1.2"
@@ -6667,110 +6677,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"emtiyaz@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "emtiyaz@workspace:."
-  dependencies:
-    "@babel/core": ^7.28.0
-    "@babel/preset-env": ^7.28.0
-    "@babel/runtime": ^7.27.6
-    "@gorhom/bottom-sheet": ^5.1.6
-    "@notifee/react-native": ^9.1.8
-    "@react-native-async-storage/async-storage": ~2.2.0
-    "@react-native-clipboard/clipboard": ^1.16.3
-    "@react-native-community/cli": 19.0.0
-    "@react-native-community/cli-platform-android": 19.0.0
-    "@react-native-community/cli-platform-ios": 19.0.0
-    "@react-native-community/datetimepicker": ^8.4.4
-    "@react-native-community/masked-view": 0.1.11
-    "@react-native-community/slider": ^4.5.7
-    "@react-native-firebase/app": 22.2.1
-    "@react-native-firebase/messaging": 22.2.1
-    "@react-native-picker/picker": ^2.11.1
-    "@react-native/babel-preset": 0.80.1
-    "@react-native/eslint-config": 0.80.1
-    "@react-native/metro-config": 0.80.1
-    "@react-native/typescript-config": 0.80.1
-    "@react-navigation/bottom-tabs": ^7.4.2
-    "@react-navigation/drawer": ^7.5.3
-    "@react-navigation/native": ^7.1.14
-    "@react-navigation/native-stack": ^7.3.21
-    "@react-navigation/stack": ^7.4.2
-    "@types/jest": ^30.0.0
-    "@types/react": ^19.1.8
-    "@types/react-test-renderer": ^19.1.0
-    add: ^2.0.6
-    axios: ^1.10.0
-    crypto-js: ^4.2.0
-    deprecated-react-native-prop-types: ^5.0.0
-    eslint: ^9.30.1
-    formik: ^2.4.6
-    freerasp-react-native: ^4.2.1
-    i18next: ^25.3.0
-    install: ^0.13.0
-    jest: ^30.0.4
-    metro-react-native-babel-preset: ^0.77.0
-    npm: ^11.5.2
-    patch-package: ^8.0.0
-    prettier: 3.6.2
-    react: 19.1.0
-    react-dom: 19.1.0
-    react-i18next: ^15.5.3
-    react-native: 0.80.1
-    react-native-barcode-expo: ^2.0.0
-    react-native-blob-util: ^0.22.2
-    react-native-bootsplash: ^6.3.10
-    react-native-bouncy-checkbox: ^4.1.2
-    react-native-collapsible-tab-view: ^8.0.1
-    react-native-confirmation-code-field: ^8.0.1
-    react-native-country-picker-modal: ^2.0.0
-    react-native-exit-app: 1.1.0
-    react-native-fast-image: ^8.6.3
-    react-native-flash-message: ^0.4.2
-    react-native-geocoding: ^0.5.0
-    react-native-geolocation-service: ^5.3.1
-    react-native-gesture-handler: ^2.27.1
-    react-native-htmlview: ^0.17.0
-    react-native-image-picker: ^8.2.1
-    react-native-image-zoom-viewer: ^3.0.1
-    react-native-keyboard-aware-scroll-view: ^0.9.5
-    react-native-linear-gradient: ^2.8.3
-    react-native-maps: 1.20.0
-    react-native-modal: ^13.0.2
-    react-native-modal-datetime-picker: ^18.0.0
-    react-native-nested-listview: ^0.14.2
-    react-native-pager-view: ^6.8.1
-    react-native-pdf: 6.7.6
-    react-native-permissions: 5.4.1
-    react-native-phone-input: ^1.3.7
-    react-native-print: ^0.11.0
-    react-native-reanimated: ^3.18.0
-    react-native-reanimated-carousel: ^4.0.2
-    react-native-restart: 0.0.27
-    react-native-safe-area-context: 5.5.1
-    react-native-screens: ^4.13.1
-    react-native-share: ^12.1.0
-    react-native-slide-to-unlock: ^0.1.8
-    react-native-ssl-public-key-pinning: ^1.2.6
-    react-native-svg: 15.12.0
-    react-native-svg-transformer: ^1.5.1
-    react-native-swiper: ^1.6.0
-    react-native-touch-id: ^4.4.1
-    react-native-vector-icons: ^10.2.0
-    react-native-view-shot: 4.0.3
-    react-native-wallet-passes: ^1.2.2
-    react-native-webview: ^13.15.0
-    react-query: ^3.39.3
-    react-redux: ^7.2.5
-    react-test-renderer: 19.1.0
-    redux: ^4.1.2
-    redux-thunk: ^2.3.0
-    typescript: 5.8.3
-    yarn: ^1.22.22
-    yup: ^1.6.1
-  languageName: unknown
-  linkType: soft
-
 "encodeurl@npm:~1.0.2":
   version: 1.0.2
   resolution: "encodeurl@npm:1.0.2"
@@ -7971,6 +7877,110 @@ __metadata:
   checksum: b4be8885e0cfa018fc783792942d53926c35c50b3aefd3fdcfb9d22c627639dc26bd2327a40a0b74b074100ce95bb7187bfeae2f236856aa3de183af7a02aea6
   languageName: node
   linkType: hard
+
+"golalitamasraf@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "golalitamasraf@workspace:."
+  dependencies:
+    "@babel/core": ^7.28.0
+    "@babel/preset-env": ^7.28.0
+    "@babel/runtime": ^7.27.6
+    "@expensify/react-native-wallet": ^0.1.7
+    "@gorhom/bottom-sheet": ^5.1.6
+    "@notifee/react-native": ^9.1.8
+    "@react-native-async-storage/async-storage": ~2.2.0
+    "@react-native-clipboard/clipboard": ^1.16.3
+    "@react-native-community/cli": 19.0.0
+    "@react-native-community/cli-platform-android": 19.0.0
+    "@react-native-community/cli-platform-ios": 19.0.0
+    "@react-native-community/datetimepicker": ^8.4.4
+    "@react-native-community/masked-view": 0.1.11
+    "@react-native-community/slider": ^4.5.7
+    "@react-native-firebase/app": 22.2.1
+    "@react-native-firebase/messaging": 22.2.1
+    "@react-native-picker/picker": ^2.11.1
+    "@react-native/babel-preset": 0.80.1
+    "@react-native/eslint-config": 0.80.1
+    "@react-native/metro-config": 0.80.1
+    "@react-native/typescript-config": 0.80.1
+    "@react-navigation/bottom-tabs": ^7.4.2
+    "@react-navigation/drawer": ^7.5.3
+    "@react-navigation/native": ^7.1.14
+    "@react-navigation/native-stack": ^7.3.21
+    "@react-navigation/stack": ^7.4.2
+    "@types/jest": ^30.0.0
+    "@types/react": ^19.1.8
+    "@types/react-test-renderer": ^19.1.0
+    add: ^2.0.6
+    axios: ^1.10.0
+    crypto-js: ^4.2.0
+    deprecated-react-native-prop-types: ^5.0.0
+    eslint: ^9.30.1
+    formik: ^2.4.6
+    freerasp-react-native: ^4.2.1
+    i18next: ^25.3.0
+    install: ^0.13.0
+    jest: ^30.0.4
+    metro-react-native-babel-preset: ^0.77.0
+    npm: ^11.5.2
+    patch-package: ^8.0.0
+    prettier: 3.6.2
+    react: 19.1.0
+    react-dom: 19.1.0
+    react-i18next: ^15.5.3
+    react-native: 0.80.1
+    react-native-barcode-expo: ^2.0.0
+    react-native-blob-util: ^0.22.2
+    react-native-bootsplash: ^6.3.10
+    react-native-bouncy-checkbox: ^4.1.2
+    react-native-collapsible-tab-view: ^8.0.1
+    react-native-confirmation-code-field: ^8.0.1
+    react-native-country-picker-modal: ^2.0.0
+    react-native-exit-app: 1.1.0
+    react-native-fast-image: ^8.6.3
+    react-native-flash-message: ^0.4.2
+    react-native-geocoding: ^0.5.0
+    react-native-geolocation-service: ^5.3.1
+    react-native-gesture-handler: ^2.27.1
+    react-native-htmlview: ^0.17.0
+    react-native-image-picker: ^8.2.1
+    react-native-image-zoom-viewer: ^3.0.1
+    react-native-keyboard-aware-scroll-view: ^0.9.5
+    react-native-linear-gradient: ^2.8.3
+    react-native-maps: 1.20.0
+    react-native-modal: ^13.0.2
+    react-native-modal-datetime-picker: ^18.0.0
+    react-native-nested-listview: ^0.14.2
+    react-native-pager-view: ^6.8.1
+    react-native-pdf: 6.7.6
+    react-native-permissions: 5.4.1
+    react-native-phone-input: ^1.3.7
+    react-native-print: ^0.11.0
+    react-native-reanimated: ^3.18.0
+    react-native-reanimated-carousel: ^4.0.2
+    react-native-restart: 0.0.27
+    react-native-safe-area-context: 5.5.1
+    react-native-screens: ^4.13.1
+    react-native-share: ^12.1.0
+    react-native-slide-to-unlock: ^0.1.8
+    react-native-ssl-public-key-pinning: ^1.2.6
+    react-native-svg: 15.12.0
+    react-native-svg-transformer: ^1.5.1
+    react-native-swiper: ^1.6.0
+    react-native-touch-id: ^4.4.1
+    react-native-vector-icons: ^10.2.0
+    react-native-view-shot: 4.0.3
+    react-native-webview: ^13.15.0
+    react-query: ^3.39.3
+    react-redux: ^7.2.5
+    react-test-renderer: 19.1.0
+    redux: ^4.1.2
+    redux-thunk: ^2.3.0
+    typescript: 5.8.3
+    yarn: ^1.22.22
+    yup: ^1.6.1
+  languageName: unknown
+  linkType: soft
 
 "google-libphonenumber@npm:^3.2.32":
   version: 3.2.42
@@ -12470,13 +12480,6 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: d795849b5e2d1c75f66675aea073dae7d109b2b0a266d54f8c0ac8b30d4516dd83a5a7494fd2c44adf0e6e7286d3c29e9b025dbea3536332bf7165715f8a97de
-  languageName: node
-  linkType: hard
-
-"react-native-wallet-passes@npm:^1.2.2":
-  version: 1.2.2
-  resolution: "react-native-wallet-passes@npm:1.2.2"
-  checksum: cbfe9b2dde1f8f8c7c5d6d929a7aba07755468331ab51f5503fbbdf2e4eda89de6d25a5e2d8bd1a4c72dea0cf299654538502a109666cf17f1c68b4da38ceb44
   languageName: node
   linkType: hard
 
