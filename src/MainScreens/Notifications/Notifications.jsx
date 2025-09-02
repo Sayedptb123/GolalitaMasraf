@@ -43,7 +43,7 @@ const Notifications = ({
       headerHeight={50}
       contentStyle={{
         height: SCREEN_HEIGHT - 120,
-        backgroundColor: isDark ? "#151515" : "white",
+        backgroundColor: isDark ? colors.darkBlue : "white",
       }}
     >
       {pressedNotification && (
@@ -81,7 +81,7 @@ const Notifications = ({
             <View style={styles.noData}>
               <TypographyText
                 title={t("General.noData")}
-                textColor={colors.darkBlue}
+                textColor={isDark ? colors.white : colors.darkBlue}
                 size={18}
                 font={BALOO_SEMIBOLD}
               />
