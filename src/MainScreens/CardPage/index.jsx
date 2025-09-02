@@ -1,27 +1,46 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import Header from '../../components/Header';
 import { View } from 'react-native';
 import { TypographyText } from '../../components/Typography';
 import Card from '../../components/Card/Card';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { userSelector } from '../../redux/auth/auth-selectors';
 import Barcode from 'react-native-barcode-expo';
 import { transformDisplayedExpiryDate } from './utils';
 import { useTheme } from '../../components/ThemeProvider';
 import { colors } from '../../components/colors';
 import AddToWalletBtn from './components/AddToWalletBtn';
+import { getFamilyMembers } from '../../redux/transactions/transactions-thunks';
+import Swiper from 'react-native-swiper';
 
 const CardPage = () => {
   const user = useSelector(userSelector);
   const { t } = useTranslation();
   const { isDark } = useTheme();
+  const dispatch = useDispatch();
+  const isMainUser = useSelector(state => state.authReducer.isMainUser);
+  const familyMembers = useSelector(
+    state => state.transactionsReducer.familyMembers,
+  );
+  const [data, setData] = useState([user]);
 
   const expiryDate = transformDisplayedExpiryDate(user?.x_user_expiry);
-  const mainnBackgroundColor = isDark ? colors.darkModeBackground : '#fff';
+  const mainnBackgroundColor = isDark ? colors.darkBlue : '#fff';
   const barcodeLineColor = isDark ? '#fff' : 'black';
-  const barcodeBackgroundColor = isDark ? colors.darkModeBackground : '#fff';
+
+  useEffect(() => {
+    if (familyMembers?.length && isMainUser) {
+      setData([user, ...familyMembers]);
+    }
+  }, [familyMembers?.length]);
+
+  useEffect(() => {
+    if (isMainUser) {
+      dispatch(getFamilyMembers());
+    }
+  }, []);
 
   return (
     <SafeAreaView
@@ -34,15 +53,32 @@ const CardPage = () => {
     >
       <Header label={t('CardPage.card')} btns={['back']} />
 
-      <Card
-        name={user.name}
-        lname={user.x_moi_last_name}
-        nameAr={user.x_first_name_arbic}
-        lnameAr={user.x_last_name_arbic}
-        barcode={user.barcode}
-        expiryDate={expiryDate}
-        availablePoints={user.available_points || user.points}
-      />
+      <View
+        style={{
+          height: 230,
+          width: "90%",
+          marginTop: 25,
+        }}
+      >
+        <Swiper
+          loop={false}
+          showsButtons={false}
+          showsPagination={false}
+          scrollEnabled={data.length > 1}
+        >
+          {data.map(item => (
+            <Card
+              name={item.name}
+              lname={item.x_moi_last_name}
+              nameAr={item.x_first_name_arbic}
+              lnameAr={item.x_last_name_arbic}
+              barcode={item.barcode}
+              expiryDate={expiryDate}
+              availablePoints={item.available_points || item.points}
+            />
+          ))}
+        </Swiper>
+      </View>
 
       <View
         style={{
@@ -53,10 +89,10 @@ const CardPage = () => {
       >
         <View
           style={{
-            alignItems: 'center',
+            alignItems: 'center',justifyContent:'center',
             marginTop: 10,
             flex: 1,
-            marginBottom: 5,
+            marginBottom: 5
           }}
         >
           <Barcode
@@ -70,7 +106,7 @@ const CardPage = () => {
 
           <TypographyText
             textColor={barcodeLineColor}
-            size={25}
+            size={22}
             title={user?.barcode}
             style={{ fontWeight: '600' }}
           />
