@@ -92,7 +92,7 @@ const AddToWalletBtn = () => {
         shadowColor: 'rgba(0, 0, 0, 0)',
         marginBottom: 40,
        // backgroundColor: 'transparent',
-        borderColor: isDark ? colors.mainDarkMode : colors.darkBlue,
+        borderColor: isDark ? colors.darkBlue : colors.darkBlue,
       }}
       loadingIsCard={loading}
     />
