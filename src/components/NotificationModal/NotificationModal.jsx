@@ -86,7 +86,7 @@ const NotificationModal = ({
             snapPoints={snapPoints}
             onChange={handleSheetChanges}
             backgroundStyle={{
-              backgroundColor: isDark ? '#2E2E2E' : colors.white,
+              backgroundColor: isDark ? colors.navyBlue : colors.white,
             }}
           >
             <View style={styles.header}>

@@ -21,6 +21,7 @@ import { connect } from "react-redux";
 import HTMLRenderer from "../../../components/HTMLRenderer";
 import CloseSvg from "../../../assets/close.svg";
 import { getMerchantDetails } from "../../../redux/merchant/merchant-thunks";
+import { useTheme } from "../../../components/ThemeProvider";
 
 const CloseIcon = sized(CloseSvg, 14, 14, "white");
 
@@ -34,10 +35,11 @@ const NotificationModal = ({
 }) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
+  const { isDark } = useTheme();
   const [fullImage, setFullImage] = useState(false);
 
   return (
-    <View style={mainStyles.notificationModal}>
+    <View style={[mainStyles.notificationModal,{backgroundColor:isDark ? colors.darkBlue : colors.white}]}>
       <TouchableOpacity
         onPress={() => {
           setPressedNotification(null);
