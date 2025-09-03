@@ -156,7 +156,15 @@ export const getParentCategories = (type) => async (dispatch) => {
     });
 
     const parentCategories = res.data.result;
-
+    if (parentCategories?.length && type === 'local') {
+      parentCategories.unshift({
+        name: 'Vouchers & Giftcards',
+        x_name_arabic: 'القسائم وبطاقات الهدايا',
+        x_if_have_child_cat: false,
+        image3: '',
+        id: 'vouchers',
+      });
+    }
     const newCategories = await getSubCategoriesFunc(parentCategories, type);
 
     dispatch(setParentCategories(newCategories || []));
@@ -644,6 +652,7 @@ export const bookNow =
           params: {
             ...body,
             token,
+            organization: 'Al Rayan Rewards',
           },
         }
       );

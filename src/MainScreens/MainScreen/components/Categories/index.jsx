@@ -14,7 +14,7 @@ import ListNoData from "../../../../components/ListNoData";
 import { setCategoriesType } from "../../../../redux/merchant/merchant-actions";
 import useUpdateEffect from "../../../../hooks/useUpdateEffect";
 
-const IMAGE_SIZE = 72;
+const IMAGE_SIZE = 69;
 
 const Categories = () => {
   const { isDark } = useTheme();
@@ -47,7 +47,15 @@ const Categories = () => {
         params: {},
       });
       return;
-    } else if (!category.children?.length) {
+    }  
+    if (category.id === 'vouchers') {
+      navigation.navigate('myVouchers', {
+        screen: 'myVouchers-list',
+      });
+
+      return;
+    }
+    if (!category.children?.length) {
       navigation.navigate("merchants", {
         screen: "merchants-list",
         params: {
@@ -75,6 +83,26 @@ const Categories = () => {
 
   const handleTypeChange = (type) => {
     dispatch(setCategoriesType(type));
+  };
+  const getCategoryTitle = item => {
+    const words = (language === 'ar' ? item.x_name_arabic : item.name).split(
+      ' ',
+    );
+
+    if (words.length === 2) {
+      // If there are two words, place the second word in the second line
+      return `${words[0]}\n${words[1]}`;
+    } else if (words.length === 3) {
+      // If there are three words, apply the logic based on word lengths
+      if (words[0].length > words[2].length) {
+        return `${words[0]}\n${words.slice(1).join(' ')}`;
+      } else {
+        return `${words[0]} ${words[1]}\n${words[2]}`;
+      }
+    } else {
+      // Default behavior for other cases
+      return words.join(' ');
+    }
   };
 
   return (
@@ -115,7 +143,15 @@ const Categories = () => {
             <FullScreenLoader />
           )
         }
-        renderItem={({ item }) => (
+        renderItem={({ item }) => 
+          {
+            const source =
+            item.id === 'vouchers'
+              ? require('../../../../assets/vouchers.png')
+              : {
+                  uri: item.image3 || undefined,
+                };
+            return (
           <TouchableOpacity
             onPress={() => navigateToMerchant(item)}
             style={styles.listItem}
@@ -129,16 +165,14 @@ const Categories = () => {
                     tintColor: imageTintColor,
                   },
                 ]}
-                source={{
-                  uri: item.image3,
-                }}
+                source={source}
               />
             </View>
             <TypographyText
               textColor={textColor}
               size={16}
               font={BALOO_REGULAR}
-              title={language === "ar" ? item.x_name_arabic : item.name}
+              title={getCategoryTitle(item)}
               style={styles.categoryName}
               numberOfLines={2}
               textBreakStrategy="simple"
@@ -146,6 +180,7 @@ const Categories = () => {
             />
           </TouchableOpacity>
         )}
+        }
       />
     </View>
   );
@@ -192,12 +227,12 @@ const styles = StyleSheet.create({
     // ...mainStyles.generalShadow,
     width: IMAGE_SIZE + 5,
     height: IMAGE_SIZE + 5,
-    borderRadius: 32,
+    borderRadius: 38,
   },
   image: {
     width: IMAGE_SIZE,
     height: IMAGE_SIZE,
-    borderRadius: 32,
+    borderRadius: 37,
   },
   categoryImage: {
     width: IMAGE_SIZE,
