@@ -42,7 +42,12 @@ const Categories = () => {
   }, [categoriesType]);
 
   const navigateToMerchant = (category) => {
-    if (!category.children?.length) {
+    if (category.id == 265) {
+      navigation.navigate("MumayzInfo", {
+        params: {},
+      });
+      return;
+    } else if (!category.children?.length) {
       navigation.navigate("merchants", {
         screen: "merchants-list",
         params: {

@@ -433,7 +433,8 @@
       "scanBill": "عرض الفاتورة",
       "cancel": "يلغي",
       "logout": "تسجيل خروج",
-      "language": "لغة"
+      "language": "لغة",
+      "mumayizat": "تنزيل / فتح مميزات"
     },
     "Profile": {
       "changePassword": "تغيير كلمة المرور",

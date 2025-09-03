@@ -26,7 +26,7 @@ import BillScanner from '../../../MainScreens/BillScanner';
 import Family from "../../../MainScreens/Family/Family";
 import B1G1 from "../../../MainScreens/B1G1";
 import ApplyCodeConfirmation from '../../../MainScreens/AllOffers/ApplyCodeConfirmation';
-
+import MumayzInfo from "../../../MainScreens/MumayzInfo";
 import CategoriesNavigator from "../../../MainScreens/Categories";
 import ChildCategories from "../../../MainScreens/Categories/ChildCategories";
 
@@ -100,7 +100,10 @@ export const MainStackScreen = ({ navigation, route }) => {
         component={ChildCategories}
       />
 
-
+<MainStack.Screen
+        name={"MumayzInfo"}
+        component={MumayzInfo}
+      />
 
 
       <MainStack.Screen name={"ProductPage"} component={ProductPage} />

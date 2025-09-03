@@ -60,6 +60,7 @@ const styles = StyleSheet.create({
   },
   infoItemTitle: {
     borderRadius: 10,
+    padding: 6,
   },
   infoItemValue: {
     marginTop: 3,
