@@ -39,6 +39,9 @@ const CodeConfirmation = ({ route, navigation, verify, profileLoading,
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
 
+  const loginBg = isDark
+    ? require("../../assets/horizontal_logo_white.png")
+    : require("../../assets/horizontal_logo.png");
   const titleText = params.phone
     ? t("Login.enter4DigitsPhone")
     : t("Login.enter4DigitsEmail");
@@ -84,8 +87,10 @@ const CodeConfirmation = ({ route, navigation, verify, profileLoading,
               ]}
             >
               <Image
-                source={require("../../assets/shield.png")}
-                style={mainStyles.registerIcon}
+                source={loginBg}
+                style={{
+                  width: 250,
+                  height: 150}}
               />
               <TypographyText
                 title={titleText + " " + params?.params?.email}
