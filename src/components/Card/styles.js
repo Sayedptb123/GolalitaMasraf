@@ -3,7 +3,7 @@ import { SCREEN_WIDTH } from "../../styles/mainStyles";
 
 const styles = StyleSheet.create({
   wrapper: {
-   
+    height:"90%",
     // width: (SCREEN_WIDTH / 100) * 86,
     overflow: "hidden",
     borderRadius: 8,
@@ -13,12 +13,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   card: {
-    paddingHorizontal: 17,
-    paddingVertical: 15,
-    width: (SCREEN_WIDTH / 100) * 86,
+   // paddingHorizontal: 17,
+    //paddingVertical: 15,
+  //  width: (SCREEN_WIDTH / 100) * 86,
     // left: -2,
     //bottom: -2,
-    height: 220,
+    height: '100%',width:'100%',
     justifyContent: "center",
     borderRadius: 8,
     overflow: "hidden",
