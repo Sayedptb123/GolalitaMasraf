@@ -14,6 +14,7 @@ import { colors } from '../../components/colors';
 import AddToWalletBtn from './components/AddToWalletBtn';
 import { getFamilyMembers } from '../../redux/transactions/transactions-thunks';
 import Swiper from 'react-native-swiper';
+import { BALOO_REGULAR } from "../../redux/types";
 
 const CardPage = () => {
   const user = useSelector(userSelector);
@@ -25,14 +26,19 @@ const CardPage = () => {
     state => state.transactionsReducer.familyMembers,
   );
   const [data, setData] = useState([user]);
-console.log(data, 'data');
   const expiryDate = transformDisplayedExpiryDate(user?.x_user_expiry);
   const mainnBackgroundColor = isDark ? colors.darkBlue : '#fff';
   const barcodeLineColor = isDark ? '#fff' : 'black';
 
   useEffect(() => {
     if (familyMembers?.length && isMainUser) {
-      setData([user, ...familyMembers]);
+      // Create additional card for main member with special background
+      const mainMemberSpecialCard = { ...user, isSpecialCard: true };
+      setData([mainMemberSpecialCard, user, ...familyMembers]);
+    } else if (isMainUser) {
+      // Create additional card for main member with special background
+      const mainMemberSpecialCard = { ...user, isSpecialCard: true };
+      setData([mainMemberSpecialCard, user]);
     }
   }, [familyMembers?.length]);
 
@@ -66,28 +72,34 @@ console.log(data, 'data');
           showsPagination={false}
           scrollEnabled={data.length > 1}
         >
-          {data.map((item, index) => {
-            console.log(`Card ${index} data:`, {
-              name: item.name,
-              lname: item.x_moi_last_name,
-              nameAr: item.x_first_name_arbic,
-              lnameAr: item.x_last_name_arbic,
-              fullItem: item
-            });
-            
-            return (
-              <Card
-                key={index}
-                name={item.name}
-                lname={item.x_moi_last_name}
-                nameAr={item.x_first_name_arbic}
-                lnameAr={item.x_last_name_arbic}
-                barcode={item.barcode}
-                expiryDate={expiryDate}
-                availablePoints={item.available_points || item.points}
-              />
-            );
-          })}
+          {data.map((item, index) => (
+            <Card
+              key={item.id || item.partner_id || index}
+              name={item.name}
+              lname={item.x_moi_last_name}
+              nameAr={item.x_first_name_arbic}
+              lnameAr={item.x_last_name_arbic}
+              barcode={item.barcode}
+              expiryDate={expiryDate}
+              availablePoints={item.available_points || item.points}
+              isMainMember={!!item.partner_id}
+              isSpecialCard={item.isSpecialCard}
+              index={index}
+              renderHeader={() => (
+                <TypographyText
+                  textColor={isDark ? colors.white : colors.darkBlue}
+                  size={16}
+                  font={BALOO_REGULAR}
+                  title={
+                    item.partner_id
+                      ? t("CardPage.employeeCard")
+                      : t("CardPage.familyCard")
+                  }
+                  style={styles.cardType}
+                />
+              )}
+            />
+          ))}
         </Swiper>
       </View>
 
@@ -134,6 +146,11 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
   },
+  cardType: {
+    alignSelf: "flex-end",
+    fontWeight: "900",
+    paddingRight: 6,
+  }
 });
 
 export default CardPage;

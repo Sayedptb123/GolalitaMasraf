@@ -69,7 +69,7 @@ const AddToWalletBtn = () => {
        // backgroundColor: 'transparent',
         borderColor: isDark ? colors.darkBlue : colors.darkBlue,
       }}
-      loadingIsCard={loading}
+      loading={loading}
     />
   );
 };
