@@ -180,7 +180,7 @@ const ApplyCodeConfirmation = ({ navigation }) => {
           <TypographyText
             title={
               isRTL()
-                ? merchantDataRef.current.x_arabic_name
+                ? merchantDataRef.current.merchant_name_arabic
                 : merchantDataRef.current.merchant_name
             }
             textColor={isDark ? colors.mainDarkMode : colors.darkBlue}

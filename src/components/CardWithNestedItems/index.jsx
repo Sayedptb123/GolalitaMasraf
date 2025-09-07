@@ -137,7 +137,7 @@ const CardWithNesetedItems = (props) => {
             font={BALOO_SEMIBOLD}
             title={parentProps.name}
             numberOfLines={2}
-            style={{width:'90%'}}
+            style={{width:'85%'}}
           />
 
           {parentProps.loadingDescription && (
