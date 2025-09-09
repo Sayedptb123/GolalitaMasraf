@@ -1,23 +1,18 @@
 {
   "project_info": {
     "project_number": "1063084247741",
-    "project_id": "golalitamasraf",
-    "storage_bucket": "golalitamasraf.appspot.com"
+    "project_id": "golalita-rewards",
+    "storage_bucket": "golalita-rewards.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1063084247741:android:f8eb58a6106287594e85d4",
+        "mobilesdk_app_id": "1:1063084247741:android:bdfbdd1aaff233af4e85d4",
         "android_client_info": {
-          "package_name": "com.golalitabarwa"
+          "package_name": "com.beemaapp"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "1063084247741-bmq6toa2l9lnh8np9fv25bs00a39ei1t.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
           "current_key": "AIzaSyAWihLABHmbjGtXpPYh_83xLtBZsaQ-5kQ"
@@ -25,19 +20,45 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "1063084247741-bmq6toa2l9lnh8np9fv25bs00a39ei1t.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "1063084247741-5vioa160kppqf2asjodsovfpvdelum47.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.golalita.ios"
-              }
-            }
-          ]
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1063084247741:android:8aa742fa4deec3ec4e85d4",
+        "android_client_info": {
+          "package_name": "com.emtiazapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWihLABHmbjGtXpPYh_83xLtBZsaQ-5kQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1063084247741:android:f8eb58a6106287594e85d4",
+        "android_client_info": {
+          "package_name": "com.golalitabarwa"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWihLABHmbjGtXpPYh_83xLtBZsaQ-5kQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
         }
       }
     },
@@ -48,12 +69,7 @@
           "package_name": "com.golalitadaam"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "1063084247741-bmq6toa2l9lnh8np9fv25bs00a39ei1t.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
           "current_key": "AIzaSyAWihLABHmbjGtXpPYh_83xLtBZsaQ-5kQ"
@@ -61,19 +77,7 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "1063084247741-bmq6toa2l9lnh8np9fv25bs00a39ei1t.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "1063084247741-5vioa160kppqf2asjodsovfpvdelum47.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.golalita.ios"
-              }
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     },
@@ -84,12 +88,7 @@
           "package_name": "com.golalitagulfexchange"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "1063084247741-bmq6toa2l9lnh8np9fv25bs00a39ei1t.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
           "current_key": "AIzaSyAWihLABHmbjGtXpPYh_83xLtBZsaQ-5kQ"
@@ -97,19 +96,7 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "1063084247741-bmq6toa2l9lnh8np9fv25bs00a39ei1t.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "1063084247741-5vioa160kppqf2asjodsovfpvdelum47.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.golalita.ios"
-              }
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     },
@@ -117,15 +104,10 @@
       "client_info": {
         "mobilesdk_app_id": "1:1063084247741:android:47868ef298b447814e85d4",
         "android_client_info": {
-          "package_name": "com.golalitamasraf"
+          "package_name": "com.golalitamasrif"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "1063084247741-bmq6toa2l9lnh8np9fv25bs00a39ei1t.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
           "current_key": "AIzaSyAWihLABHmbjGtXpPYh_83xLtBZsaQ-5kQ"
@@ -133,19 +115,7 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "1063084247741-bmq6toa2l9lnh8np9fv25bs00a39ei1t.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "1063084247741-5vioa160kppqf2asjodsovfpvdelum47.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.golalita.ios"
-              }
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     },
@@ -156,12 +126,7 @@
           "package_name": "com.golalitaqib"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "1063084247741-bmq6toa2l9lnh8np9fv25bs00a39ei1t.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
           "current_key": "AIzaSyAWihLABHmbjGtXpPYh_83xLtBZsaQ-5kQ"
@@ -169,19 +134,45 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "1063084247741-bmq6toa2l9lnh8np9fv25bs00a39ei1t.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "1063084247741-5vioa160kppqf2asjodsovfpvdelum47.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.golalita.ios"
-              }
-            }
-          ]
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1063084247741:android:35ecd70856dae7384e85d4",
+        "android_client_info": {
+          "package_name": "com.golalitaqlmrewards"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWihLABHmbjGtXpPYh_83xLtBZsaQ-5kQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1063084247741:android:f4613a9bd22cd9cb4e85d4",
+        "android_client_info": {
+          "package_name": "com.golalitaqpost"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWihLABHmbjGtXpPYh_83xLtBZsaQ-5kQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
         }
       }
     },
@@ -192,12 +183,7 @@
           "package_name": "com.golalitarewards"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "1063084247741-bmq6toa2l9lnh8np9fv25bs00a39ei1t.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
           "current_key": "AIzaSyAWihLABHmbjGtXpPYh_83xLtBZsaQ-5kQ"
@@ -205,19 +191,26 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "1063084247741-bmq6toa2l9lnh8np9fv25bs00a39ei1t.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "1063084247741-5vioa160kppqf2asjodsovfpvdelum47.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.golalita.ios"
-              }
-            }
-          ]
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1063084247741:android:05ae61afd159ce434e85d4",
+        "android_client_info": {
+          "package_name": "com.golalitarewards.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWihLABHmbjGtXpPYh_83xLtBZsaQ-5kQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
         }
       }
     },
@@ -236,10 +229,6 @@
             "package_name": "com.golalitasjc",
             "certificate_hash": "666ff8f14d109dd1edcff470234339442f704178"
           }
-        },
-        {
-          "client_id": "1063084247741-bmq6toa2l9lnh8np9fv25bs00a39ei1t.apps.googleusercontent.com",
-          "client_type": 3
         }
       ],
       "api_key": [
@@ -249,55 +238,7 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "1063084247741-bmq6toa2l9lnh8np9fv25bs00a39ei1t.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "1063084247741-5vioa160kppqf2asjodsovfpvdelum47.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.golalita.ios"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:1063084247741:android:600e6229662a88684e85d4",
-        "android_client_info": {
-          "package_name": "com.golalitazaman"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "1063084247741-bmq6toa2l9lnh8np9fv25bs00a39ei1t.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAWihLABHmbjGtXpPYh_83xLtBZsaQ-5kQ"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "1063084247741-bmq6toa2l9lnh8np9fv25bs00a39ei1t.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "1063084247741-5vioa160kppqf2asjodsovfpvdelum47.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.golalita.ios"
-              }
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }
