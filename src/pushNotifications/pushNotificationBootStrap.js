@@ -29,7 +29,7 @@ messaging().onMessage(async remoteMessage => {
       android: {
         channelId: NOTIFICATION_DEFAULT_CHANNEL_ID,
         pressAction: { id: 'default' },
-        smallIcon: 'bootsplash_logo',
+        smallIcon: 'logo',
       },
     });
 

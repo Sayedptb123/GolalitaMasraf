@@ -5,17 +5,11 @@ import {
 import store from "../redux/store";
 import i18n from "i18next";
 import { setClickedNotificationData } from "../redux/notifications/notifications-actions";
-import { navigate } from "../Navigation/navigationHelpers";
 
 export const NotificatiionClickHanlder = {
-  general: () => {
-    navigate("Notifications");
+  merchant: (merchant_id) => {
     store.dispatch(setClickedNotificationData(null));
-  },
-  merchant: (merchant_id, notification) => {
-    console.log(merchant_id, "merchant id");
-    console.log(notification, "notification");
-    store.dispatch(setClickedNotificationData(notification));
+    console.log("before get merchant details");
     store.dispatch(getMerchantDetails(merchant_id, null, i18n.t));
   },
   product: (product_id, notification) => {
@@ -29,19 +23,14 @@ export const handleNotificationClick = (notification) => {
     return;
   }
 
-  const data = notification.data;
-
-  if (!data.merchant_id) {
-    NotificatiionClickHanlder.general();
-  }
+  const { data } = notification;
 
   if (data.merchant_id && data.merchant_id !== "False") {
-    NotificatiionClickHanlder.merchant(Number(data.merchant_id), notification);
+    NotificatiionClickHanlder.merchant(Number(data.merchant_id));
     return;
   }
 
   if (data.product_id && data.product_id !== "False") {
     NotificatiionClickHanlder.product(Number(data.product_id), notification);
-    return;
   }
 };
