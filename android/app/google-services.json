@@ -102,6 +102,25 @@
     },
     {
       "client_info": {
+        "mobilesdk_app_id": "1:1063084247741:android:b321c23d1a1ad9fe4e85d4",
+        "android_client_info": {
+          "package_name": "com.golalitamasraf"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWihLABHmbjGtXpPYh_83xLtBZsaQ-5kQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:1063084247741:android:47868ef298b447814e85d4",
         "android_client_info": {
           "package_name": "com.golalitamasrif"
