@@ -42,7 +42,7 @@ def _push_notification_to_employee_call():
 
     # Use test device tokens for testing
     test_device_tokens = [
-        "dwDZUE0TQYmHFsWAqFrZRW:APA91bEjpjbKrQg13cqqgR_QeWQZqhX8VHuy98GQFfBkg3DqaVAHdJDKJL2ivnaEummEwp9Y68npVUwzlCofBs9yj_yw8NjXenHOwjmMdwH8DeoEmFBedBA"
+        "dFLUXH6KQRSviKWOzDDIL9:APA91bG0K9y3v0XcUOZHV1w3WbjBb-IO9nXyv4ZTJY_IQeTAHdE7kroCm4M9JcJvRZg-CtY4WHy6itVRegeG1oLqlExdoxz8haCYf9l9y_bm65zN5P2ePdg"
     ]
 
     _logger.info(f"Sending push notification to test devices: {test_device_tokens}")
