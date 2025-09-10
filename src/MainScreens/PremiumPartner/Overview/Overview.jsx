@@ -308,23 +308,32 @@ const Overview = ({
           </View>
         </View>
 
-        {merchantDetails.x_online_store && (
-          <CommonButton
-            text={`${t("ProductPage.openOnlineStore")} ${
-              merchantDetails.merchant_name.length > 15
-                ? `${merchantDetails.merchant_name.slice(0, 15)}...`
-                : merchantDetails.merchant_name
-            } ${t("TabBar.onlineStore")}`}
-            onPress={() => Linking.openURL(merchantDetails.website)}
-            wrapperStyle={{
-              backgroundColor: "#00A3FF",
-              marginHorizontal: 20,
-              borderWidth: 0,
-              marginTop: 25,
-            }}
-            textStyle={{ color: "#fff" }}
-          />
-        )}
+        {merchantDetails.x_online_store && (() => {
+          const merchantName = isArabic
+            ? merchantDetails?.merchant_name_arabic || merchantDetails.merchant_name
+            : merchantDetails.merchant_name;
+          const displayName = merchantName.length > 15
+            ? `${merchantName.slice(0, 15)}...`
+            : merchantName;
+          
+          const buttonText = isArabic
+            ? t("ProductPage.openOnlineStore", { name: displayName }) + ` ${t("TabBar.onlineStore")}`
+            : `${t("ProductPage.openOnlineStore")} ${displayName} ${t("TabBar.onlineStore")}`;
+          
+          return (
+            <CommonButton
+              text={buttonText}
+              onPress={() => Linking.openURL(merchantDetails.website)}
+              wrapperStyle={{
+                backgroundColor: "#00A3FF",
+                marginHorizontal: 20,
+                borderWidth: 0,
+                marginTop: 25,
+              }}
+              textStyle={{ color: "#fff" }}
+            />
+          );
+        })()}
 
         <Modal visible={isFullImage} transparent={true}>
           <ImageViewer
