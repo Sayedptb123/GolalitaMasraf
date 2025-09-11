@@ -165,9 +165,9 @@ export const getParentCategories = (type) => async (dispatch) => {
         id: 'vouchers',
       });
     }
-    const newCategories = await getSubCategoriesFunc(parentCategories, type);
+   // const newCategories = await getSubCategoriesFunc(parentCategories, type);
 
-    dispatch(setParentCategories(newCategories || []));
+    dispatch(setParentCategories(parentCategories || []));
   } catch (err) {
     console.log(err, "get parrent categories error");
   } finally {

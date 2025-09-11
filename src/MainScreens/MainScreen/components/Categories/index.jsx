@@ -55,28 +55,26 @@ const Categories = () => {
 
       return;
     }
-    if (!category.children?.length) {
-      navigation.navigate("merchants", {
-        screen: "merchants-list",
+    if (!category.x_if_have_child_cat) {
+      navigation.navigate('merchants', {
+        screen: 'merchants-list',
         params: {
-          filters: {
-            category_id: category.id,
-          },
+          selectedCategoryId: category.id,
           parentCategoryId: category?.parent_id?.[0],
           parentCategoryName:
-            language === "ar" ? category?.x_name_arabic : category.name,
+            language === 'ar' ? category?.x_name_arabic : category.name,
         },
       });
 
       return;
     }
 
-    navigation.navigate("categories", {
-      screen: "categories-child",
+    navigation.navigate('merchants', {
+      screen: 'categories-child',
       params: {
-        childCategories: category.children,
+        parentCategoryId: category.id,
         parentCategoryName:
-          language === "ar" ? category?.x_name_arabic : category.name,
+          language === 'ar' ? category?.x_name_arabic : category.name,
       },
     });
   };
