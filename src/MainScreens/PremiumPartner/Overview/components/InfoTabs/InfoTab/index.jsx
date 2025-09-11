@@ -1,4 +1,5 @@
 import { Linking, StyleSheet } from "react-native";
+import { useState } from "react";
 import CommonButton from "../../../../common/CommonButton";
 import { View } from "react-native";
 import { colors } from "../../../../../../components/colors";
@@ -6,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { useTheme } from "../../../../../../components/ThemeProvider";
 import MenuBookSvg from "../../../../../../assets/menu-book.svg";
 import CallSvg from "../../../../../../assets/call.svg";
+import ContactUsSvg from "../../../../../../assets/contact_us.svg";
 import HTMLRenderer from "../../../../../../components/HTMLRenderer";
 import { sized } from "../../../../../../Svg";
 import { TypographyText } from "../../../../../../components/Typography";
@@ -13,6 +15,7 @@ import { TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import TermsAndConditions from "./TermsAndConditions";
 import ContractBtn from "./ContractBtn";
+import ComplaintModal from "../../../../../ComplaintForm/ComplaintModal";
 
 const InfoTab = ({ merchantDetails }) => {
   const { t, i18n } = useTranslation();
@@ -20,12 +23,22 @@ const InfoTab = ({ merchantDetails }) => {
   const navigation = useNavigation();
 
   const isArabic = i18n.language === "ar";
+  const [isComplaintModalVisible, setIsComplaintModalVisible] = useState(false);
+  const [complaintData, setComplaintData] = useState({});
+
+  // Debug: Log merchant details to see what's available
+  console.log("InfoTab merchantDetails:", merchantDetails);
+  console.log("merchantDetails.merchant_name:", merchantDetails?.merchant_name);
+  console.log("merchantDetails.merchant_name_arabic:", merchantDetails?.merchant_name_arabic);
+  console.log("merchantDetails.name:", merchantDetails?.name);
+  console.log("merchantDetails.x_arabic_name:", merchantDetails?.x_arabic_name);
 
   const backgroundColor = isDark ? colors.darkBlue : "#fff";
   const btnColor = isDark ? colors.mainDarkMode : colors.darkBlue;
 
   const MenuBookIcon = sized(MenuBookSvg, 16, 16, btnColor);
   const CallIcon = sized(CallSvg, 16, 16, btnColor);
+  const ComplaintIcon = sized(ContactUsSvg, 16, 16, btnColor);
 
   const renderInfo = (title, value, onPress, isHtml) => {
     if (!value) {
@@ -151,7 +164,37 @@ const InfoTab = ({ merchantDetails }) => {
           }}
         />
 
-<ContractBtn merchantId={merchantDetails.id} />
+        <ContractBtn merchantId={merchantDetails.id} />
+
+        <CommonButton
+          text={t("Merchants.complaint")}
+          icon={<ComplaintIcon />}
+          onPress={() => {
+            const merchantName = isArabic 
+              ? (merchantDetails.merchant_name_arabic || merchantDetails.merchant_name)
+              : merchantDetails.merchant_name;
+            console.log("Opening ComplaintModal with merchant_name:", merchantName);
+            console.log("isArabic:", isArabic);
+            console.log("merchantDetails.merchant_name_arabic:", merchantDetails.merchant_name_arabic);
+            console.log("merchantDetails.merchant_name:", merchantDetails.merchant_name);
+            
+            setComplaintData({
+              merchant_name: merchantName,
+              merchant_id: merchantDetails.id,
+            });
+            setIsComplaintModalVisible(true);
+          }}
+          textStyle={{
+            color: btnColor,
+            fontSize: 11,
+            marginLeft: 4,
+          }}
+          wrapperStyle={{
+            borderColor: btnColor,
+            paddingHorizontal: 10,
+            marginLeft: 16,
+          }}
+        />
       </View>
       {renderInfo(
         t("ProductPage.workingHours"),
@@ -187,6 +230,12 @@ const InfoTab = ({ merchantDetails }) => {
       {renderInfo(t("ProductPage.website"), merchantDetails.website, () =>
         Linking.openURL(merchantDetails.website)
       )}
+      
+      <ComplaintModal
+        visible={isComplaintModalVisible}
+        onClose={() => setIsComplaintModalVisible(false)}
+        merchantData={complaintData}
+      />
     </View>
   );
 };

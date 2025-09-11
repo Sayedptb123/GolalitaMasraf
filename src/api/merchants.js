@@ -258,3 +258,43 @@ export const getContracts = async (merchat_id) => {
 
   return res.data.result;
 };
+
+export const submitComplaint = async (complaintData) => {
+  const token = await AsyncStorage.getItem("token");
+
+  console.log("Submitting complaint:", complaintData);
+
+  const res = await instance.post("/user/complaints/create", {
+    params: {
+      token,
+      merchant_id: complaintData.merchant_id,
+      merchant_name: complaintData.merchant_name,
+      date: complaintData.date,
+      time: complaintData.time,
+      subject: complaintData.subject,
+      description: complaintData.description,
+      rating: complaintData.rating,
+      communication_type: complaintData.communication_type,
+      customer_email: complaintData.email,
+      customer_phone: complaintData.phone,
+    },
+  });
+
+  console.log("Complaint submission response:", res.data);
+
+  // Check if the response has the expected structure
+  if (!res.data.result) {
+    throw new Error('Invalid response format');
+  }
+
+  // Check if the result indicates success or error
+  if (res.data.result.status === 'error') {
+    throw new Error(res.data.result.message || 'Failed to submit complaint');
+  }
+
+  if (res.data.result.status !== 'success') {
+    throw new Error(res.data.result.message || 'Failed to submit complaint');
+  }
+
+  return res.data.result;
+};
