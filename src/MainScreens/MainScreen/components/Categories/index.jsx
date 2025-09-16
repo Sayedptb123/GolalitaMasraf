@@ -59,6 +59,9 @@ const Categories = () => {
       navigation.navigate('merchants', {
         screen: 'merchants-list',
         params: {
+          filters: {
+          category_id: category.id,
+        },
           selectedCategoryId: category.id,
           parentCategoryId: category?.parent_id?.[0],
           parentCategoryName:
@@ -71,7 +74,9 @@ const Categories = () => {
 
     navigation.navigate('merchants', {
       screen: 'categories-child',
-      params: {
+      params: { filters: {
+        category_id: category.id,
+      },
         parentCategoryId: category.id,
         parentCategoryName:
           language === 'ar' ? category?.x_name_arabic : category.name,

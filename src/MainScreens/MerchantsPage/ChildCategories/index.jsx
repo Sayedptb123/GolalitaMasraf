@@ -63,6 +63,9 @@ const ChildCategories = ({ navigation }) => {
     navigation.navigate('merchants', {
       screen: 'merchants-list',
       params: {
+        filters: {
+          category_id: category.id,
+        },
         selectedCategoryId: category.id,
         parentCategoryId: category?.parent_id?.[0],
         parentCategoryName,

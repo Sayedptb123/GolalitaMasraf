@@ -85,7 +85,7 @@ const MainScreen = ({
       <MainLayout
         outsideScroll={true}
         headerChildren={
-          <Header label={"AI Rayan Rewards"} btns={["notifications"]} />
+          <Header label={"Al Rayan Rewards"} isDrawer={true} btns={["notifications"]} />
         }
         headerHeight={50}
         contentStyle={{ height: SCREEN_HEIGHT - 65, paddingHorizontal: 20 }}
