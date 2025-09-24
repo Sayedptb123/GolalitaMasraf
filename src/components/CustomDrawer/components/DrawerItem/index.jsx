@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
   itemCount: {
     backgroundColor: "red",
     padding: 2,
-    width: 20,
+    width: 35,
     borderRadius: 20,
     alignItems: "center",
     justifyContent: "center",
