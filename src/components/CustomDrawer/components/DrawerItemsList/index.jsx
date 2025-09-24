@@ -72,14 +72,6 @@ const DrawerItemList = () => {
 
   const drawerItems = [
     {
-      icon: () => <VouchersIcon style={styles.iconWrapper} />, //routeName === 'Cart' ? <BagActiveIcon /> : <BagIcon />,
-      title: t("Drawer.vouchersAndGiftCards"),
-      onPress: () =>
-        navigate("myVouchers", {
-          screen: "myVouchers-list",
-        }),
-    },
-    {
       icon: () => <FamilyIcon style={styles.iconWrapper} />, //routeName === 'Cart' ? <BagActiveIcon /> : <BagIcon />,
       title: t("Drawer.familyMembers"),
       onPress: () => navigate("Family"),
