@@ -1,7 +1,7 @@
 import React, { useCallback, useRef, useState } from "react";
 import { colors } from "../../components/colors";
 import CommonHeader from "../../components/CommonHeader/CommonHeader";
-import { mainStyles } from "../../styles/mainStyles";
+import { mainStyles,SCREEN_HEIGHT } from "../../styles/mainStyles";
 import { styles } from "./styles";
 import { SafeAreaView, ScrollView, TouchableOpacity, View } from "react-native";
 import { useTheme } from "../../components/ThemeProvider";
@@ -103,7 +103,7 @@ const Voucher = ({
               ref={viewRef}
               style={[
                 styles.container,
-                { backgroundColor: isDark ? colors.darkBlue : colors.white },
+                { backgroundColor: isDark ? colors.darkBlue : colors.white,minHeight: (SCREEN_HEIGHT / 100) * 60 },
               ]}
             >
               <TypographyText
@@ -132,83 +132,6 @@ const Voucher = ({
                   style={{ marginLeft: 11 }}
                 />
               </View>
-              {
-                <Slider
-                  onEndReached={() => {
-                    setIsSlided(true);
-                    saveOffer(params?.id, t, true);
-                    track(
-                      "promocode",
-                      params?.id,
-                      false,
-                      params?.promocode,
-                      () => {
-                        track(
-                          "promocode",
-                          params?.id,
-                          true,
-                          params?.promocode,
-                          () => {
-                            setTimeout(() => {
-                              navigation.navigate("Main");
-                            }, 3000);
-                          }
-                        );
-                      }
-                    );
-                  }}
-                  containerStyle={{
-                    margin: 8,
-                    backgroundColor: isCopied ? "#8286B1" : colors.navyBlue,
-                    borderRadius: 10,
-                    overflow: "hidden",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    width: "95%",
-                  }}
-                  sliderElement={
-                    isSlided ? (
-                      <View style={{ height: 60 }}></View>
-                    ) : (
-                      <SwipeIcon />
-                    )
-                  }
-                >
-                  {isSlided ? (
-                    <View style={mainStyles.row}>
-                      <TypographyText
-                        textColor={colors.white}
-                        size={24}
-                        font={BALOO_SEMIBOLD}
-                        title={`${params?.promocode ?? ""} |`}
-                      />
-                      <TouchableOpacity
-                        onPress={async () => {
-                          setIsCopied(true);
-                          Clipboard.setString(params?.promocode ?? "");
-                        }}
-                        style={mainStyles.row}
-                      >
-                        <CopyIcon style={{ marginHorizontal: 5 }} />
-                        <TypographyText
-                          textColor={colors.white}
-                          size={24}
-                          font={BALOO_SEMIBOLD}
-                          title={isCopied ? "Copied" : "Copy"}
-                        />
-                      </TouchableOpacity>
-                    </View>
-                  ) : (
-                    <TypographyText
-                      textColor={colors.white}
-                      size={18}
-                      font={BALOO_SEMIBOLD}
-                      title={t("PremiumPartner.swipeToGetCode")}
-                      style={[mainStyles.centeredText, { marginLeft: 30 }]}
-                    />
-                  )}
-                </Slider>
-              }
               <TypographyText
                 textColor={!isDark ? colors.darkBlue : colors.white}
                 size={14}
@@ -297,6 +220,83 @@ const Voucher = ({
             </View>
           </View>
         </ScrollView>
+        {
+                <Slider
+                  onEndReached={() => {
+                    setIsSlided(true);
+                    saveOffer(params?.id, t, true);
+                    track(
+                      "promocode",
+                      params?.id,
+                      false,
+                      params?.promocode,
+                      () => {
+                        track(
+                          "promocode",
+                          params?.id,
+                          true,
+                          params?.promocode,
+                          () => {
+                            setTimeout(() => {
+                              navigation.navigate("Main");
+                            }, 3000);
+                          }
+                        );
+                      }
+                    );
+                  }}
+                  containerStyle={{
+                    margin: 8,
+                    backgroundColor: isCopied ? "#8286B1" : colors.navyBlue,
+                    borderRadius: 10,
+                    overflow: "hidden",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: "95%",
+                  }}
+                  sliderElement={
+                    isSlided ? (
+                      <View style={{ height: 60 }}></View>
+                    ) : (
+                      <SwipeIcon />
+                    )
+                  }
+                >
+                  {isSlided ? (
+                    <View style={mainStyles.row}>
+                      <TypographyText
+                        textColor={colors.white}
+                        size={24}
+                        font={BALOO_SEMIBOLD}
+                        title={`${params?.promocode ?? ""} |`}
+                      />
+                      <TouchableOpacity
+                        onPress={async () => {
+                          setIsCopied(true);
+                          Clipboard.setString(params?.promocode ?? "");
+                        }}
+                        style={mainStyles.row}
+                      >
+                        <CopyIcon style={{ marginHorizontal: 5 }} />
+                        <TypographyText
+                          textColor={colors.white}
+                          size={24}
+                          font={BALOO_SEMIBOLD}
+                          title={isCopied ? "Copied" : "Copy"}
+                        />
+                      </TouchableOpacity>
+                    </View>
+                  ) : (
+                    <TypographyText
+                      textColor={colors.white}
+                      size={18}
+                      font={BALOO_SEMIBOLD}
+                      title={t("PremiumPartner.swipeToGetCode")}
+                      style={[mainStyles.centeredText, { marginLeft: 30 }]}
+                    />
+                  )}
+                </Slider>
+              }
       </SafeAreaView>
     </View>
   );
