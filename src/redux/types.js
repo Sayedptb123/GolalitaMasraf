@@ -18,4 +18,4 @@ export const DISCOUNT = "discount";
 export const PROMOCODE = "promocode";
 export const GIFTCARD = "giftcard";
 
-export const VERSION = "1.4.8";
+export const VERSION = "1.4.9";
